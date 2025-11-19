@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DigiSafeMan</title>
+  <link rel="stylesheet" href="style/style.css" />
+  <link rel="stylesheet" href="style/fontstyle.css" />
+  <link rel="stylesheet" href="style/hamMenuHidden.css" />
+  
+  <script src="js/menu.js" ></script>
+  
+  <script src="js/header.js" defer></script>
+  <script src="js/bottomnav.js" defer></script>
+  
+  <script src="js/breadcrumb.js" defer></script>
+  
+  <script src="js/login.js" defer></script>
+  
+  
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+<!-- HEADER------------------------------------------------------------------------------------!>
+<!-- inserito con js file header --!>
+
+<!-- BREADCRUMB------------------------------------------------------------------------------------!>
+<!-- inserito con js file breadcrumb --!>
+  
+ 
+ <!-- MAIN PAGE COMPONENTS------------------------------------------------------------------------------------!>
+ 
+  <main>
+    <section class="profile-page">
+
+      <!-- riga “Ciao! scrivi qui” -->
+      <p class="profile-greeting">
+        Ciao! <span class="profile-greeting-name" id="profileGreeting">scrivi qui</span>
+      </p>
+
+      <!-- avatar + icona matita -->
+      <div class="profile-top">
+        <div class="profile-avatar">
+          <img src="resources/avatars/avatar0.png" alt="Avatar utente">
+          <button class="profile-avatar-edit" type="button" aria-label="Modifica avatar">
+            ✏️
+          </button>
+        </div>
+      </div>
+
+      <!-- card con informazioni personali -->
+      <section class="profile-card" aria-labelledby="profileInfoTitle">
+        <header class="profile-card-header">
+          <h2 id="profileInfoTitle">INFORMAZIONI PERSONALI</h2>
+          <button class="profile-edit-btn" type="button" aria-label="Modifica informazioni personali">
+            ✏️
+          </button>
+        </header>
+
+        <div class="profile-field">
+          <span class="profile-field-label">Nome:</span>
+          <span class="profile-field-value" id="profileName">scrivi qui</span>
+        </div>
+        <div class="profile-divider"></div>
+
+        <div class="profile-field">
+          <span class="profile-field-label">E-mail:</span>
+          <span class="profile-field-value" id="profileEmail">scrivi qui</span>
+        </div>
+        <div class="profile-divider"></div>
+
+        <div class="profile-field">
+          <span class="profile-field-label">Password:</span>
+          <span class="profile-field-value" id="profilePassword">scrivi qui</span>
+        </div>
+        <div class="profile-divider"></div>
+      </section>
+
+    </section>
+  </main>
+
+<!-- BOTTOM NAVBAR------------------------------------------------------------------------------------!>
+<!-- inserito con js file bottomnav --!>
+  <!-- OVERLAY SCELTA AVATAR (riusato dal login) -->
+  <div class="register-overlay" id="avatarOverlay" aria-hidden="true">
+    <div class="register-panel avatar-panel" role="dialog" aria-modal="true" aria-labelledby="avatarTitle">
+
+      <div class="register-header">
+        <h2 id="avatarTitle">Scegli il tuo avatar</h2>
+        <button type="button" class="reg-close" data-close-register aria-label="Chiudi">
+          ✕
+        </button>
+      </div>
+
+      <div class="avatar-grid">
+        <button type="button" class="avatar-option" data-avatar="resources/avatars/avatar0.png">
+          <img src="resources/avatars/avatar0.png" alt="Avatar 0">
+        </button>
+        <button type="button" class="avatar-option" data-avatar="resources/avatars/avatar1.png">
+          <img src="resources/avatars/avatar1.png" alt="Avatar 1">
+        </button>
+        <button type="button" class="avatar-option" data-avatar="resources/avatars/avatar2.png">
+          <img src="resources/avatars/avatar2.png" alt="Avatar 2">
+        </button>
+        <button type="button" class="avatar-option" data-avatar="resources/avatars/avatar3.png">
+          <img src="resources/avatars/avatar3.png" alt="Avatar 3">
+        </button>
+        <button type="button" class="avatar-option" data-avatar="resources/avatars/avatar4.png">
+          <img src="resources/avatars/avatar4.png" alt="Avatar 4">
+        </button>
+        <button type="button" class="avatar-option" data-avatar="resources/avatars/avatar5.png">
+          <img src="resources/avatars/avatar5.png" alt="Avatar 5">
+        </button>
+        <button type="button" class="avatar-option" data-avatar="resources/avatars/avatar6.png">
+          <img src="resources/avatars/avatar6.png" alt="Avatar 6">
+        </button>
+        <button type="button" class="avatar-option" data-avatar="resources/avatars/avatar7.png">
+          <img src="resources/avatars/avatar7.png" alt="Avatar 7">
+        </button>
+        <button type="button" class="avatar-option" data-avatar="resources/avatars/avatar8.png">
+          <img src="resources/avatars/avatar8.png" alt="Avatar 8">
+        </button>
+        <button type="button" class="avatar-option" data-avatar="resources/avatars/avatar9.png">
+          <img src="resources/avatars/avatar9.png" alt="Avatar 9">
+        </button>
+        <button type="button" class="avatar-option" data-avatar="resources/avatars/avatar10.png">
+          <img src="resources/avatars/avatar10.png" alt="Avatar 10">
+        </button>
+        <button type="button" class="avatar-option" data-avatar="resources/avatars/avatar11.png">
+          <img src="resources/avatars/avatar11.png" alt="Avatar 11">
+        </button>
+      </div>
+
+    </div>
+  </div>
+  
+  <footer>
+  </footer>
+  
+</body>
+</html>

@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="it" data-page="tornio-hscroll">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>index game</title>
+
+  <link rel="stylesheet" href="../style/style.css" />
+  <link rel="stylesheet" href="../style/fontstyle.css" />
+  <link rel="stylesheet" href="../style/hamMenuHidden.css" />
+  
+  <link rel="stylesheet" href="game_style/style.css" />
+
+  <script src="../js/menu.js"></script>
+  <script src="../js/header.js" defer></script>
+  <script src="../js/bottomnav.js" defer></script>
+  <script src="../js/breadcrumb.js" defer></script>
+  
+  <script src="../js/hscrollGame.js" defer></script>
+  
+  <script src="game_js/game.js" defer></script>
+  <script src="game_js/game_index.js" defer></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Exo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+</head>
+
+<body data-layout="hscroll">
+
+  <main class="hscroll-layout" aria-label="Contenuto a pagine orizzontali">
+    <div id="statusBar">
+		<button id="helpBtn" class="help-round" aria-label="Come si gioca?">?</button>
+		<button id="btnGainLife" class="life-btn" aria-live="polite" title="Guadagna una vita (+1)" disabled>
+			+1&nbsp;vita
+		</button>
+		<div class="pill">
+		  <span class="pillvalueHeart">5</span>
+		  <div class="is-heart"><img src="../resources/games/heart.png" alt="Descrizione dell'immagine"></div>
+		</div>
+		<div class="pill">
+		  <span class="pillvalueStar">0</span>
+		  <div class="is-heart"><img src="../resources/games/star.png" alt="Descrizione dell'immagine"></div>
+		</div>
+	</div>
+
+														<button 
+														  onclick="resetProgress()" 
+														  style="
+															position: absolute; 
+															top: 10px; 
+															right: 10px; 
+															padding: 8px 14px; 
+															background-color: #ff5555; 
+															color: white; 
+															border: none; 
+															border-radius: 8px; 
+															cursor: pointer; 
+															font-weight: bold;
+															box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+														  ">
+														  🔄 Reset progresso
+														</button>
+
+														<script>
+														function resetProgress() {
+														  if (confirm('Vuoi davvero cancellare tutti i progressi (stelle, cuori, livelli)?')) {
+															localStorage.clear();
+															alert('Progressi azzerati!');
+															location.reload(); // ricarica la pagina
+														  }
+														}
+														</script>
+	<div class="hscroll-viewportGame" id="hpages" tabindex="0">
+
+      <!-- Pagina 1: contenuto BREVE -->
+      <section class="hpageGame" data-breadcrumb="test" style="background: linear-gradient(to bottom, #6b3806, #B48227);">
+        <div class="section-content">
+			
+			<div id="titleGame"><h1 >MACCHINARI</h1></div>
+			<div id="sectionGame">
+				<button class="scroll-arrow left">&#10094;</button>
+				<div class="sectionGameCatImage"> <img src="../resources/games/1menuMacchine.png" alt="Descrizione dell'immagine"></div>
+				<button class="scroll-arrow right">&#10095;</button>
+			</div>
+			<div class="levelOverview">
+				<h2>seleziona il livello</h2>
+			</div>
+        
+			<div id="levelBox">
+				<div class="selectionLevel">
+					<div class="gridLevels">
+					<div class="selectionLevelCateg"><h2>TORNIO MANUALE</h2></div>
+					  <button class="level-btn">
+						<span class="number">1</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					  <button class="level-btn">
+						<span class="number">2</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					  <button class="level-btn">
+						<span class="number">3</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					</div>
+				</div>
+				<div class="selectionLevel">
+					<div class="gridLevels">
+					<div class="selectionLevelCateg"><h2>MOLATRICE</h2></div>
+					  <button class="level-btn">
+						<span class="number">1</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					  <button class="level-btn" data-game="find">
+						 <span class="number">2</span>
+						 <span class="percentLevel"><h3>0%</h3></span>
+						 <div class="stars">
+							<div class="star"></div>
+						 </div>
+					  </button>
+					</div>
+				</div>
+				<div class="selectionLevel">
+					<div class="gridLevels">
+					<div class="selectionLevelCateg"><h2>TRAPANO A COLONNA</h2></div>
+					  <button class="level-btn">
+						<span class="number">1</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					</div>
+				</div>
+				<div class="selectionLevel">
+					<div class="gridLevels">
+					<div class="selectionLevelCateg"><h2>TRAPANO RADIALE</h2></div>
+					  <button class="level-btn">
+						<span class="number">1</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					</div>
+				</div>
+				<div class="selectionLevel">
+					<div class="gridLevels">
+					<div class="selectionLevelCateg"><h2>FRESATRICE</h2></div>
+					  <button class="level-btn">
+						<span class="number">1</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					</div>
+				</div>
+				<div class="selectionLevel">
+					<div class="gridLevels">
+					<div class="selectionLevelCateg"><h2>CESOIA A GHIGLIOTTINA</h2></div>
+					  <button class="level-btn">
+						<span class="number">1</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					</div>
+				</div>
+				<div class="selectionLevel">
+					<div class="gridLevels">
+					<div class="selectionLevelCateg"><h2>PRESSA PIEGATRICE</h2></div>
+					  <button class="level-btn">
+						<span class="number">1</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					</div>
+				</div>
+				<div class="selectionLevel">
+					<div class="gridLevels">
+					<div class="selectionLevelCateg"><h2>SEGA A NASTRO</h2></div>
+					  <button class="level-btn">
+						<span class="number">1</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					</div>
+				</div>
+				<div class="selectionLevel">
+					<div class="gridLevels">
+					<div class="selectionLevelCateg"><h2>TRONCATRICE</h2></div>
+					  <button class="level-btn">
+						<span class="number">1</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					</div>
+				</div>
+				<div class="selectionLevel">
+					<div class="gridLevels">
+					<div class="selectionLevelCateg"><h2>CENTRO DI LAVORO</h2></div>
+					  <button class="level-btn">
+						<span class="number">1</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					</div>
+				</div>
+			</div>
+		
+		</div>
+		
+      </section>
+
+      <!-- Pagina 2: ATTREZZATURE -->
+      <section class="hpageGame" data-breadcrumb="test" style="background: linear-gradient(to bottom, #31653C, #97cba2);">
+        <div class="section-content">
+			
+			<div id="titleGame"><h1 >ATTREZZATURE</h1></div>
+			<div id="sectionGame">
+				<button class="scroll-arrow left">&#10094;</button>
+				<div class="sectionGameCatImage"> <img src="../resources/games/1menuAttrezzature.png" alt="Descrizione dell'immagine"></div>
+				<button class="scroll-arrow right">&#10095;</button>
+			</div>
+			<div class="levelOverview">
+				<h2>seleziona il livello</h2>
+			</div>
+        
+			<div id="levelBox">
+				<div class="selectionLevel">
+					<div class="gridLevels">
+					<div class="selectionLevelCateg"><h2>CARRELLO ELEVATORE</h2></div>
+					  <button class="level-btn">
+						<span class="number">1</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					  <button class="level-btn">
+						<span class="number">2</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					  <button class="level-btn">
+						<span class="number">3</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					</div>
+				</div>
+				<div class="selectionLevel">
+					<div class="gridLevels">
+					<div class="selectionLevelCateg"><h2>TRABATTELLO O PONTE A TORRE</h2></div>
+					  <button class="level-btn">
+						<span class="number">1</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					</div>
+				</div>
+				<div class="selectionLevel">
+					<div class="gridLevels">
+					<div class="selectionLevelCateg"><h2>SCALE PORTATILI</h2></div>
+					  <button class="level-btn">
+						<span class="number">1</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					</div>
+				</div>
+				<div class="selectionLevel">
+					<div class="gridLevels">
+					<div class="selectionLevelCateg"><h2>PARANCHI</h2></div>
+					  <button class="level-btn">
+						<span class="number">1</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					</div>
+				</div>
+				<div class="selectionLevel">
+					<div class="gridLevels">
+					<div class="selectionLevelCateg"><h2>IMBRAGO DEI CARICHI</h2></div>
+					  <button class="level-btn">
+						<span class="number">1</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					</div>
+				</div>
+				<div class="selectionLevel">
+					<div class="gridLevels">
+					<div class="selectionLevelCateg"><h2>PLE</h2></div>
+					  <button class="level-btn">
+						<span class="number">1</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					</div>
+				</div>
+				<div class="selectionLevel">
+					<div class="gridLevels">
+					<div class="selectionLevelCateg"><h2>PONTEGGI</h2></div>
+					  <button class="level-btn">
+						<span class="number">1</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					</div>
+				</div>
+			</div>
+		
+		</div>
+		
+      </section>
+
+<!-- Pagina 3: DPI -->
+      <section class="hpageGame" data-breadcrumb="test" style="background: linear-gradient(to bottom, #3a6182, #95CBE4);">
+        <div class="section-content">
+			
+			<div id="titleGame"><h1 >DPI</h1></div>
+			<div id="sectionGame">
+				<button class="scroll-arrow left">&#10094;</button>
+				<div class="sectionGameCatImage"> <img src="../resources/games/1menuDpi.png" alt="Descrizione dell'immagine"></div>
+				<button class="scroll-arrow right">&#10095;</button>
+			</div>
+			<div class="levelOverview">
+				<h2>seleziona il livello</h2>
+			</div>
+        
+			<div id="levelBox">
+				<div class="selectionLevel">
+					<div class="gridLevels">
+					<div class="selectionLevelCateg"><h2>DISPOSITIVI DI PROTEZIONE</h2></div>
+					  <button class="level-btn">
+						<span class="number">1</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					  <button class="level-btn">
+						<span class="number">2</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					  <button class="level-btn">
+						<span class="number">3</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					  <button class="level-btn">
+						<span class="number">4</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					  <button class="level-btn">
+						<span class="number">5</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					</div>
+				</div>
+				<div class="selectionLevel">
+					<div class="gridLevels">
+					<div class="selectionLevelCateg"><h2>IMBRAGATURA</h2></div>
+					  <button class="level-btn">
+						<span class="number">1</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					  <button class="level-btn">
+						<span class="number">2</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					  <button class="level-btn">
+						<span class="number">3</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					  <button class="level-btn">
+						<span class="number">4</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					  <button class="level-btn">
+						<span class="number">5</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					</div>
+				</div>
+			</div>
+		
+		</div>
+		
+      </section>
+    
+<!-- Pagina 4: RISCHIO INCENDIO -->
+      <section class="hpageGame" data-breadcrumb="test" style="background: linear-gradient(to bottom, #f08a1b, #d56a12);">
+        <div class="section-content">
+			
+			<div id="titleGame"><h1>RISCHIO INCENDIO</h1></div>
+			<div id="sectionGame">
+				<button class="scroll-arrow left">&#10094;</button>
+				<div class="sectionGameCatImage"> <img src="../resources/games/1menuFire.png" alt="Descrizione dell'immagine"></div>
+				<button class="scroll-arrow right">&#10095;</button>
+			</div>
+			<div class="levelOverview">
+				<h2>seleziona il livello</h2>
+			</div>
+        
+			<div id="levelBox">
+				<div class="selectionLevel">
+					<div class="gridLevels">
+					<div class="selectionLevelCateg"><h2>RISCHIO INCENDIO</h2></div>
+					  <button class="level-btn">
+						<span class="number">1</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					  <button class="level-btn">
+						<span class="number">2</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					  <button class="level-btn">
+						<span class="number">3</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					  <button class="level-btn">
+						<span class="number">4</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					</div>
+				</div>
+				<div class="selectionLevel">
+					<div class="gridLevels">
+					<div class="selectionLevelCateg"><h2>ESTINTORI</h2></div>
+					  <button class="level-btn">
+						<span class="number">1</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					  <button class="level-btn">
+						<span class="number">2</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					  <button class="level-btn">
+						<span class="number">3</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					</div>
+				</div>
+				<div class="selectionLevel">
+					<div class="gridLevels">
+					<div class="selectionLevelCateg"><h2>PROCEDURE DI SICUREZZA</h2></div>
+					  <button class="level-btn">
+						<span class="number">1</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					  <button class="level-btn">
+						<span class="number">2</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					  <button class="level-btn">
+						<span class="number">3</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					</div>
+				</div>
+				<div class="selectionLevel">
+					<div class="gridLevels">
+					<div class="selectionLevelCateg"><h2>DPI E SEGNALETICA</h2></div>
+					  <button class="level-btn">
+						<span class="number">1</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					  <button class="level-btn">
+						<span class="number">2</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					  <button class="level-btn">
+						<span class="number">3</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					</div>
+				</div>
+			</div>
+		
+		</div>
+		
+      </section>	
+	
+
+	</div>
+	
+  </main>
+  
+  <!-- MODAL: Consiglio salute/sicurezza + timer 10s -->
+	<div id="lifeTipModal" hidden>
+	  <div class="ltm-backdrop"></div>
+	  <div class="ltm-card" role="dialog" aria-modal="true" aria-labelledby="ltm-title">
+		<h3 id="ltm-title">Consiglio salute & sicurezza</h3>
+		<p id="ltm-tip">…</p>
+		<div class="ltm-timer" aria-live="polite">⏳ <span id="ltm-count">10</span>s</div>
+		<button id="ltm-close" disabled>Chiudi</button>
+	  </div>
+	</div>
+
+  <footer></footer>
+
+	<!-- OVERLAY AIUTO / COME SI GIOCA -->
+	<div id="helpOverlay" class="help-overlay" hidden>
+		<div class="help-backdrop"></div>
+		<div class="help-card" role="dialog" aria-modal="true">
+			<h2>Come si gioca?</h2>
+			<p>
+			GIOCO 1<br>
+				• Rispondi alle domande scegliendo una delle opzioni.<br>
+				• Hai un numero limitato di vite: ogni errore ne toglie una.<br>
+				• Completa almeno il 60% per sbloccare il livello successivo.<br>
+				• Se raggiungi il 100%, ottieni una stella bonus! ⭐<br>
+			</p>
+			<div class="tutorialImage""><img src="../resources/games/tutorial1.png" alt="Descrizione dell'immagine"></div>
+			
+			<br>
+			<p>
+			GIOCO 2<br>
+				• Tocca o clicca sugli errori presenti nell’immagine.<br>
+				• Ogni errore viene segnato con un’icona di avviso.<br>
+				• Trova tutti gli errori per completare il livello e per sbloccare il livello successivo.<br>
+				• Ogni errore sbagliato ti toglie 1 vita. ⭐<br>
+				• Se raggiungi il 100%, ottieni una stella bonus! ⭐<br>
+			</p>
+			<div class="tutorialImage""><img src="../resources/games/tutorial2.png" alt="Descrizione dell'immagine"></div>
+			<button id="helpClose" class="help-close">Chiudi</button>
+		</div>
+	</div>
+
+</body>
+</html>

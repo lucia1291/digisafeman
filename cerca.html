@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DigiSafeMan</title>
+  <link rel="stylesheet" href="style/style.css" />
+  <link rel="stylesheet" href="style/fontstyle.css" />
+  <link rel="stylesheet" href="style/hamMenuHidden.css" />
+
+  <!-- Header / Bottomnav / Breadcrumb -->
+  <script src="js/menu.js" defer></script>
+  <script src="js/header.js" defer></script>
+  <script src="js/bottomnav.js" defer></script>
+  <script src="js/breadcrumb.js" defer></script>
+
+  <!-- Indice di ricerca + logica (ordine importante) -->
+  <script src="js/search-index.js" defer></script>
+  <script src="js/search.js" defer></script>
+  
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+
+</head>
+<body>
+<!-- HEADER------------------------------------------------------------------------------------!>
+<!-- inserito con js file header --!>
+
+<!-- BREADCRUMB------------------------------------------------------------------------------------!>
+<!-- inserito con js file breadcrumb --!>
+  
+ 
+ <!-- MAIN PAGE COMPONENTS------------------------------------------------------------------------------------!>
+  <main>
+    <div id="title"><h1 data-breadcrumb="cerca">CERCA</h1></div>
+	<div id="searchBar" >
+	  <label for="searchInput" class="visually-hidden">Cosa stavi cercando?</label>
+	  <input id="searchInput" type="search" placeholder="Cerca macchine, attrezzature, parole chiave…" autocomplete="off" />
+	  
+	  <section id="searchResults">
+		<h2>Risultati</h2>
+		<p id="noResults" hidden>Nessun risultato.</p>
+		<div id="results"></div>
+	  </section>
+	 
+	  <div id="suggestions" aria-live="polite"></div>
+	
+	</div>
+
+    <section id="keywordSection">
+	  <div class="keywordSectionTitle">
+		<h2>Parole chiave (A–Z)</h2>
+	  </div>
+	  <label id="textDescription"><h3>Forse stavi cercando...</h3></label>
+      <div id="keywordIndex">
+		<label class="gridText"><h3>C</h3></label>
+			<section class="gridSearch">
+			  <a href="_dpi/0calzature.html"><div class="cardSearch">Calzature</div></a>
+			  <a href="_attrezzature/0carrello.html"><div class="cardSearch">Carrello elevatore</div></a>
+			  <a href="_macchine/0centroLavoro.html"><div class="cardSearch">Centro di lavoro</div></a>
+			  <a href="_macchine/0cesoia.html"><div class="cardSearch">Cesoia a ghigliottina</div></a>
+			</section>
+		<label class="gridText"><h3>E</h3>
+			<section class="gridSearch">
+			  <a href="_dpi/0elmetto.html"><div class="cardSearch">Elmetto</div></a>
+			  <a href="_fire/0estintori.html"><div class="cardSearch">Estintori</div></a>
+			</section>
+		</label>
+		<label class="gridText"><h3>F</h3>
+			<section class="gridSearch">
+			  <a href="_macchine/0fresatrice.html"><div class="cardSearch">Fresatrice</div></a>
+			</section>
+		</label>
+		<label class="gridText"><h3>G</h3>
+			<section class="gridSearch">
+			  <a href="_dpi/0ghette.html"><div class="cardSearch">Ghette di cuoio</div></a>
+			  <a href="_dpi/0grembiule.html"><div class="cardSearch">Gremgiule in cuoio</div></a>
+			  <a href="_dpi/0guanti.html"><div class="cardSearch">Guanti</div></a>
+			</section>
+		</label>
+		<label class="gridText"><h3>I</h3>
+			<section class="gridSearch">
+			  <a href="_attrezzature/0imbragocarichi.html"><div class="cardSearch">Imbrago carichi</div></a>
+			  <a href="_dpi/0imbrago.html"><div class="cardSearch">Imbragatura</div></a>
+			  <a href="_fire/0incendi.html"><div class="cardSearch">Incendio</div></a>
+			  <a href="_dpi/0indumenti.html"><div class="cardSearch">Indumenti</div></a>
+			</section>
+		</label>
+		<label class="gridText"><h3>M</h3>
+			<section class="gridSearch">
+			  <a href="_dpi/0maschera.html"><div class="cardSearch">Maschere</div></a>
+			  <a href="_macchine/0molatrice.html"><div class="cardSearch">Molatrice</div></a>
+			</section>
+		</label>
+		<label class="gridText"><h3>O</h3>
+			<section class="gridSearch">
+			  <a href="_dpi/0inattinico"><div class="cardSearch">Occhiali vetro inattinico</div></a>
+			</section>
+		</label>
+		<label class="gridText"><h3>P</h3>
+			<section class="gridSearch">
+			  <a href="_attrezzature/0paranchi.html"><div class="cardSearch">Paranchi</div></a>
+			  <a href="_attrezzature/0ple.html"><div class="cardSearch">PLE</div></a>
+			  <a href="_attrezzature/0ponteggi.html"><div class="cardSearch">Ponteggi</div></a>
+			  <a href="_macchine/0pressa.html"><div class="cardSearch">Pressa piegatrice</div></a>
+			  <a href="_dpi/0oculari.html"><div class="cardSearch">Protettori oculari</div></a>
+			</section>
+		</label>
+		<label class="gridText"><h3>R</h3>
+			<section class="gridSearch">
+			  <a href="_fire/0incendi.html"><div class="cardSearch">Rischio incendio</div></a>
+			</section>
+		</label>
+		<label class="gridText"><h3>S</h3>
+			<section class="gridSearch">
+			 <a href="_attrezzature/0scale.html"><div class="cardSearch">Scale portatili</div></a>
+			 <a href="_macchine/0sega.html"><div class="cardSearch">Sega a nastro</div></a>
+			</section>
+		</label>
+		<label class="gridText"><h3>T</h3>
+			<section class="gridSearch">
+			 <a href="_macchine/0tornio.html"><div class="cardSearch">Tornio manuale</div></a>
+			 <a href="_attrezzature/0trabattello.html"><div class="cardSearch">Trabattello o ponte a torre</div></a>
+			 <a href="_macchine/0trapanoColonna.html"><div class="cardSearch">Trapano a colonna</div></a>
+			 <a href="_macchine/0trapanoRadiale.html"><div class="cardSearch">Trapano radiale</div></a>
+			 <a href="_macchine/0troncatrice.html"><div class="cardSearch">Troncatrice</div></a>
+			</section>
+		</label>
+	  
+	  </div>
+	  
+    </section>
+	
+<!-- COME UP------------------------------------------------------------------------------------!>	
+	<div id="comeUpContainer">
+		<a href="#"><div class="comeUp">
+			<div class="comeUpArrow"><img src="resources/icons/comeUpArrow.svg" alt="Icona"></div>
+			<div class="comeUpArrowText"><h4>Torna su</h4></div>
+			<div class="comeUpArrow"><img src="resources/icons/comeUpArrow.svg" alt="Icona"></div>
+		</a>
+		</div>
+	</div>
+	
+  
+  </main>
+  
+  <footer>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DigiSafeMan</title>
+  <link rel="stylesheet" href="../style/style.css" />
+  <link rel="stylesheet" href="../style/fontstyle.css" />
+  <link rel="stylesheet" href="../style/hamMenuHidden.css" />
+  
+  <script src="../js/menu.js" ></script>
+  
+  <script src="../js/header.js" defer></script>  
+  <script src="../js/bottomnav.js" defer></script>
+  
+  <script src="../js/breadcrumb.js" defer></script>
+  <script src="../js/zoom.js" defer></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+<!-- HEADER------------------------------------------------------------------------------------!>
+<!-- inserito con js file header --!>  
+
+<!-- BREADCRUMB------------------------------------------------------------------------------------!>
+<!-- inserito con js file breadcrumb --!>
+  
+ 
+ <!-- MAIN PAGE COMPONENTS------------------------------------------------------------------------------------!>
+ 
+  <main>
+	<div id="title"><h1 data-breadcrumb="tornio">TORNIO MANUALE</h1></div>
+	
+	<div id="caroselloBox">
+		<div class="carousel-container" tabindex="0" aria-roledescription="carousel" aria-label="Galleria immagini">
+			<div class="carousel" id="carousel">
+			  <figure class="slide">
+				<img src="../resources/machineries/main_content/1_tornioCarousel.png" alt="Figura 1" />
+			  </figure>
+			  <figure class="slide">
+				<img src="../resources/machineries/main_content/2_tornioCarousel.png" alt="Figura 2" />
+			  </figure>
+			  <figure class="slide">
+				<img src="../resources/machineries/main_content/3_tornioCarousel.png" alt="Figura 3" />
+			  </figure>
+			</div>
+			
+			<button class="carousel-arrow prev" aria-label="Slide precedente" type="button">&#10094;</button>
+			<button class="carousel-arrow next" aria-label="Slide successiva" type="button">&#10095;</button>
+			
+			<div class="indicators">
+			  <span class="dot active"></span>
+			  <span class="dot"></span>
+			  <span class="dot"></span>
+			</div>
+		 </div>
+	</div>
+	<div id="textDescription">
+		<h3> Macchina utensile, <b>ad asportazione di truciolo</b>, nella quale <b>il movimento principale è la rotazione del pezzo rispetto all’utensile</b>. <br>Il pezzo da lavorare viene bloccato nel mandrino o autocentrante e fatto ruotare con esso a velocità predeterminata.  
+		</h3>
+	</div>
+	
+	<div id="title"><h1>RISCHI</h1></div>
+	<div id="sottotitolo"> <h2>I tre rischi principali e il loro livello di rischio</h2> </div>
+	<div id="riskList">
+		<div class="levelRisk">	
+			<ul>
+				<li>
+					<div class="levelRiskColorLabel" style="background-color: red"></div>
+					<div class="levelRiskColorText"><h4>ALTO</h4></div>
+				</li>
+				<li>
+					<div class="levelRiskColorLabel" style="background-color: yellow"></div>
+					<div class="levelRiskColorText"><h4>MEDIO</h4></div>
+				</li>
+				<li>
+					<div class="levelRiskColorLabel" style="background-color: green"></div>
+					<div class="levelRiskColorText"><h4>BASSO</h4></div>
+				</li>
+			</ul>
+		</div>
+		<ul>
+			<li class="riskListElement">
+				<div class="riskListColor" style="background-color: yellow"></div>
+				<div class="riskListFigure"><img src="../resources/risk_list/1_impigliamento.png" alt="rischio"></div>
+				<div class="riskListText"><h3><b>impigliamento degli indumenti </b>nel mandrino rotante con conseguente trascinamento nella rotazione</h3></div>
+			</li>
+			<li class="riskListElement">
+				<div class="riskListColor" style="background-color: yellow"></div>
+				<div class="riskListFigure"><img src="../resources/risk_list/2_proiezione.png" alt="rischio"></div>
+				<div class="riskListText"><h3><b>proiezione del materiale </b>in lavorazione per effetto della forza centrifuga</h3></div>
+			</li>
+			<li class="riskListElement">
+				<div class="riskListColor" style="background-color: yellow"></div>
+				<div class="riskListFigure"><img src="../resources/risk_list/3_schiacciamento.png" alt="rischio"></div>
+				<div class="riskListText"><h3><b>schiacciamento degli arti </b>con il mandrino durante le sua sostituzione</h3></div>
+			</li>
+		</ul>
+	</div>
+		
+	<div id="title"><h1>DISPOSITIVI DI PROTEZIONE</h1></div>
+	<div id="dispositiviList">
+		<ul>
+			<li>
+				<a href="../_dpi/0guanti.html">
+				<div class="dispositiviList">
+					<div class="dispositiviListText"><h2>GUANTI</h2></div>
+					<div class="dispositiviListIcon"><img src="../resources/icons/dpi_gloves.svg" alt="icona"></div>
+				</div>
+				<div class="dispositiviListInfo"><h3>Non durante l’uso della machina, per evitare impigliamenti</h3></div>
+				</a>
+			</li>
+			<li>
+				<a href="../_dpi/0oculari.html">
+				<div class="dispositiviList">
+					<div class="dispositiviListText"><h2>OCCHIALI PROTETTIVI</h2></div>
+					<div class="dispositiviListIcon"><img src="../resources/icons/dpi_glass.svg" alt="icona"></div>
+				</div>
+				</a>
+			</li>
+			<li>
+				<a href="../_dpi/0calzature.html">
+				<div class="dispositiviList">
+					<div class="dispositiviListText"><h2>SCARPE</h2></div>
+					<div class="dispositiviListIcon"><img src="../resources/icons/dpi_shoes.svg" alt="icona"></div>
+				</div>
+				</a>
+			</li>
+			<li>
+				<a href="">
+				<div class="dispositiviList">
+					<div class="dispositiviListText"><h2>OTOPROTETTORI</h2></div>
+					<div class="dispositiviListIcon"><img src="../resources/icons/dpi_hear.svg" alt="icona"></div>
+				</div>
+				</a>
+			</li>
+			<li>
+				<a href="../_dpi/0indumenti.html">
+				<div class="dispositiviList">
+					<div class="dispositiviListText"><h2>ABBIGLIAMENTO</h2></div>
+					<div class="dispositiviListIcon"><img src="../resources/icons/dpi_wear.svg" alt="icona"></div>
+				</div>
+				<div class="dispositiviListInfo"><h3>Uso di una tuta a maniche lunghe e polsino con elastici anti-impigliamento</h3></div>
+				</a>
+			</li>
+		</ul>
+	</div>
+	
+	<div class="wrap">
+		<div id="textDescription"> 
+			<h3 id="prevalenti" class="titleDescription" style="margin-top:40px;">Clicca per visuallizare nel dettaglio</h3>
+		</div>
+		<div class="image-zoomer" id="zoomer" aria-live="polite">
+		  <div class="panzoom">
+			<!-- Sostituisci questi due src con le tue immagini (stesso soggetto) -->
+			<!-- Disegno / illustrazione -->
+			<img
+			  class="img--drawn"
+			  src="../resources/machineries/draw_tornio_.png"
+			  alt="Illustrazione del soggetto" />
+
+			<!-- Foto realistica corrispondente -->
+			<img
+			  class="img--photo"
+			  id="photoImage"
+			  src="../resources/machineries/real_tornio_.png"
+			  alt="Foto realistica del soggetto" />
+		  </div>
+
+		  <!-- Marcatori numerati (posizionati in %) -->
+		  <button class="marker" data-id="1" data-caption="IMPIGLIAMENTO E TRASCINAMENTO CON I MORSETTI, MANDRINO O PEZZO IN ROTAZIONE" style="left: 35%; top: 45%;">1</button>
+		  <button class="marker" data-id="2" data-caption="PROIEZIONE DI TRUCIOLI E RESIDUI DI LAVORAZIONE VERSO L’OPERATORE" style="left: 32%; top: 32%;">2</button>
+		  <button class="marker" data-id="3" data-caption="CONTATTO CON LE BARRE DI TRASMISSIONE DEL MOTO AL CARRELLO DI MOVIMENTAZIONE PEZZO" style="left: 80%; top: 63%;">3</button>
+		  <button class="marker" data-id="4" data-caption="SCHIACCIAMENTO E URTO DA SFILAMENTO DELLA CONTROPUNTA" style="left: 90%; top: 55%;">4</button>
+		  <button class="marker" data-id="5" data-caption="PROIEZIONE DI TRUCIOLI E RESIDUI DI LAVORAZIONE VERSO L’OPERATORE" style="left: 40%; top: 50%;">5</button>
+		  <button class="marker" data-id="6" data-caption="PROIEZIONE DI TRUCIOLI E RESIDUI DI LAVORAZIONE VERSO IL RETRO DEL TORNIO" style="left: 60%; top: 40%;">6</button>
+		</div>
+		<div id="caption" class="caption"></div>
+	</div>
+  
+  
+  
+	<div id="title"><h1>APPROFONDISCI</h1></div>
+	
+	<a href="1tornio.html">
+	<div id="approfondisciButton">
+		<h2>INIZIA ORA</h2>
+	</div>
+	</a>
+	
+	<div id="navigatePages">
+		<!-- <a href=""> -->
+		<div class="navigateSX">
+			<div class="navigateArrow"></div>
+			<div class="navigateName"></div>
+		</div>
+		<!--</a> -->
+		<a href="0molatrice.html">
+		<div class="navigateDX">
+			<div class="navigateName"><h2>MOLATRICE</h2></div>
+			<div class="navigateArrow"><img src="../resources/icons/goAhead.svg" alt="icona"></div>
+		</div>
+		</a>
+	</div>	
+	
+	
+	
+<!-- COME UP------------------------------------------------------------------------------------!>
+	
+	<div id="comeUpContainer">
+		<a href="#"><div class="comeUp">
+			<div class="comeUpArrow"><img src="../resources/icons/comeUpArrow.svg" alt="Icona"></div>
+			<div class="comeUpArrowText"><h4>Torna su</h4></div>
+			<div class="comeUpArrow"><img src="../resources/icons/comeUpArrow.svg" alt="Icona"></div>
+		</a>
+		</div>
+	</div>
+	
+  </main>
+
+<!-- BOTTOM NAVBAR------------------------------------------------------------------------------------!>
+<!-- inserito con js file bottomnav --!>
+  
+  <footer>
+  </footer>
+  
+</body>
+</html>
