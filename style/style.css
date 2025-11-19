@@ -729,7 +729,7 @@ button {
 	position: sticky;
 	top: 0;
 	border-bottom: 1px solid #919192;
-	background-color: #FFF;
+	background-color: #f0f2f7;
 	z-index: 1;
 }
 
@@ -932,7 +932,8 @@ footer {
 #searchInput {
 	width: 100%;
     height: 48px;
-    margin: 20px 0px
+    margin: 20px 0px;
+	border-radius: 10px;
 }
 
 #searchResults {
@@ -977,7 +978,7 @@ footer {
 
 a .cardSearch {
   height: 56px;          /* altezza fissa */
-  background: #fff;
+  background: #f0f2f7;
   border: 1px solid #ddd;
   border-radius: 10px;
   padding: 16px;
@@ -1909,7 +1910,7 @@ ul li:last-child #textDescription {
 	max-width: 800px;
 	padding: 10px 16px;
 	border-top: 1px solid #000;
-	background-color: #fff;
+	background-color: #f0f2f7;
 }
 
 @media screen and (min-width: 800px) {
@@ -2113,6 +2114,17 @@ ul li:last-child #textDescription {
 }
 /* se vuoi che da bloccato sia più “spento” */
 .level-btn[data-game="find"].locked {
+  filter: grayscale(0);   /* opzionale, per non ingrigirlo */
+   cursor: not-allowed;
+}
+
+/* FIND: sempre rosso */
+.level-btn[data-game="imgquiz"] {
+  background-color: #690000;
+  color: #fff;        /* o #fff se preferisci */
+}
+/* se vuoi che da bloccato sia più “spento” */
+.level-btn[data-game="imgquiz"].locked {
   filter: grayscale(0);   /* opzionale, per non ingrigirlo */
    cursor: not-allowed;
 }

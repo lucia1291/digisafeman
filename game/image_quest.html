@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz Immagini – Livello</title>
+
+  <link rel="stylesheet" href="../style/style.css" />
+  <link rel="stylesheet" href="../style/fontstyle.css" />
+  <link rel="stylesheet" href="game_style/style.css" />
+
+  <script src="game_js/game.js" defer></script>
+  <script src="game_js/game_index.js" defer></script>
+
+  <script src="game_js/image_questions_bank.js" defer></script>
+  <script src="game_js/image_quest.js" defer></script>
+</head>
+
+<body>
+<div class="wrap">
+
+  <div id="statusBar">
+	<a href="index_game.html" class="bread-back-link">
+      <div class="backgame"><img src="../resources/icons/back.svg"></div>
+    </a>
+    <div class="pill"><span id="pillHearts">5</span><img src="../resources/games/heart.png"></div>
+    <div class="pill"><span id="pillStars">0</span><img src="../resources/games/star.png"></div>
+  </div>
+
+  <main class="screen">
+    <div class="header"><div class="title" id="levelTitle">Livello</div></div>
+
+    <div class="progress" id="progressDots"></div>
+
+    <section class="card" id="card">
+
+      <div class="question" id="qText"></div>
+
+      <div class="answers images" id="answersImg"></div>
+
+      <div class="footer">
+        <button class="btn hidden" id="btnNext">Avanti</button>
+      </div>
+
+    </section>
+
+    <section id="summary" class="summary hidden">
+      <h2>Risultato livello</h2>
+      <div id="winLose"></div>
+      <p id="scoreLine"></p>
+      <div class="meter"><i id="meterBar"></i></div>
+      <div class="stars"><span class="star" id="levelStar"></span></div>
+      <div class="actions">
+        <button class="btn" id="btnRetry">Riprova</button>
+        <a class="btn ghost" id="btnMenu" href="index_game.html">Torna al menu</a>
+      </div>
+    </section>
+
+  </main>
+</div>
+</body>
+</html>

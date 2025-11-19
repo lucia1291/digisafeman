@@ -45,33 +45,7 @@
 		</div>
 	</div>
 
-														<button 
-														  onclick="resetProgress()" 
-														  style="
-															position: absolute; 
-															top: 10px; 
-															right: 10px; 
-															padding: 8px 14px; 
-															background-color: #ff5555; 
-															color: white; 
-															border: none; 
-															border-radius: 8px; 
-															cursor: pointer; 
-															font-weight: bold;
-															box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-														  ">
-														  🔄 Reset progresso
-														</button>
-
-														<script>
-														function resetProgress() {
-														  if (confirm('Vuoi davvero cancellare tutti i progressi (stelle, cuori, livelli)?')) {
-															localStorage.clear();
-															alert('Progressi azzerati!');
-															location.reload(); // ricarica la pagina
-														  }
-														}
-														</script>
+														
 	<div class="hscroll-viewportGame" id="hpages" tabindex="0">
 
       <!-- Pagina 1: contenuto BREVE -->
@@ -132,6 +106,13 @@
 							<div class="star"></div>
 						 </div>
 					  </button>
+					  <button class="level-btn" data-game="imagegquiz">
+						 <span class="number">3</span>
+						  <span class="percentLevel"><h3>0%</h3></span>
+						 <div class="stars">
+							<div class="star"></div>
+						 </div>	
+					  </button>
 					</div>
 				</div>
 				<div class="selectionLevel">
@@ -143,6 +124,20 @@
 						<div class="stars">
 						  <div class="star"></div>
 						</div>
+					  </button>
+					  <button class="level-btn" data-game="find">
+						 <span class="number">2</span>
+						 <span class="percentLevel"><h3>0%</h3></span>
+						 <div class="stars">
+							<div class="star"></div>
+						 </div>
+					  </button>
+					  <button class="level-btn" data-game="imgquiz">
+						 <span class="number">3</span>
+						  <span class="percentLevel"><h3>0%</h3></span>
+						 <div class="stars">
+							<div class="star"></div>
+						 </div>	
 					  </button>
 					</div>
 				</div>
@@ -274,6 +269,13 @@
 						<div class="stars">
 						  <div class="star"></div>
 						</div>
+					  </button>
+					  <button class="level-btn" data-game="find">
+						 <span class="number">4</span>
+						 <span class="percentLevel"><h3>0%</h3></span>
+						 <div class="stars">
+							<div class="star"></div>
+						 </div>
 					  </button>
 					</div>
 				</div>
@@ -559,12 +561,12 @@
 				<div class="selectionLevel">
 					<div class="gridLevels">
 					<div class="selectionLevelCateg"><h2>DPI E SEGNALETICA</h2></div>
-					  <button class="level-btn">
-						<span class="number">1</span>
-						<span class="percentLevel"><h3>0%</h3></span>
-						<div class="stars">
-						  <div class="star"></div>
-						</div>
+					  <button class="level-btn" data-game="imgquiz">
+						 <span class="number">1</span>
+						  <span class="percentLevel"><h3>0%</h3></span>
+						 <div class="stars">
+							<div class="star"></div>
+						 </div>	
 					  </button>
 					  <button class="level-btn">
 						<span class="number">2</span>
@@ -575,6 +577,13 @@
 					  </button>
 					  <button class="level-btn">
 						<span class="number">3</span>
+						<span class="percentLevel"><h3>0%</h3></span>
+						<div class="stars">
+						  <div class="star"></div>
+						</div>
+					  </button>
+					  <button class="level-btn">
+						<span class="number">4</span>
 						<span class="percentLevel"><h3>0%</h3></span>
 						<div class="stars">
 						  <div class="star"></div>
@@ -616,18 +625,22 @@
 				• Rispondi alle domande scegliendo una delle opzioni.<br>
 				• Hai un numero limitato di vite: ogni errore ne toglie una.<br>
 				• Completa almeno il 60% per sbloccare il livello successivo.<br>
-				• Se raggiungi il 100%, ottieni una stella bonus! ⭐<br>
+				• Se raggiungi il 100%, ottieni una stella bonus! ⭐ Raccoglile tutte<br>
 			</p>
 			<div class="tutorialImage""><img src="../resources/games/tutorial1.png" alt="Descrizione dell'immagine"></div>
-			
+			<p>
+				• ATTENTO! Potrebbe esserci anche una versione in formato immagini.<br>
+				• Se raggiungi il 100%, ottieni una stella bonus! ⭐ Raccoglile tutte<br>
+			</p>
+			<div class="tutorialImage""><img src="../resources/games/tutorial1.png" alt="Descrizione dell'immagine"></div>
 			<br>
 			<p>
 			GIOCO 2<br>
 				• Tocca o clicca sugli errori presenti nell’immagine.<br>
 				• Ogni errore viene segnato con un’icona di avviso.<br>
 				• Trova tutti gli errori per completare il livello e per sbloccare il livello successivo.<br>
-				• Ogni errore sbagliato ti toglie 1 vita. ⭐<br>
-				• Se raggiungi il 100%, ottieni una stella bonus! ⭐<br>
+				• Non perdi vite, ma devi armarti di ingegno e pazienza <br>
+				• Se raggiungi il 100%, ottieni una stella bonus! ⭐ Raccoglile tutte<br>
 			</p>
 			<div class="tutorialImage""><img src="../resources/games/tutorial2.png" alt="Descrizione dell'immagine"></div>
 			<button id="helpClose" class="help-close">Chiudi</button>

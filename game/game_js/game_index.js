@@ -1,13 +1,10 @@
-/* game_index.js — versione pulita
-   ---------------------------------
-   Obiettivi:
-   1) Generare i link dei livelli rispettando il gating.
-   2) Garantire che, una volta superata la soglia (≥60% o stella),
-      il livello successivo resti sbloccato anche se i tentativi
-      successivi hanno una percentuale più bassa.
-   3) Bloccare l’accesso ai livelli se le vite sono 0, con feedback.
-   4) Evitare duplicazioni del sistema di toast: usa window.showToast
-      se disponibile (creato da game.js), altrimenti fallback alert().
+/* game_index.js — gestione menu livelli + vite + overlay
+   ------------------------------------------------------
+   1) Costruisce i link dei livelli (quest/find/imgquiz) rispettando lo sblocco.
+   2) Tiene memoria persistente dello sblocco (unlockedNext).
+   3) Blocca l’accesso se le vite = 0.
+   4) Gestisce la modale “+1 vita” (lifeTipModal).
+   5) Gestisce l’overlay “Come si gioca?” (helpOverlay).
 */
 
 'use strict';
@@ -47,12 +44,11 @@ function setLevelProgress(category, topic, level, patch) {
 /*
   Sblocco livelli
   ---------------
-  Regola: il livello N è sbloccato se (N === 1) oppure
-          il livello N-1 ha percent >= 60 oppure ha starAwarded true
-          oppure ha già flagged unlockedNext true (lock-in persistente).
-  Inoltre, appena rileviamo una condizione di sblocco, scriviamo
-  prev.unlockedNext = true per fissare lo stato e renderlo persistente
-  anche se in futuro la percentuale salvata fosse più bassa.
+  Regola: il livello N è sbloccato se:
+    - N === 1, oppure
+    - il livello N-1 ha percent >= 60, oppure
+    - ha starAwarded true, oppure
+    - ha già unlockedNext true.
 */
 function isUnlocked(category, topic, level) {
   if (level <= 1) return true; // Il primo livello è sempre aperto
@@ -64,7 +60,7 @@ function isUnlocked(category, topic, level) {
 
   const meetsThreshold = (percent >= 60) || hasStar || wasUnlocked;
 
-  // Lock-in (idempotente): se raggiunta la soglia e non marcato, marca ora
+  // Se raggiungiamo la soglia, fissiamo unlockedNext = true in modo persistente
   if (meetsThreshold && !wasUnlocked) {
     setLevelProgress(category, topic, level - 1, { unlockedNext: true });
   }
@@ -75,7 +71,6 @@ function isUnlocked(category, topic, level) {
 /* =========================================================
    1) Costruzione pulsanti livello (rispetta sblocco)
    ========================================================= */
-
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.hpageGame').forEach(section => {
     const categoryEl = section.querySelector('#titleGame h1');
@@ -96,15 +91,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const gameType = (btn.dataset.game || 'quest').toLowerCase();
 
         // Pagina giusta in base al tipo
-        const targetPage = gameType === 'find'
-          ? 'find.html'
-          : 'quest.html';
+        let targetPage;
+        if (gameType === 'find') {
+          targetPage = 'find.html';
+        } else if (gameType === 'imgquiz' || gameType === 'imagegquiz') {
+          targetPage = 'imgquiz.html';
+        } else {
+          targetPage = 'quest.html';
+        }
 
-        const href = `${targetPage}?category=${encodeURIComponent(category)}&topic=${encodeURIComponent(topic)}&level=${level}`;
+        const href =
+          `${targetPage}?category=${encodeURIComponent(category)}` +
+          `&topic=${encodeURIComponent(topic)}` +
+          `&level=${level}`;
+
         const unlocked = isUnlocked(category, topic, level);
 
         if (unlocked) {
-          // Livello sbloccato → link cliccabile
+          // Livello sbloccato → link cliccabile (<a>)
           if (btn.tagName.toLowerCase() === 'a') {
             // già <a>, aggiorno solo attributi
             btn.setAttribute('href', href);
@@ -119,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
             a.className = btn.className.replace(/\blocked\b/g, '').trim();
             a.classList.add('level-btn');
 
-            // preserva tutti i data-attribute (es. data-game="find")
+            // preserva tutti i data-attribute (es. data-game="find"/"imgquiz")
             for (const [k, v] of Object.entries(btn.dataset)) {
               a.dataset[k] = v;
             }
@@ -137,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
             b.className = `${btn.className} locked`;
             b.innerHTML = btn.innerHTML;
 
-            // preserva i data-attribute (es. data-game="find")
+            // preserva i data-attribute (es. data-game="find"/"imgquiz")
             for (const [k, v] of Object.entries(btn.dataset)) {
               b.dataset[k] = v;
             }
@@ -218,10 +222,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const countEl = document.getElementById('ltm-count');
   const closeEl = document.getElementById('ltm-close');
 
-  // Se non esistono gli elementi (es. nelle pagine quest/find) esci
+  // Se non esistono gli elementi (es. nelle pagine quest/find/imgquiz) esci
   if (!btn || !modal || !tipEl || !countEl || !closeEl) return;
 
-  const getHearts = () => parseInt(localStorage.getItem(HEARTS_KEY) ?? '5', 10);
+  const getHearts = () =>
+    parseInt(localStorage.getItem(HEARTS_KEY) ?? '5', 10);
   const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
 
   const setHearts = (n) => {
