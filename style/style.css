@@ -1,0 +1,2216 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Lato, sans-serif;
+  background-color: #f0f2f7;
+  color: #1c2e4a;
+  max-width: 800px;
+  min-width: 340px;
+  margin: 0 auto;
+  
+  overscroll-behavior: none;
+}
+
+main {
+	margin-left: 16px;
+	margin-right:16px;
+	/*background-color: red;*/
+}
+
+li {
+	list-style:none;
+}
+
+html {
+  scroll-behavior: smooth;
+  overscroll-behavior: none;
+}
+
+img {
+	width: 100%;
+}
+
+a {
+	text-decoration: none;
+	color: #FFF;
+}
+a:hover {
+	cursor:pointer;
+}
+
+
+/* SCHERMATA WELCOME / LOGIN -------------------------------------------------------------*/
+
+.welcome-main {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  background-color: #ffffff;
+}
+
+.welcome-topbar {
+position: fixed;
+top: 0;
+  width: 100%;
+  height: 48px;
+  background-color: #000;
+}
+
+.welcome-card {
+  width: 100%;
+  max-width: 360px;
+  text-align: center;
+}
+
+/* spazio per il logo */
+.welcome-logo {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 24px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome-logo img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 2s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(10px); }
+}
+
+.welcome-title {
+  font-family: "Lato", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.welcome-subtitle {
+  font-family: "Lato", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #555;
+  margin-bottom: 40px;
+  line-height: 1.4;
+}
+
+/* bottone LOGIN rosso */
+.welcome-login-btn {
+  width: 100%;
+  height: 48px;
+  border-radius: 10px;
+  border: none;
+  background-color: #DA0037;
+  color: #fff;
+  font-family: "Lato", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  box-shadow: 0 4px 8px rgba(0,0,0,.25);
+  margin-bottom: 16px;
+}
+
+/* “Continua come ospite” */
+p, .welcome-guest-btn a {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-family: "Lato", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 24px;
+}
+
+/* “Nuovo su DigiSafeMan? Registrati” */
+.welcome-register {
+  font-family: "Lato", sans-serif;
+  font-size: 16px;
+  color: #555;
+}
+
+.welcome-register a {
+  color: #DA0037;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+
+/* OVERLAY REGISTRAZIONE DA LOGIN INIZIALE------------------------------------------------- */
+
+.register-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;                      /* nascosto di default */
+  justify-content: center;
+  align-items: flex-end;              /* pannello parte dal basso */
+  background: rgba(0, 0, 0, 0.6);     /* sfondo scuro semi-trasparente */
+  z-index: 2000;
+}
+
+.register-overlay.is-visible {
+  display: flex;
+}
+
+/* Pannello che scorre dal basso */
+.register-panel {
+  width: 100%;
+  height: 90%;
+  max-width: 420px;
+  background: #171717;
+  color: #fff;
+  border-radius: 16px 16px 0 0;
+  padding: 24px 20px 32px;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.4);
+  animation: slideUp .35s ease-out;
+}
+
+/* Animazione */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* HEADER pannello (freccia, titolo, X) */
+.register-header {
+  position: relative;
+  display: flex;
+  justify-content: center;  /* centro il titolo */
+  align-items: center;
+  margin-bottom: 24px;}
+
+.register-header h2 {
+  font-family: Lato, sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-align: center;
+  width: 100%;
+}
+
+/* AVATAR (solo spazio per immagine) */
+.reg-avatar {
+  width: 112px;
+  height: 112px;
+  margin: 0 auto 24px;
+  border-radius: 12px;
+  background: #2b2b2b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reg-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+/* FORM */
+.reg-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Etichette / input */
+.reg-label {
+  display: flex;
+  flex-direction: column;
+  font-family: Lato, sans-serif;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.reg-label input {
+  margin-top: 4px;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  padding: 0 12px;
+  font-size: 14px;
+  background: #f1f5f9;
+}
+
+/* Riga password con icona occhio */
+.reg-label-password {
+  position: relative;
+}
+
+.reg-label-password input {
+  padding-right: 40px;  /* spazio per l'icona */
+}
+
+.reg-eye {
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  width: 24px;
+  height: 30px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 24px;
+  /* qui potrai mettere un background-image o un <img> dentro */
+}
+
+/* Bottone REGISTRATI */
+.reg-submit {
+  height: 44px;
+  border-radius: 10px;
+  border: none;
+  background: #DA0037;
+  color: #fff;
+  font-family: Lato, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
+}
+
+/* Continua come ospite */
+.reg-guest {
+  margin-top: 12px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.reg-error {
+  font-size: 12px;
+  color: #ff4d4f;
+  display: none;
+}
+
+.reg-error.is-visible {
+  display: block;
+}
+
+.forgot-header-text {
+  margin: 24px 0;
+}
+
+.forgot-header-text h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.forgot-header-text p {
+  font-size: 13px;
+  line-height: 1.4;
+  color: #fff;
+}
+
+/* avatar selector in registrazione */
+.avatar-grid {
+  margin: 8px auto 0;
+  max-width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.avatar-option {
+	width: 100%;
+  border: none;
+  border-radius: 10px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.avatar-option img {
+  width: 100%;
+  aspect-ratio: 1 / 1;      /* quadrato perfetto */
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 2px 6px rgba(0,0,0,.4);
+}
+
+.avatar-panel {
+  height: 90%;
+}
+
+/*PROFILO -------------------------------------------------------------------*/
+/* PAGINA PROFILO UTENTE ----------------------------------------------------*/
+
+.profile-page {
+  padding-top: 24px;
+  padding-bottom: 80px;
+  color: #000;
+}
+
+/* “Ciao! scrivi qui” */
+.profile-greeting {
+  font-family: Lato, sans-serif;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.profile-greeting-name {
+  font-weight: 700;
+}
+
+/* avatar + parte alta */
+.profile-top {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+/* box avatar quadrato */
+.profile-avatar {
+  position: relative;
+  width: 112px;
+  height: 112px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,.15);
+}
+
+.profile-avatar img {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+}
+
+/* pallino con la matita in basso a destra */
+.profile-avatar-edit {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  border: none;
+  background: #DA0037;
+  color: #fff;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,.3);
+  cursor: pointer;
+}
+
+/* card informazioni personali */
+.profile-card {
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+/* titolo rosso + icona matita a destra */
+.profile-card-header {
+  display: flex;
+  padding-left: 16px;
+  
+}
+
+.profile-card-header h2 {
+  font-family: Lato, sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  color: #DA0037;
+}
+
+.profile-edit-btn {
+  width: 56px;
+  border: none;
+  background: transparent;
+  color: #DA0037;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* singola riga “Nome: scrivi qui” */
+.profile-field {
+  display: flex;
+  gap: 4px;
+  height: 48px;
+  line-height: 48px;
+}
+
+.profile-field-label {
+  font-weight: 600;
+  padding-left: 16px;
+}
+
+.profile-field-value {
+  font-weight: 400;
+}
+
+/* riga separatrice */
+.profile-divider {
+  width: 100%;
+  height: 1px;
+  margin-top: 4px;
+  background: #DA0037;
+  opacity: 0.4;
+}
+
+
+/* DISATTIVARE OCCHIO BROWSER -----------------------------------------------*/
+input[type="password"] {
+  -webkit-text-security: disc; /* Chrome/Safari */
+}
+/* Edge/Chrome */
+input[type="password"]::-webkit-clear-button,
+input[type="password"]::-webkit-reveal-button {
+  display: none !important;
+}
+/* Nasconde l’occhio predefinito nei browser basati su Chromium */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear,
+input[type="password"]::-webkit-credentials-auto-fill-button {
+  display: none !important;
+}
+
+
+/* PARTE RELATIVA L'HEADER -------------------------------------------------------------*/
+header {
+	width: 100%;
+	height: 56px;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	background-color: #171717;
+	border-bottom: 1px solid #C41320;
+}
+
+#headerContent {
+	height: 30px;
+	width: 100%;
+	position: relative;
+	align-items: left;
+	margin: 5px 16px 0px 16px;
+	background-color: #171717;
+}
+
+.logoContent {
+	height: 36px;
+	float: left;
+	/*background-color: grey;*/
+}
+
+.logo {
+  	width: 36px;
+	height: 36px;
+	float: left;
+}
+
+.logo img {
+  	width: 100%;
+	margin-top:20%;
+}
+
+.logoName {
+	width: 80px;
+	height: inherit;
+	float: left;
+	/*background-color: blue;*/
+}
+
+.logoName h1 {
+	line-height: 36px;
+	color: #B5B4B4;
+	font-family: Exo;
+	font-size: 11px;
+	font-style: normal;
+	font-weight: 400;
+	vertical-align: middle;
+	padding-left: 5%;
+}
+
+.menuContent {
+	width: 50px;
+	position: relative;
+	float: right;
+	/*background-color: blue;*/
+}
+
+button {
+	width: 100%;
+	height: inherit;
+	border: none;
+	background-color: inherit;
+}
+
+#menuButton {
+	display: none; 
+	z-index: 3;
+	width: 200px;
+	position: relative;
+	float: right;
+	margin-top: -7.8px;
+	margin-right: -16px;
+	
+	border-radius: 5px;
+	background-color: #171717;
+}
+
+#menuButton li {
+	height: 60px;
+	font-size: 10px;
+	font-family: Exo, sans-serif;
+	text-align:left;
+	line-height: 50px;
+	color: #fff;
+	font-weight: 400;
+	display: block;
+	cursor: pointer;
+}
+
+#menuIcon {
+	width: 35px;
+	height: inherit;
+	float: left;
+	display: block;
+	margin-right: 10px;
+	margin-left: 10px;
+}
+
+#menuIcon img {
+	width: 80%;
+	margin-left:20%;
+	height: inherit;
+}
+
+#menuButtonImposta {
+	display: none; 
+	width: 200px;
+	position: relative;
+	float: right;
+	margin-right: -16px;
+	border-radius: 5px;
+	background-color: #DA0037;
+	z-index: 2;
+	
+	cursor: pointer;
+}
+
+#menuButtonImposta.inactive {
+  background-color: #4CAF50; /* Verde */
+  transition: background-color 0.3s ease;
+}
+
+/* Stato ATTIVO: Verde */
+#menuButtonImposta.active {
+  background-color: #DA0037; /* Rosso */
+  transition: background-color 0.3s ease;
+}
+
+@media screen and (min-width: 800px) {
+  /* Navbar inferiore */
+  #navbar {
+    display: none !important;
+  }
+
+  /* Toggle impostazioni */
+  #menuButtonImposta {
+    display: none !important;
+  }
+
+  /* Voce “impostazioni” nel menu principale */
+  #menuButton li:nth-child(1) {
+    display: none !important;
+  }
+}
+
+#menuIconImposta {
+	width: 100%;
+	height: inherit;
+	float: left;
+	padding: 20px 30px;
+	font-size: 10px;
+	font-family: Exo, sans-serif;
+	text-align:left;
+	color: #fff;
+	font-weight: 400;
+
+}
+
+
+/* TRASFORMARE HAMBURGER IN LINEA ------------------------------------------------------*/
+
+@media screen and (min-width: 800px) {
+
+  /* Layout del contenitore header */
+  #headerContent{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 16px;
+    height: 56px; /* allinea i testi alla barra */
+  }
+
+  .logoContent{ float: none; display: flex; align-items: center; }
+  .menuContent{ float: none; width: auto; margin-right: 16px;}
+
+  /* Nascondi il pulsante/hamburger */
+  .menuContent > button,
+  .menuContent .hamburger { display: none !important; }
+
+  /* Trasforma il vecchio dropdown in una nav orizzontale */
+  #menuButton{
+    display: block !important;
+    position: static;
+    width: auto;
+    background: none;
+    margin: 0;
+  }
+
+  #menuButton ul{
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+
+  /* ogni voce come testo singolo, niente altezza forzata */
+  #menuButton li{
+    height: auto;
+    line-height: 36px;
+    font-size: 10px;
+    color: #B5B4B4;
+  }
+
+  /* niente icone nel desktop */
+  #menuIcon{ display: none !important; }
+
+  /* link/testi delle voci */
+  #menuButton li h2{
+    display: inline;
+    font-family: Exo, sans-serif;
+    font-weight: 600;
+    color: #fff;
+    text-transform: none;
+  }
+  #menuButton li a h2{ color: #fff; }
+  #menuButton li a:hover h2{ text-decoration: underline; }
+
+  /* la voce “impostazioni” resta nascosta (già c'è, qui per sicurezza) */
+  #menuButton li:nth-child(1){ display: none !important; }
+}
+
+/* PARTE RELATIVA IL BREADCRUMB ------------------------------------------------------*/
+#breadcrumb {
+	width: 100%;
+	height: 56px;
+	position: sticky;
+	top: 0;
+	border-bottom: 1px solid #919192;
+	background-color: #FFF;
+	z-index: 1;
+}
+
+.breadContent {
+	display: flex;
+	align-items: left;
+	margin: 0px 16px 0px 16px;
+	/* background-color: purple;*/
+}
+
+.back {
+  	width: 36px;
+	height: 60px;
+	padding-top: 10px;
+	float: left;
+}
+
+.breadcrumb {
+	height: 36px;
+	float: left;
+	padding-left:5px;
+}
+
+.breadcrumb h4 {
+	font-size: 12px;
+	text-decoration: underline;
+	font-family: Exo, sans-serif;
+	text-align:center;
+	line-height: 56px;
+	color: #000;
+	font-weight: 400;
+}
+
+
+/* PARTE RELATIVA IL COME UP --------------------------------------------------------*/
+
+#comeUpContainer {
+	width: 100%;
+	height: 200px;
+	border-top: 1px solid #171717;
+	display: flex;
+	margin-top:46px;
+	justify-content:center;
+	/* background-color: yellow; */
+}
+
+.comeUp {
+	width: 122px;
+	height: 55px;
+	margin-top: 20px;
+	/* background-color: pink; */
+}
+
+.comeUpArrow {
+	position: relative;
+	z-index: -1;
+	width: 25%;
+	height: 55px;
+	float: left;
+	/*background-color: blue;*/
+}
+
+.comeUpArrow img {
+	width: 100%;
+	height: 25px;
+	margin-top:12px;
+}
+
+.comeUpArrowText {
+	width: 50%;
+	height: 55px;
+	float: left;
+}
+
+.comeUpArrowText h4 {
+	font-size: 10px;
+	font-family: Exo, sans-serif;
+	text-align:center;
+	line-height: 55px;
+	text-decoration: underline;
+	color: #000;
+	font-weight: 400;
+}
+
+
+/* PARTE RELATIVA LA NAVBAR AL FONDO ---------------------------------------------------------*/
+
+#navbar {
+	position: fixed;
+	display: flex;
+	height: 56px;
+	bottom: 44px;
+	width: 100%;
+	max-width: 800px;
+	z-index: 999; 
+}
+
+.navButton {
+	height: 56px;
+	width: 33.33%;
+	display: flex;
+	justify-content: center;
+	background-color: #171717;
+}
+
+.navIconBox {
+	height: 56px;
+	/*width: 56px; */
+	justify-content: center;
+}
+
+.navIcon {
+	height: 70%;
+	width: 100%;
+}
+
+.navIcon img {
+	height: 90%;
+	width: 100%;
+	margin-top:10%;
+}
+
+.navText {
+	height: 30%;
+	width: 100%;
+}
+
+.navText h4 {
+	font-size: 10px;
+	font-family: Exo, sans-serif;
+	text-align:center;
+	line-height: 18px;
+	color: #FFF;
+	font-weight: 400;
+}
+
+
+/* PARTE RELATIVA IL FOOTER ----------------------------------------------------------*/
+footer {
+	position: fixed;
+	height: 44px;
+	bottom: 0;
+	width: 100%;
+	max-width: 800px;
+	background-color: #171717;
+	text-align: center;
+	padding: 1rem;
+	font-size: 0.9rem; 
+}
+
+@media screen and (min-width: 800px) {
+  footer,
+  .page-footer {
+    display: none !important;
+  }
+}
+
+/* PARTE RELATIVA I TITOLI INTESTAZIONI-----------------------------------------------*/
+
+#title {
+	height: 52px;
+	margin: 10px 0px;
+	/*background-color: pink;*/
+}
+
+#title h1, #titleGame h1 {
+	color: #000;
+	font-family: Lato, sans-serif;
+	font-size: 20px;
+	font-style: normal;
+	font-weight: 900;
+	line-height: 52px;
+}
+
+#sottotitolo h2 {
+	color: #000;
+	font-family: Lato, sans-serif;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 600;
+	padding-bottom: 20px;
+}
+
+/* PARTE RELATIVA PAGINA SEARCH-----------------------------------------*/
+
+#searchBar {
+	display: block;
+}
+
+.visually-hidden {
+	color: #000;
+    font-weight: 600;
+}
+
+.suggTitle {
+	line-height: 35px;
+	font-weight: 400;
+}
+
+#searchInput {
+	width: 100%;
+    height: 48px;
+    margin: 20px 0px
+}
+
+#searchResults {
+	color: #000;
+    font-weight: 600;
+    font-size: 12px;
+	margin-bottom: 20px;
+}
+
+#suggestions, #noResults {
+	color: #000;
+    font-family: Lato, sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+#keywordSection {
+	margin-top: 50px;
+	color: #000;
+    font-family: Lato, sans-serif;
+    font-size: 14px;
+    font-style: normal;
+}
+
+.keywordSectionTitle {
+	margin-bottom: 10px;
+}
+
+#keywordIndex {
+	margin-top: 10px;
+}
+
+.gridSearch {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* sempre 3 colonne uguali */
+  gap: 12px;
+}
+
+a .cardSearch {
+  height: 56px;          /* altezza fissa */
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 16px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 6px rgba(0,0,0,.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #000;
+}
+
+
+/* PARTE RELATIVA I BOX MENU HOME PAGE-------------------------------------------------*/
+
+.gridContainer {
+	width: 100%;
+	display: grid; 
+	gap: 25px 16px;
+	grid-template-columns: repeat(auto-fit, minmax(156px, 1fr));
+	/*background-color: purple;	*/
+}
+
+.gridColumn {
+	height: 112px;
+	width: 100%;
+	border-radius: 5px; 
+	border: 1px solid #fff;
+}
+
+.gridColumn, .item3 {
+	margin-right:0;
+}
+.gridColumn, .item2 {
+	margin-right:0;
+}
+.gridColumn, .item1 {
+	margin-left:0;
+}
+
+.gridImage {
+	width: 100%;
+	height: 50%;
+	border-bottom: 1px solid #C41320;
+	object-fit: cover;
+}
+
+.gridImage img {
+	width: 100%;
+	height: 100%;
+	border-radius: 5px 5px 0px 0px ;
+	object-fit: cover;
+}
+
+.gridText {
+	width: 100%;
+	height: 50%;
+	background-color: #EDF2F4;
+	-moz-box-shadow: 2px 0px 5px #B8A5A5;
+	-webkit-box-shadow: 2px 0px 5px #B8A5A5;
+}
+
+.gridText h3 {
+	color: #000;
+	font-family: Lato, sans-serif;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 900;
+	line-height: 25px;
+	text-align: left;
+	padding-left: 10px;
+	padding-top: 2%;
+	/* background-color: white; */
+}
+
+.single {
+	width: 100%;
+	grid-column: 1 / span 2;
+}
+
+
+/* PARTE RELATIVA LO ZOOM SYSTEM ----------------------------------------*/
+
+    :root {
+      --scale: 2; /* fattore di zoom */
+      --tx: 0px;    /* translate X calcolato via JS */
+      --ty: 0px;    /* translate Y calcolato via JS */
+    }
+
+    .wrap {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .image-zoomer {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 14;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #111827;
+      box-shadow: 0 5px 10px rgba(0,0,0,.45);
+      user-select: none;
+      cursor: zoom-in;
+    }
+
+    /* Layer trasformato (traslato + scalato) */
+    .panzoom {
+      position: relative; /* necessario per posizionare le 2 immagini assolute */
+      width: 100%;
+      height: 100%;
+      transform: translate(var(--tx), var(--ty)) scale(1);
+      transform-origin: 0 0;
+      transition: transform 380ms cubic-bezier(.2,.8,.2,1);
+    }
+
+    .image-zoomer.zoomed .panzoom {
+      transform: translate(var(--tx), var(--ty)) scale(var(--scale));
+      cursor: zoom-out;
+    }
+
+    /* Le due immagini sovrapposte occupano tutto il layer */
+    .panzoom img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* o 'contain' se preferisci */
+      display: block;
+      pointer-events: none; /* i click passano ai marker / contenitore */
+      transition: opacity 280ms ease;
+    }
+
+    /* Stato iniziale: disegno visibile, foto nascosta */
+    .img--drawn { opacity: 1; }
+    .img--photo { opacity: 0; }
+
+    /* In zoom: mostra la foto, nascondi il disegno (cross-fade) */
+    .image-zoomer.zoomed .img--photo { opacity: 1; }
+    .image-zoomer.zoomed .img--drawn { opacity: 0; }
+
+    /* Marcatori numerati */
+    .marker {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      background: #fff;
+      color: #000;
+      font-weight: 700;
+      border: 1px solid rgba(#bbb,.9);
+      box-shadow: 0 8px 18px rgba(85,0,21,.45);
+      transform: translate(-50%, -50%);
+      transition: opacity 200ms ease, transform 200ms ease;
+      cursor: pointer;
+    }
+
+    .marker:hover { transform: translate(-50%, -50%) scale(1.06); }
+
+    /* Niente numeri in modalità zoom */
+    .image-zoomer.zoomed .marker {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* didascalia */
+    .caption {
+      margin-top: 14px;
+      padding: 14px 16px;
+      background: #fff;
+      border: 1px solid #bbb;
+      border-radius: 10px;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 240ms ease, transform 240ms ease;
+      min-height: 0;
+    }
+    .caption.show {
+      opacity: 1;
+      transform: translateY(0);
+      min-height: 48px;
+    }
+    .caption small { display: block; opacity: .7; margin-top: 6px; }
+
+    .hint { font-size: .9rem; opacity: .7; margin-top: 8px; }
+	
+	
+/* PARTE RELATIVA I BOX LIST CATEGORIE, ATTREZZATURE ETC-----------------------------------------*/
+
+.gridContainerList {
+	width: 100%;
+	display: grid; 
+	gap: 16px 16px;
+}
+
+.singleList {
+	height: 56px;
+	width: 100%;
+	border-radius: 5px; 
+	border: 1px solid #fff;
+	background-color: #EDF2F4;
+}
+
+.gridImageList {
+	width: 20%;
+	height: 100%;
+	float: left;
+	border-right: 1px solid #DA0037;
+	border: 5px;
+	/*background-color: yellow;*/
+}
+
+.gridImageList img {
+	width: 100%;
+	height: 100%;
+	border-radius: 5px;
+	object-fit: cover;
+}
+
+.gridTextList {
+	width: 55%;
+	float: left;
+	margin-left: 3%;
+	color: #000;
+	font-family: Lato, sans-serif;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 900;
+	line-height: 56px;
+}
+
+.gridTextList h3 {
+	color: #000;
+	font-family: Lato, sans-serif;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 56px;
+	padding-left: 10px;
+	/* background-color: white; */
+}
+
+#selectFavourite {
+	width: 56px;
+	height: 56px;
+	padding-left: 2%;
+	float: right;
+}
+
+.selectFavouriteCheck {
+	width: 40px;
+	height: 40px;
+	border-radius: 100%;
+	background-color:none;
+}
+
+#selectFavourite .selectFavouriteCheck { 
+	transition: background .2s; }
+#selectFavourite .selectFavouriteCheck.active { 
+	background: #DA0037; } /* colore acceso */
+
+.selectFavouriteCheck img {
+	width: 104%;
+	margin-left: -2%;
+	margin-top: -2%;
+	object-fit: cover;
+}
+
+.salva {
+	width: 80%;
+	height: 80%;
+	margin-top:15%;
+}
+
+#listaPreferiti {
+	width: 100%;
+	height: inherit;
+	display: grid; 
+	gap: 16px 16px;
+}
+
+/* PARTE RELATIVA LE PAGINE SPECIFICHE-----------------------------------------*/
+
+#textDescription {
+	width: 100%;
+	/*height: inherit;*/
+	margin-bottom: 15px;
+}
+
+#textDescription h3 {
+	color: #000;
+	font-family: Lato, sans-serif;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 20px;
+}
+
+#riskList {
+	width: 100%;
+}
+
+.levelRisk {
+	width: 100%;
+	height: 45px;
+}
+
+.levelRisk li {
+	width: 30%;
+	height: 45px;
+	float:left;
+	margin-right:3%;
+}
+
+.levelRiskColorLabel {
+	width: 15px;
+	height: 15px;
+	float: left;
+	margin-top: 0.8em;
+	margin-right:3%;
+	border-radius: 100%;
+}
+
+.levelRiskColorText{
+	height: 20px;
+	margin-top:10px;
+	margin-left:30px;
+	font-size: 1em;
+}
+
+.riskListElement {
+	width: 100%;
+	min-height: 87px;
+	margin-bottom: 12px;
+}
+
+.riskListElement:last-child {
+	margin-bottom: 0px;
+}
+
+.riskListColor {
+	width: 4%;
+	min-height: 87px;
+	float: left;
+}
+.riskListFigure {
+	width: 25%;
+	height: 87px;
+	float: left;
+	object-fit: cover;
+}
+
+.riskListFigure img {
+	height: 87px;
+	object-fit: cover;
+}
+
+.riskListText {
+	width: 71%;
+	height: inherit;
+	display: block;
+	float: left;
+	padding-left: 3%
+}
+
+.riskListText h3 {
+	color: #000;
+	font-family: Lato, sans-serif;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 20px;
+	padding: 2%;
+}
+				
+				
+#dispositiviList {
+	width: 100%;
+}
+
+.dispositiviList {
+	width: 100%;
+	height: 48px;
+	border-radius: 10px;
+	margin-bottom: 15px;
+	box-shadow: 0px 5px 10px 1px #D9D9D9;
+}
+
+
+.dispositiviListText {
+	width: 80%;
+	height: 48px;
+	float: left;
+}
+
+.dispositiviListText h2 {
+	color: #000;
+	font-family: Lato, sans-serif;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 48px;
+	padding-left: 20px;
+	text-decoration: underline;
+}
+.dispositiviListInfo h3 {
+	width: 100%;
+	border-radius: 10px;
+	padding: 10px;
+	margin-top: -15px;
+	margin-bottom: 15px;
+	box-shadow: 0px 5px 10px 1px #D9D9D9;
+	color: #000;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 400;
+}
+
+.dispositiviListIcon {
+	width: 20%;
+	padding-top: 4px;
+	float: left;
+}
+.dispositiviListIcon img {
+	max-height: 40px;
+	float: left;
+}
+
+#approfondisciButton {
+	width: 100%;
+	height: 46px; 
+	background-color: #DA0037;
+	border-radius: 10px;
+	margin-bottom: 32px;
+	box-shadow: 0px 5px 10px 1px #D9D9D9;
+}
+
+#approfondisciButton h2 {
+	color: #fff;
+	font-family: Lato, sans-serif;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 46px;
+	padding-left: 20px;
+	text-decoration: underline;
+}
+
+#navigatePages {
+	width: 100%;
+	height: 48px; 
+}
+
+.navigateSX, .navigateDX {
+	width: 50%;
+	height: inherit;
+	float: left;
+}
+
+.navigateDX {
+	float: right;
+}
+
+.navigateArrow {
+	width: 10%;
+	max-width:1.5em;
+	height: inherit;
+	padding-top:0.9em;
+	float: left;
+}
+
+.navigateName {
+	width: 90%;
+	float: left;
+	height: inherit;
+}
+
+.navigateName h2 {
+	color: #000;
+	font-family: Lato, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 48px;
+	padding: 0px 10px;
+	text-decoration: underline;
+}
+
+.navigateSX .navigateName h2 {
+	text-align: left;
+}
+.navigateDX .navigateName h2 {
+	text-align: right;
+}
+
+.bullets li {
+	list-style-type: disc; 
+	margin-left: 20px;
+}
+
+#image-container {
+	width: 100%;
+	margin-bottom: 20px;
+	display: flex;
+	border-radius: 15px;
+	background-color: #e7e7e7;
+}
+
+#image-container2 {
+	width: 100%;
+	margin-bottom: 20px;
+	display: flex;
+}
+
+.single-image {
+	width: 100%;
+	height: 100%;
+}
+
+.split-image {
+	/*width: 45%;*/
+	height: 100%;
+	display: flex;
+	overflow: hidden;
+}
+
+.split-image img{
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+#split-description  {
+	display: flex;
+	width: 52%;
+	height: 100%;
+	align-items: center;
+	padding-left: 4%
+}
+
+#split-description h3 {
+	color: #000;
+	font-family: Lato, sans-serif;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 20px;
+}
+
+#textSelector {
+  display: flex;
+  flex-direction: column; /* disposizione in colonna */
+  gap: 10px;              /* spazio tra i box */
+  margin: 20px 0;
+}
+
+#textSelector .textSearch {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
+  text-align: center;
+  font-weight: 600;
+  color: #333;
+  transition: all 0.3s ease;
+  text-decoration: underline; 
+}
+
+/* PARTE RELATIVA IL CAROSELLOOOOOOOOOOOO-----------------------------------------*/
+
+#caroselloBox {
+	width: 100%;
+	height: 364px; 
+	margin-bottom: 15px;
+}
+
+.carousel-container {
+  width: 100%;
+  height: 100%;
+  max-width: 800px;
+  overflow: hidden;
+}
+
+.carousel {
+  display: flex;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  height: 90%;
+  border-radius: 10px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .carousel {
+    scrollbar-width: none;      /* Firefox */
+  }
+  .carousel::-webkit-scrollbar { /* Chrome, Safari */
+    display: none;
+  }
+}
+
+.slide {
+  scroll-snap-align: start;
+  min-width: 400px;
+  max-width: 100%;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 15px;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+}
+
+.indicators {
+  text-align: center;
+  margin-top: 1em;
+}
+
+.dot {
+  height: 0.7em;
+  width: 0.7em;
+  margin: 0 0.3em;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+}
+
+.dot.active {
+  background-color: #333;
+}
+
+/* PARTE RELATIVA IL CAROSELLOOOOOOOOOOOO FRECCE -----------------------------------------*/
+
+.carousel-container { position: relative; }
+
+
+.carousel-arrow {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 44px; height: 44px;
+	border: none; border-radius: 50%;
+	display: none; /* nascosto di default (mobile) */
+	align-items: center; justify-content: center;
+	font-size: 22px; line-height: 1;
+	background: rgba(0,0,0,.5);
+	color: #fff;
+	cursor: pointer;
+	box-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
+.carousel-arrow.prev { left: 8px; }
+.carousel-arrow.next { right: 8px; }
+.carousel-arrow:focus { outline: 2px solid #DA0037; outline-offset: 2px; }
+
+
+/* Desktop only */
+@media (hover: hover) and (pointer: fine) {
+.carousel-arrow { display: inline-flex; }
+}
+
+
+/* PARTE RELATIVA OPEN MODAL-----------------------------------------*/
+
+/* --- Overlay + finestra modale --- */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;                 /* nascosto di default */
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,.45);   /* overlay */
+  z-index: 1000;
+}
+.modal[open] {                   /* quando JS aggiunge open */
+  display: flex;
+}
+
+.modal__dialog {
+  width: min(92vw, 520px);
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.2);
+  padding: 1rem;
+  outline: none;
+}
+
+.modal__header {
+  display: flex; flex-direction: column; gap: .75rem; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid #eee; padding-bottom: .5rem; margin-bottom: 1rem;
+}
+
+.modal__title { 
+	margin: 0; 
+	font-size: 1rem; 
+	font-family: Lato, sans-serif; 
+	font-weight: 400;}
+
+.modal__close {
+  border: 1px solid #000; 
+  font-size: 1.5rem;
+  line-height: 1; 
+  padding: .25rem .5rem; 
+  border-radius: 50%;
+}
+
+.modal__footer {
+  display: flex; 
+  flex-direction: column; 
+  gap: .5rem; 
+  justify-content: flex-end; 
+  margin-top: 1rem;
+}
+
+.selectWorkerDpi {
+	width: 100%;
+	height: 40px;
+	border-radius: 5px;
+	background-color: #DA0037;
+	
+	color: #fff;
+	font-size: 16px;
+}
+
+
+/* PARTE RELATIVA DPI PER LAVORATORI-----------------------------------------*/
+
+#iconDpiContent {
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	/*height: inherit; */
+}
+
+.gridDpi {
+	max-width: 60px;
+	height: inherit;
+	flex-direction: wrap;
+	padding: 5px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	border-radius: 5px;
+	box-shadow: 0 3px 8px rgba(0,0,0,.5);
+	background-color: #fff;
+}
+
+.titleDescription {
+	font-weight: 800 !important;
+	text-decoration: underline !important;
+	margin-bottom: 10px;
+	margin-top: 52px;
+}
+
+ul li:last-child #textDescription {
+	margin-bottom: 32px;
+}
+
+#imbragatura, #calzature, #elmetto, #occhiali{
+	scroll-margin-top: 80px;
+}
+
+
+/* ===== Integrazione layout hscroll ===== */
+
+:root{
+      --h-header: 56px;
+      --h-breadcrumb: 56px;
+      --h-footer: 44px;
+      --h-navbar: 56px;
+      --h-progress: 8px;
+	  
+	  --content-max: 800px; /* stesso valore del tuo body */
+	  --gap-breadcrumb-progress: 1px;
+
+    }
+
+    body[data-layout="hscroll"]{ 
+		overflow: hidden; 
+	}
+
+    #hscroll-progress {
+	  max-width: 100%;
+      position: fixed;
+      top: calc(var(--h-header) + var(--h-breadcrumb) + var(--gap-breadcrumb-progress));
+      left: 0; 
+	  right: 0;
+      height: var(--h-progress);
+      background: #eee;
+      z-index: 2;
+    }
+	
+		@media screen and (min-width: 800px) {
+  #hscroll-progress {
+    max-width: 800px;
+    margin: 0 auto;       /* la centra orizzontalmente */
+    left: 0;
+    right: 0;
+  }
+}
+
+    #hscroll-progress .bar{
+      height: 100%;
+      width: 0%;
+      background: #DA0037;
+      transition: width .1s linear;
+    }
+
+    /* viewport sotto header + breadcrumb + barra progresso */
+    .hscroll-viewport, .hscroll-viewportGame {
+      position: fixed;
+      top: calc(var(--h-header) + var(--h-breadcrumb) + var(--h-progress) + var(--gap-breadcrumb-progress));
+      /* left: 0;
+      right: 0;*/
+      bottom: 0;
+      display: flex;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+	  z-index: 0;
+	  
+	  left: 50%;
+	  transform: translateX(-50%);
+	  width: min(100vw, var(--content-max));
+	  right: auto;
+    }
+
+    .hpage, .hpageGame {
+      flex: 0 0 100%;
+      height: 100%;
+      overflow-y: auto;           /* contenuti lunghi scorrono verticalmente dentro la pagina */
+      scroll-snap-align: start;
+      padding: 0 16px 16px;
+	  max-width: 800px;
+	  
+	  overflow-wrap: anywhere;
+	  word-break: normal;
+    }
+
+    main.hscroll-layout { 
+		margin: 0; 
+	}
+
+    /* ---- Contenuti ---- */
+    .section-content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding-bottom: 24px;
+    }
+
+.hscrollSection, #image-container.hscrollSection {
+	margin-bottom: 180px;
+}
+
+
+/* PARTE RELATIVA I BOX SEGNALETICA-------------------------------------------------*/
+
+.gridContainerSign {
+	width: 100%;
+	display: grid; 
+	gap: 25px 16px;
+	grid-template-columns: repeat(auto-fit, minmax(156px, 1fr));
+	/*background-color: purple;	*/
+}
+
+.gridColumnSign {
+	height: 150px;
+	width: 100%;
+	border-radius: 5px; 
+	border: 1px solid #EDF2F4;
+}
+
+.gridColumnSign, .item3 {
+	margin-right:0;
+}
+.gridColumnSign, .item2 {
+	margin-right:0;
+}
+.gridColumnSign, .item1 {
+	margin-left:0;
+}
+
+.gridImageSign {
+	width: 100%;
+	height: 70%;
+	object-fit: cover;
+}
+
+.gridImageSign img {
+	width: 100%;
+	height: 100%;
+	border-radius: 5px 5px 0px 0px ;
+	object-fit: cover;
+}
+
+.gridTextSign {
+	width: 100%;
+	height: 30%;
+	background-color: #EDF2F4;
+}
+
+.gridTextSign h3 {
+	color: #000;
+	font-family: Lato, sans-serif;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 18px;
+	text-align: center;
+	padding-top: 2%;
+	/* background-color: white; */
+}
+
+
+/* PARTE RELATIVA VAI ALLA SEZIONE GIOCHI -----------------------------------------*/
+
+	
+#goPlay {
+	position: fixed;
+	bottom: calc(var(--h-navbar) + var(--h-footer));
+	height: 56px;
+	width: 100%;
+	max-width: 800px;
+	padding: 10px 16px;
+	border-top: 1px solid #000;
+	background-color: #fff;
+}
+
+@media screen and (min-width: 800px) {
+  #goPlay {
+    bottom: 0px;
+    position: fixed;
+  }
+}
+
+.goPlayButton {
+	width: 100%;
+    height: 36px;
+    background-color: #DA0037;
+    border-radius: 10px;
+    margin-bottom: 32px;
+	opacity: 100%;
+}
+
+.goPlayButton h2 {
+	color: #fff;
+	font-family: Lato, sans-serif;
+	text-align: center;
+	line-height: 32px;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 600;
+	padding-bottom: 20px;
+}
+
+
+
+
+/* PARTE RELATIVA GIOCHI - HOME PAGE-------------------------------------------------------------*/
+
+.hpageGame {
+	
+}
+
+.hscroll-viewportGame {
+	top: calc(var(--h-header) + var(--h-breadcrumb));
+	width: 100%;
+	max-width: 800px;
+}
+
+#titleGame h1 {
+	text-align: center;
+	padding-top: 65px;
+}
+
+#statusBar {
+	position: relative;
+	max-width: 800px;
+	width: 100%;
+	height: 48px;
+	z-index: 1;
+	
+	display: flex;              /* 🔹 mette le pillole in fila */
+    justify-content: flex-end;  /* 🔹 le allinea a destra (cambia in center o flex-start se vuoi) */
+    align-items: center;        /* 🔹 centratura verticale */
+    gap: 20px;                  /* 🔹 spazio tra le pillole */
+    padding: 8px 16px;
+	border-bottom: 1px solid #919192;
+    background-color: rgb(255, 255, 255, 0.5);
+}
+
+.pill {
+	display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;                /* puoi regolare le dimensioni */
+  height: 32px;
+  border-radius: 10px;         /* forma circolare */
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.pillvalueStar, .pillvalueHeart {
+	padding-left: 25px;
+	font-size: 1.2em;
+	font-weight: 800;
+}
+
+.is-heart {
+	width: 50px;
+	height: inherith;
+	position: relative;
+	margin-left: 10px;
+}
+	
+.is-heart img {
+	
+}
+
+
+#sectionGame {
+	width: 100%;
+	height: 250px;
+	justify-content: center;
+	
+	position: relative;         /* 🔹 serve per posizionare le frecce dentro */
+    display: flex;
+    align-items: center;
+    overflow: hidden;   
+}
+
+.sectionGameCatImage {
+	height: 100%;
+	width: 60%;
+	display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sectionGameCatImage img {
+	width: 100%;
+	min-width: 3em;
+	height: 100%;
+	object-fit: contain;
+}
+
+.levelOverview {
+	height: 32px;
+	width: 100%;
+	margin-top: 10px;
+}
+
+.levelOverview h2, .selectionLevelCateg h2 {
+	text-align: center;
+	font-size: 1.2em;
+}
+
+.selectionLevelCateg {
+	width: 100%;
+	margin-top: 15px;
+}
+
+#levelBox {
+	width: 100%;
+	margin-bottom: 100px;
+}
+
+.selectionLevel {
+	width: 80%;
+	margin-left: 10%;
+}
+
+
+.gridLevels {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;   /* 🔹 centra i bottoni nel div giallo */
+	align-items: center;       /* 🔹 centra anche verticalmente se serve */
+	gap: 20px 10px;
+	width: 100%;               /* 🔹 occupa tutta la larghezza di .selectionLevel */
+	margin: 0 auto;            /* 🔹 centra l’intero gruppo dentro il giallo */
+	box-sizing: border-box;
+}
+
+  /* bottone livello */
+.level-btn {
+  position: relative;
+  flex: 1 1 120px;       /* responsive: minimo 120px */
+  max-width: 56px;
+  height: 85px;
+  width: 20%;
+  
+  display: flex;          /* per centrare il contenuto */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+  background-color: #000;
+  color: white;
+  font-weight: 800;
+  font-size: 1.8rem;
+
+  text-decoration: none;  /* rimuove sottolineatura link */
+  cursor: pointer;
+  transition: transform .1s ease;
+}
+
+.level-btn.locked {
+  filter: grayscale(0);
+  cursor: not-allowed;
+}
+
+  /* numero in alto */
+.level-btn .number {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+/* FIND: sempre verde */
+.level-btn[data-game="find"] {
+  background-color: #00224e;
+  color: #fff;        /* o #fff se preferisci */
+}
+/* se vuoi che da bloccato sia più “spento” */
+.level-btn[data-game="find"].locked {
+  filter: grayscale(0);   /* opzionale, per non ingrigirlo */
+   cursor: not-allowed;
+}
+
+
+  /* stelle sotto */
+.stars {
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 5px;
+}
+
+  .star {
+    width: 18px;
+    aspect-ratio: 1 / 1;
+    background: #848174;
+    clip-path: polygon(
+      50% 0%, 61% 35%, 98% 35%,
+      68% 57%, 79% 91%, 50% 70%,
+      21% 91%, 32% 57%, 2% 35%, 39% 35%
+    );
+    box-shadow: 0 2px 0 rgba(0,0,0,0.3);
+  }
+  
+.percentLevel h3 {
+	padding-top:10px;
+	font-weight: 300;
+    font-size: 1rem;
+}
+
+
+/* --- Stile delle frecce --- */
+.scroll-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scroll-arrow:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.scroll-arrow.left {
+  left: 10px;
+}
+
+.scroll-arrow.right {
+  right: 10px;
+}
+
+
+/* --- GUADAGNARE LE VITE ------------------------ */
+
+/* Pulsante guadagna vite */
+  .life-btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    height:32px; width: 80px; padding:0 10px;
+    border:0; border-radius:10px; font-weight:800; cursor:pointer;
+    background:#2e7d32; color:#fff; box-shadow:0 2px 6px rgba(0,0,0,.15);
+    transition:transform .05s ease, filter .2s, opacity .2s;
+  }
+  .life-btn:active{ transform:scale(.98) }
+  .life-btn[disabled]{ background:#bbb; color:#fff; opacity:.7; cursor:not-allowed }
+
+  /* Modal */
+  #lifeTipModal{ position:fixed; inset:0; z-index:10000; }
+  #lifeTipModal[hidden]{ display:none }
+  .ltm-backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.5) }
+  .ltm-card{
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    width:min(560px,90vw); background:#fff; border-radius:10px; padding:18px;
+    box-shadow:0 12px 32px rgba(0,0,0,.25); font-family:inherit;
+  }
+  .ltm-card h3{ margin:0 0 8px; font-size:18px }
+  .ltm-card p{ margin:6px 0 12px; line-height:1.4 }
+  .ltm-timer{ font-weight:800; margin:8px 0 14px }
+  #ltm-close{
+    border:0; border-radius:10px; padding:10px 14px; font-weight:800;
+    background:#4a4a44; color:#fff; cursor:pointer;
+  }
+  #ltm-close[disabled]{ opacity:.5; cursor:not-allowed }
+  
+  
+  
