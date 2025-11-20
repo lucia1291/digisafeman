@@ -52,7 +52,7 @@ const IMG_QUESTIONS_BANK = {
   },
   
   "DPI E SEGNALETICA": {
-    1: [
+    4: [
       {
         q: "Quale tra questi cartelli rappresenta l'allarme antincendio",
         a: [
