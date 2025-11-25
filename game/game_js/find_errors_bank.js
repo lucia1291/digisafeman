@@ -10,9 +10,9 @@ window.FIND_ERRORS_BANK = {
           image: "../resources/games/game2/trova1.png", // relativo a find.html
           description: "Trova i 3 errori nascosti nella scena.",
           errors: [
-            { x: 32, y: 27, label: "Mancanza di protezione per il viso" },
+            { x: 52, y: 25, label: "Mancanza di protezione per il viso" },
             { x: 28, y: 60, label: "Protezione della mola non adeguata" },
-            { x: 50, y: 23, label: "Operatore senza guanti protettivi" }
+            { x: 50, y: 70, label: "Operatore senza guanti protettivi" }
           ]
         },
       ]
