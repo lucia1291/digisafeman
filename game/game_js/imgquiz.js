@@ -196,7 +196,7 @@
       imgSrc = "../resources/games/perfect.png";
       imgAlt = "Perfetto!";
     }
-    else if (percent >= 60) {
+    else if (percent >= 70) {
       imgSrc = "../resources/games/win.png";
       imgAlt = "Hai vinto!";
     }
@@ -215,8 +215,8 @@
       ? `Vite esaurite – punteggio ${correct}/${QUESTIONS.length} (${percent}%)`
       : `Hai concluso il livello: ${correct}/${QUESTIONS.length} corrette (${percent}%)`;
 
-    if (percent < 60) {
-      scoreLine.innerHTML = `${baseText}<br><strong style="color:#c62828">Per sbloccare il livello successivo serve almeno il 60%.</strong>`;
+    if (percent < 70) {
+      scoreLine.innerHTML = `${baseText}<br><strong style="color:#c62828">Per sbloccare il livello successivo serve almeno il 70%.</strong>`;
     } else {
       scoreLine.textContent = baseText;
     }

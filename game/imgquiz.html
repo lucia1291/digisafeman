@@ -29,9 +29,9 @@
 <div class="wrap">
   <!-- STATUS BAR (vite + stelle) -->
   <div id="statusBar">
-    <a href="index_game.html" class="bread-back-link">
-      <div class="backgame"><img src="../resources/icons/back.svg" alt="Indietro"></div>
-    </a>
+    <a id="btnBack" class="bread-back-link">
+		<div class="backgame"><img src="../resources/icons/back.svg" alt="Indietro"></div>
+	</a>
     <div class="pill">
       <span id="pillHearts">5</span>
       <img src="../resources/games/heart.png" alt="cuori">
@@ -76,5 +76,32 @@
 </div>
 
 <footer></footer>
+
+
+ <script>
+	document.addEventListener("DOMContentLoaded", () => {
+	  const backBtn = document.getElementById("btnBack");
+	  const btnMenu = document.getElementById("btnMenu");
+
+	  const params = new URLSearchParams(window.location.search);
+	  const category = (params.get("category") || "MACCHINARI").toUpperCase();
+
+	  // categoria → indice pagina hscroll in index_game.html
+	  const pageIndexMap = {
+		"MACCHINARI": 1,
+		"ATTREZZATURE": 2,
+		"DPI": 3,
+		"RISCHIO INCENDIO": 4
+		// aggiungi qui eventuali nuove categorie
+	  };
+
+	  const page = pageIndexMap[category] ?? 1;
+	  const targetUrl = `index_game.html?page=${page}`;
+
+	  if (backBtn) backBtn.href = targetUrl;
+	  if (btnMenu) btnMenu.href = targetUrl;
+	});
+  </script>
+
 </body>
 </html>

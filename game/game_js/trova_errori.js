@@ -25,11 +25,9 @@
     localStorage.setItem('pillvalueStar',  String(stars));
   }
 
-  // ====== SCENE / ERRORI (3 schermate x 3 errori) ======
-  // ====== SCENE / ERRORI DA BANCA DATI ======
+  // ====== SCENE / ERRORI ======
   let scenes = [];
 
-  // default di emergenza se non troviamo nulla in banca dati
   const defaultScenes = [
     {
       title: "Pericoli",
@@ -70,7 +68,7 @@
   const btnNextScene = document.getElementById('btnNextScene');
   const progressDots = document.getElementById('progressDots');
 
-  // ====== DOM RIEPILOGO (come quest.js) ======
+  // ====== DOM RIEPILOGO ======
   const summary   = document.getElementById('summary');
   const card      = document.getElementById('card');
   const winLose   = document.getElementById('winLose');
@@ -96,42 +94,34 @@
     }
   }
 
-  // ====== CARICA SCENA ======
-  function loadScene (index) {
-    currentScene = index;
-    const scene = scenes[index];
-    if (!scene || !imageShell || !sceneImage) return;
+  // ====== CALCOLO BOX REALE DELL'IMMAGINE (object-fit: contain) ======
+  function getImageLayout() {
+    if (!imageShell || !sceneImage) return null;
 
-    if (tagTitleEl)    tagTitleEl.textContent    = scene.title;
-    if (topLabelTitle) topLabelTitle.textContent = scene.title;
-    if (captionText)   captionText.textContent   = scene.description;
+    const shellRect = imageShell.getBoundingClientRect();
+    const naturalW = sceneImage.naturalWidth;
+    const naturalH = sceneImage.naturalHeight;
 
-    if (sceneIndexEl)  sceneIndexEl.textContent  = String(index + 1);
-    if (sceneTotalEl)  sceneTotalEl.textContent  = String(scenes.length);
+    if (!naturalW || !naturalH) return null;
 
-    if (totTopEl)      totTopEl.textContent      = String(scene.errors.length);
-    if (foundTopEl)    foundTopEl.textContent    = String(foundPerScene[index].size);
+    const containerW = shellRect.width;
+    const containerH = shellRect.height;
 
-    sceneImage.src = scene.image;
+    // replica di object-fit: contain
+    const scale = Math.min(containerW / naturalW, containerH / naturalH);
+    const drawW = naturalW * scale;
+    const drawH = naturalH * scale;
 
-    // pulisci hotspot precedenti
-    imageShell.querySelectorAll('.hotspot').forEach(h => h.remove());
+    const offsetX = (containerW - drawW) / 2;
+    const offsetY = (containerH - drawH) / 2;
 
-    // crea hotspot
-    scene.errors.forEach((err, i) => {
-      const btn = document.createElement('button');
-      btn.className = 'hotspot';
-      btn.style.left = err.x + '%';
-      btn.style.top  = err.y + '%';
-      btn.dataset.errorIndex = String(i);
-      if (foundPerScene[index].has(i)) {
-        btn.classList.add('found');
-      }
-      btn.addEventListener('click', onHotspotClick);
-      imageShell.appendChild(btn);
-    });
-
-    renderDots();
+    return {
+      shellRect,
+      offsetX,
+      offsetY,
+      drawW,
+      drawH
+    };
   }
 
   // ====== CLICK SU HOTSPOT ======
@@ -148,30 +138,124 @@
     foundGlobal++;
     e.currentTarget.classList.add('found');
 
+    // ridimensiono il pallino found in base alla dimensione reale dell'immagine
+    const layout = getImageLayout();
+    if (layout) {
+      const base = Math.min(layout.drawW, layout.drawH);
+      const visibleDiameter = base * 0.12; // 8% del lato più corto
+      e.currentTarget.style.width  = visibleDiameter + 'px';
+      e.currentTarget.style.height = visibleDiameter + 'px';
+    }
+
     if (foundTopEl)  foundTopEl.textContent = String(foundPerScene[currentScene].size);
     if (captionText) captionText.textContent = scene.errors[idx].label;
   }
 
-  // ====== CLICK FUORI HOTSPOT (hint) ======
+  // ====== POSIZIONA HOTSPOT RELATIVI ALL’IMMAGINE ======
+  function placeHotspotsForScene(index) {
+    const scene = scenes[index];
+    if (!imageShell || !sceneImage || !scene) return;
+
+    const layout = getImageLayout();
+    if (!layout) return;
+
+    const { shellRect, offsetX, offsetY, drawW, drawH } = layout;
+
+    // grandezza area cliccabile & pallino proporzionale all'immagine
+    const base = Math.min(drawW, drawH);
+    const invisibleDiameter = base * 0.14; // area tap grande (invisibile)
+    const visibleDiameter   = base * 0.12; // pallino found
+
+    // pulisci hotspot precedenti
+    imageShell.querySelectorAll('.hotspot').forEach(h => h.remove());
+
+    scene.errors.forEach((err, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'hotspot';
+      btn.dataset.errorIndex = String(i);
+
+      // coordinate RELATIVE ALL’IMMAGINE (x,y in %)
+      const pxLeft = offsetX + drawW * (err.x / 100);
+      const pxTop  = offsetY + drawH * (err.y / 100);
+
+      // left/top relativi a imageShell
+      btn.style.left = pxLeft + 'px';
+      btn.style.top  = pxTop  + 'px';
+
+      // default: area cliccabile ampia ma invisibile
+      btn.style.width  = invisibleDiameter + 'px';
+      btn.style.height = invisibleDiameter + 'px';
+
+      // se già trovato (retry senza ricaricare pagina)
+      if (foundPerScene[index].has(i)) {
+        btn.classList.add('found');
+        btn.style.width  = visibleDiameter + 'px';
+        btn.style.height = visibleDiameter + 'px';
+      }
+
+      btn.addEventListener('click', onHotspotClick);
+      imageShell.appendChild(btn);
+    });
+  }
+
+  // ====== CARICA SCENA ======
+  function loadScene (index) {
+    currentScene = index;
+    const scene = scenes[index];
+    if (!scene || !imageShell || !sceneImage) return;
+
+    if (tagTitleEl)    tagTitleEl.textContent    = scene.title;
+    if (topLabelTitle) topLabelTitle.textContent = scene.title;
+    if (captionText)   captionText.textContent   = scene.description;
+
+    if (sceneIndexEl)  sceneIndexEl.textContent  = String(index + 1);
+    if (sceneTotalEl)  sceneTotalEl.textContent  = String(scenes.length);
+
+    if (totTopEl)      totTopEl.textContent      = String(scene.errors.length);
+    if (foundTopEl)    foundTopEl.textContent    = String(foundPerScene[index].size);
+
+    sceneImage.onload = () => {
+      placeHotspotsForScene(index);
+    };
+
+    // nel caso l'immagine sia già in cache
+    if (sceneImage.complete && sceneImage.naturalWidth > 0) {
+      placeHotspotsForScene(index);
+    }
+
+    sceneImage.src = scene.image;
+
+    renderDots();
+  }
+
+  // ====== CLICK FUORI HOTSPOT (hint + perdita vita + alert una sola volta) ======
+  let warnedOnce = false;
+
   if (imageShell) {
     imageShell.addEventListener('click', function (e) {
+      // se è un hotspot, ignoriamo
       if (e.target.classList.contains('hotspot')) return;
 
-      const rect = imageShell.getBoundingClientRect();
-      const clickX = e.clientX - rect.left;
-      const clickY = e.clientY - rect.top;
+      const layout = getImageLayout();
+      if (!layout) return;
+
+      const { shellRect, offsetX, offsetY, drawW, drawH } = layout;
+
+      const clickX = e.clientX - shellRect.left;
+      const clickY = e.clientY - shellRect.top;
 
       const scene = scenes[currentScene];
       let near = false;
       const threshold = 50; // px
 
       scene.errors.forEach(err => {
-        const hx = rect.width * (err.x / 100);
-        const hy = rect.height * (err.y / 100);
+        const hx = offsetX + drawW * (err.x / 100);
+        const hy = offsetY + drawH * (err.y / 100);
         const dist = Math.hypot(clickX - hx, clickY - hy);
         if (dist < threshold) near = true;
       });
 
+      // popup "ci sei quasi" / "non è qui"
       const hint = document.createElement('div');
       hint.className = 'hint-popup';
       hint.textContent = near ? 'ci sei quasi' : 'non è qui';
@@ -180,6 +264,55 @@
       imageShell.appendChild(hint);
 
       setTimeout(() => hint.remove(), 1200);
+
+      // perdita vita se totalmente fuori
+      if (!near) {
+        if (!warnedOnce) {
+          warnedOnce = true;
+
+          const alertBox = document.createElement('div');
+          alertBox.style.position = 'fixed';
+          alertBox.style.top = '50%';
+          alertBox.style.left = '50%';
+          alertBox.style.transform = 'translate(-50%, -50%)';
+          alertBox.style.padding = '16px';
+          alertBox.style.background = 'white';
+          alertBox.style.borderRadius = '12px';
+          alertBox.style.boxShadow = '0 0 20px rgba(0,0,0,0.3)';
+          alertBox.style.zIndex = '9999';
+          alertBox.style.fontSize = '18px';
+          alertBox.style.textAlign = 'center';
+          alertBox.innerHTML = `
+            <strong>Attenzione!</strong><br>
+            Cliccare nei punti sbagliati ti fa perdere vite!
+            <br><br>
+            <button id="alertCloseBtn" style="
+              padding: 8px 20px;
+              border: none;
+              background: #DA0037;
+              color: white;
+              font-size: 16px;
+              border-radius: 8px;
+              cursor: pointer;">
+              Ok
+            </button>
+          `;
+
+          document.body.appendChild(alertBox);
+
+          document.getElementById('alertCloseBtn').onclick = () => {
+            alertBox.remove();
+          };
+        }
+
+        hearts--;
+        saveHearts();
+        refreshPills();
+
+        if (hearts <= 0) {
+          endLevel(true);
+        }
+      }
     });
   }
 
@@ -194,7 +327,7 @@
     });
   }
 
-  // ====== PERSISTENZA (come quest.js) ======
+  // ====== PERSISTENZA ======
   function persistLevel (percent) {
     const prev = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
     const starAlready    = !!prev.starAwarded;
@@ -215,7 +348,7 @@
     }
   }
 
-  // ====== FINE LIVELLO (stesso layout del quiz) ======
+  // ====== FINE LIVELLO ======
   function endLevel (failedByHearts) {
     const percent = Math.round((foundGlobal / TOTAL_ERRORS) * 100);
     persistLevel(percent);
@@ -223,7 +356,6 @@
     if (card)    card.classList.add('hidden');
     if (summary) summary.classList.remove('hidden');
 
-    // IMMAGINE WIN / LOSE / PERFECT
     if (winLose) {
       let imgSrc = "";
       let imgAlt = "";
@@ -231,7 +363,7 @@
       if (percent === 100) {
         imgSrc = "../resources/games/perfect.png";
         imgAlt = "Perfetto!";
-      } else if (percent >= 60) {
+      } else if (percent >= 70) {
         imgSrc = "../resources/games/win.png";
         imgAlt = "Hai vinto!";
       } else {
@@ -246,13 +378,12 @@
       `;
     }
 
-    // TESTO RISULTATO – identico stile al quiz
     const baseText = failedByHearts
       ? `Vite esaurite – errori trovati ${foundGlobal}/${TOTAL_ERRORS} (${percent}%)`
       : `Hai concluso il livello: ${foundGlobal}/${TOTAL_ERRORS} errori trovati (${percent}%)`;
 
-    if (percent < 60) {
-      scoreLine.innerHTML = `${baseText}<br><strong style="color:#c62828">Per sbloccare il livello successivo serve almeno il 60%.</strong>`;
+    if (percent < 70) {
+      scoreLine.innerHTML = `${baseText}<br><strong style="color:#c62828">Per sbloccare il livello successivo serve almeno il 70%.</strong>`;
     } else {
       scoreLine.textContent = baseText;
     }
@@ -260,7 +391,6 @@
     if (meterBar) meterBar.style.width = percent + '%';
     if (percent === 100 && levelStar) levelStar.classList.add('gold');
 
-    // LOGICA bottoni (come nel quiz)
     if (failedByHearts || hearts <= 0) {
       if (btnRetry) {
         btnRetry.classList.add('hidden');
@@ -299,6 +429,11 @@
       loadScene(0);
     });
   }
+
+  // ====== RICALCOLO HOTSPOT SU RESIZE ======
+  window.addEventListener('resize', () => {
+    placeHotspotsForScene(currentScene);
+  });
 
   // ====== INIT ======
   const levelTitle = document.getElementById('levelTitle');

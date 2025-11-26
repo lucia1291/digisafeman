@@ -18,8 +18,8 @@
 	.backgame img{position: absolute; width:36px; height:60px; left:16px; top:-7px;}
 
     /* CONTAINER */
-    .screen{min-height:100dvh; padding:24px 16px 80px;}
-    .header{display:flex; align-items:center; justify-content:center; margin:4px 0 12px}
+    .screen{min-height:100dvh; padding:16px 16px 80px;}
+    .header{display:flex; align-items:center; justify-content:center;}
     .title{font-weight:900; font-size:20px}
 
     /* CARD DOMANDA */
@@ -218,8 +218,8 @@
     /* HOTSPOT INVISIBILI (cliccabili) */
     .hotspot {
       position: absolute;
-      width: 36px;
-      height: 36px;
+     /*  width: 70px;
+      height: 70px;*/
       border-radius: 999px;
       background: transparent;
       border: none;
@@ -233,6 +233,8 @@
     }
 
     .hotspot.found {
+	  /*  width: 36px;
+	  height: 36px;*/
       opacity: 1;
       background: #ff0266;
       border: 3px solid #ffffff;

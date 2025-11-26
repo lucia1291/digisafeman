@@ -887,6 +887,13 @@ footer {
   }
 }
 
+@media screen and (max-height: 670px) {
+  footer,
+  .page-footer {
+    display: none !important;
+  }
+}
+
 /* PARTE RELATIVA I TITOLI INTESTAZIONI-----------------------------------------------*/
 
 #title {
@@ -1761,8 +1768,8 @@ ul li:last-child #textDescription {
 
     }
 
-    body[data-layout="hscroll"]{ 
-		overflow: hidden; 
+/*    body[data-layout="hscroll"]{ 
+		overflow: hidden;  --*/
 	}
 
     #hscroll-progress {

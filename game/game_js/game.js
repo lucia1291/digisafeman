@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
           let prevData = null;
           try { prevData = JSON.parse(localStorage.getItem(prevKey) || '{}'); } catch(_e){ prevData = {}; }
 
-          const prevCompleted = (Number(prevData?.percent) >= 60) || !!prevData?.starAwarded;
+          const prevCompleted = (Number(prevData?.percent) >= 70) || !!prevData?.starAwarded;
 
           const ensureLockBadge = () => {
             let badge = btn.querySelector('.lock-badge');
@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.classList.add('locked');
             btn.style.opacity = '0.5';
             btn.setAttribute('aria-disabled', 'true');
-            btn.setAttribute('title', 'Serve almeno il 60% nel livello precedente per sbloccare questo');
+            btn.setAttribute('title', 'Serve almeno il 70% nel livello precedente per sbloccare questo');
             ensureLockBadge();
 
             if (!btn[LOCK_HANDLER_SYMBOL]) {
@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 e.stopPropagation();
                 const prevLevelNum = level - 1;
-                showToast(`🔒 Livello bloccato!\nCompleta prima il livello ${prevLevelNum} di “${topic}” con almeno il 60%.`);
+                showToast(`🔒 Livello bloccato!\nCompleta prima il livello ${prevLevelNum} di “${topic}” con almeno il 70%.`);
               };
               btn.addEventListener('click', btn[LOCK_HANDLER_SYMBOL]);
             }

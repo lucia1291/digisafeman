@@ -46,7 +46,7 @@ function setLevelProgress(category, topic, level, patch) {
   ---------------
   Regola: il livello N è sbloccato se:
     - N === 1, oppure
-    - il livello N-1 ha percent >= 60, oppure
+    - il livello N-1 ha percent >= 70, oppure
     - ha starAwarded true, oppure
     - ha già unlockedNext true.
 */
@@ -58,7 +58,7 @@ function isUnlocked(category, topic, level) {
   const hasStar = !!prev.starAwarded;
   const wasUnlocked = !!prev.unlockedNext;
 
-  const meetsThreshold = (percent >= 60) || hasStar || wasUnlocked;
+  const meetsThreshold = (percent >= 70) || hasStar || wasUnlocked;
 
   // Se raggiungiamo la soglia, fissiamo unlockedNext = true in modo persistente
   if (meetsThreshold && !wasUnlocked) {
@@ -154,13 +154,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
           buttonEl.setAttribute('type', 'button');
           buttonEl.setAttribute('aria-disabled', 'true');
-          buttonEl.title = `🔒 Completa il livello ${level - 1} con almeno il 60% per sbloccare`;
+          buttonEl.title = `🔒 Completa il livello ${level - 1} con almeno il 70% per sbloccare`;
 
           // Feedback al click sul livello bloccato
           buttonEl.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            const msg = `Per sbloccare il livello ${level} serve ≥60% (o stella) nel livello ${level - 1}.`;
+            const msg = `Per sbloccare il livello ${level} serve ≥70% (o stella) nel livello ${level - 1}.`;
             if (window.showToast) {
               window.showToast(`🔒 ${msg}`);
             } else {
