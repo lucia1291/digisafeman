@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
 })();
 
 /* ==================================================
-   3) Gestione vite + modale “consiglio” con ricompensa
+   3) Gestione vite + modale “consiglio” + categorie teoria
    ================================================== */
 (function () {
   const HEARTS_KEY = 'pillvalueHeart';
@@ -219,14 +219,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const btn = document.getElementById('btnGainLife');
   const modal = document.getElementById('lifeTipModal');
   const tipEl = document.getElementById('ltm-tip');
-  const countEl = document.getElementById('ltm-count');
   const closeEl = document.getElementById('ltm-close');
+  const categoryContainer = modal ? modal.querySelector('#ltm-categories') : null;
 
-  // Se non esistono gli elementi (es. nelle pagine quest/find/imgquiz) esci
-  if (!btn || !modal || !tipEl || !countEl || !closeEl) return;
+  if (!btn || !modal || !tipEl || !closeEl) return;
 
   const getHearts = () =>
     parseInt(localStorage.getItem(HEARTS_KEY) ?? '5', 10);
+
   const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
 
   const setHearts = (n) => {
@@ -268,34 +268,18 @@ document.addEventListener('DOMContentLoaded', () => {
     return TIPS[Math.floor(Math.random() * TIPS.length)];
   }
 
-  let timerId = null;
-
   function openTip() {
     tipEl.textContent = randomTip();
-    countEl.textContent = '10';
-    closeEl.disabled = true;
     modal.hidden = false;
-
-    let remaining = 10;
-    timerId = setInterval(() => {
-      remaining -= 1;
-      countEl.textContent = String(remaining);
-      if (remaining <= 0) {
-        clearInterval(timerId);
-        timerId = null;
-        closeEl.disabled = false;
-        closeEl.focus();
-      }
-    }, 1000);
+    closeEl.focus();
   }
 
-  function closeTipAndReward() {
-    if (timerId) {
-      clearInterval(timerId);
-      timerId = null;
-    }
+  function closeTip() {
     modal.hidden = true;
+  }
 
+  // ➜ +1 vita (max 5)
+  function addOneHeart() {
     const hearts = getHearts();
     const next = clamp(hearts + 1, 0, HEARTS_MAX);
     if (next !== hearts) {
@@ -306,27 +290,41 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Bottone principale che apre il modale
   btn.addEventListener('click', openTip);
-  closeEl.addEventListener('click', closeTipAndReward);
 
+  // ➜ "Chiudi" dà +1 vita e chiude
+  closeEl.addEventListener('click', () => {
+    addOneHeart();
+    closeTip();
+  });
+
+  // click sulla backdrop → chiude senza premio
   const backdrop = modal.querySelector('.ltm-backdrop');
   if (backdrop) {
-    backdrop.addEventListener('click', (e) => {
-      if (closeEl.disabled) {
-        e.stopPropagation();
-      } else {
-        closeTipAndReward();
-      }
+    backdrop.addEventListener('click', () => {
+      closeTip();
     });
   }
 
-  // Inizializza stato all’avvio
+  // ➜ CATEGORIE: +1 vita e poi redirect
+  if (categoryContainer) {
+    categoryContainer.querySelectorAll('.ltm-category-btn').forEach(btnCat => {
+      btnCat.addEventListener('click', () => {
+        addOneHeart();   // ← aggiunge la vita
+        const href = btnCat.dataset.href;
+        if (href) {
+          window.location.href = href; // ← poi vai alla pagina
+        }
+      });
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     refreshPills();
     syncButton();
   });
 
-  // Sincronizza tra tab
   window.addEventListener('storage', (e) => {
     if (e.key === HEARTS_KEY) {
       refreshPills();
@@ -334,6 +332,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 })();
+
+
 
 /* ============================
    4) Help overlay (popup aiuto)

@@ -749,16 +749,36 @@
 	
   </main>
   
-  <!-- MODAL: Consiglio salute/sicurezza + timer 10s -->
+  <!-- MODAL: Recupero vite / ripasso teoria -->
 	<div id="lifeTipModal" hidden>
 	  <div class="ltm-backdrop"></div>
 	  <div class="ltm-card" role="dialog" aria-modal="true" aria-labelledby="ltm-title">
+		<div class="q-image" id="qImage" aria-hidden="true"><img src="../resources/games/life_restored.png"></img></div>
 		<h3 id="ltm-title">Consiglio salute & sicurezza</h3>
+
+		<!-- Puoi tenere il testo random esistente -->
 		<p id="ltm-tip">…</p>
-		<div class="ltm-timer" aria-live="polite">⏳ <span id="ltm-count">10</span>s</div>
-		<button id="ltm-close" disabled>Chiudi</button>
+
+		<!-- Nuovo testo per il ripasso teoria -->
+		<p id="ltm-theory-text">
+		  Ti conviene anche ripassare la teoria: scegli una categoria qui sotto.
+		</p>
+
+		<!-- Pulsanti categorie teoria -->
+		<div id="ltm-categories" class="ltm-categories">
+		  <!-- Usa data-href per puntare alle pagine di teoria corrette -->
+		  <button class="ltm-category-btn" data-href="../macchine.html">Macchine</button>
+		  <button class="ltm-category-btn" data-href="../attrezzature.html">Attrezzature</button>
+	   	  <button class="ltm-category-btn" data-href="../dpi.html">DPI</button>
+		  <button class="ltm-category-btn" data-href="../fire.html">Rischio incendio</button>
+		  <button class="ltm-category-btn" data-href="../quota.html">Lavori in quota</button>
+
+		</div>
+
+		<button id="ltm-close">Chiudi</button>
 	  </div>
 	</div>
+
 
   <footer></footer>
 
@@ -771,22 +791,23 @@
 			GIOCO 1<br>
 				• Rispondi alle domande scegliendo una delle opzioni.<br>
 				• Hai un numero limitato di vite: ogni errore ne toglie una.<br>
-				• Completa almeno il 60% per sbloccare il livello successivo.<br>
+				• Completa almeno il 70% per sbloccare il livello successivo.<br>
 				• Se raggiungi il 100%, ottieni una stella bonus! ⭐ Raccoglile tutte<br>
 			</p>
 			<div class="tutorialImage""><img src="../resources/games/tutorial1.png" alt="Descrizione dell'immagine"></div>
 			<p>
+			GIOCO 2<br>
 				• ATTENTO! Potrebbe esserci anche una versione in formato immagini.<br>
 				• Se raggiungi il 100%, ottieni una stella bonus! ⭐ Raccoglile tutte<br>
 			</p>
 			<div class="tutorialImage""><img src="../resources/games/tutorial3.png" alt="Descrizione dell'immagine"></div>
-			<br>
 			<p>
-			GIOCO 2<br>
+			GIOCO 3<br>
 				• Tocca o clicca sugli errori presenti nell’immagine.<br>
 				• Ogni errore viene segnato con un’icona di avviso.<br>
-				• Trova tutti gli errori per completare il livello e per sbloccare il livello successivo.<br>
-				• Non perdi vite, ma devi armarti di ingegno e pazienza <br>
+				• Ogni volta che sbagli, perdi una vita!<br>
+				• Però se sei vicino all'errore, non perdi vite...<br>
+				• Completa almeno il 70% per sbloccare il livello successivo.<br>
 				• Se raggiungi il 100%, ottieni una stella bonus! ⭐ Raccoglile tutte<br>
 			</p>
 			<div class="tutorialImage""><img src="../resources/games/tutorial2.png" alt="Descrizione dell'immagine"></div>

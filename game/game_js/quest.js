@@ -48,6 +48,32 @@
     localStorage.setItem('pillvalueStar',  String(stars));
   }
 
+  // ====== IMMAGINE IN BASE ALLE VITE ======
+  function updateLifeImage() {
+    if (!qImage) return;
+
+    // cerca un'eventuale immagine di stato già presente
+    let lifeImg = qImage.querySelector('.life-state');
+    if (!lifeImg) {
+      lifeImg = document.createElement('img');
+      lifeImg.className = 'life-state';
+      // se vuoi, puoi aggiungere stile inline:
+      // lifeImg.style.width = '64px';
+      // lifeImg.style.display = 'block';
+      qImage.appendChild(lifeImg);
+    }
+
+    if (hearts >= 5)      lifeImg.src = "../resources/games/life_5.png";
+    else if (hearts === 4) lifeImg.src = "../resources/games/life_4.png";
+    else if (hearts === 3) lifeImg.src = "../resources/games/life_3.png";
+    else if (hearts === 2) lifeImg.src = "../resources/games/life_2.png";
+    else if (hearts === 1) lifeImg.src = "../resources/games/life_1.png";
+    else                   lifeImg.src = "../resources/games/life_0.png";
+
+    lifeImg.alt = "Stato vite: " + hearts;
+    qImage.removeAttribute('aria-hidden');
+  }
+
   // ====== PROGRESS DOTS ======
   function renderDots(){
     progressDots.innerHTML = '';
@@ -63,16 +89,21 @@
     renderDots();
     const { q, a, img, correct: correctIdx } = QUESTIONS[index];
     qText.textContent = q;
+
+    // reset contenitore immagine
     qImage.innerHTML = '';
+
+    // eventuale immagine specifica della domanda
     if(img){
       const im = document.createElement('img');
       im.src = img;
       im.alt = '';
+      im.className = 'q-main-img';
       qImage.appendChild(im);
-      qImage.removeAttribute('aria-hidden');
-    } else {
-      qImage.setAttribute('aria-hidden','true');
     }
+
+    // immagine stato vite
+    updateLifeImage();
 
     // shuffle risposte
     const shuffled = a.map((text, i) => ({ text, index: i }));
@@ -112,6 +143,8 @@
         saveHearts();
       }
       refreshPills();
+      updateLifeImage();   // ← aggiorna immagine vite dopo la perdita
+
       if(hearts===0){
         endLevel(true);
         return;
@@ -175,10 +208,28 @@
     summary.classList.remove('hidden');
 
     // === IMMAGINE WIN / LOSE / PERFECT + ANIMAZIONE ===
-	let imgSrc = "";
-	let imgAlt = "";
+    let imgSrc = "";
+    let imgAlt = "";
 
-	if (percent === 100) {
+    if (percent === 100) {
+      imgSrc = "../resources/games/perfect.png";
+      imgAlt = "Perfetto!";
+    }
+    else if (percent >= 70) {
+      imgSrc = "../resources/games/win.png";
+      imgAlt = "Hai vinto!";
+    }
+    else {
+      imgSrc = "../resources/games/lose.png";
+      imgAlt = "Hai perso";
+    }
+	
+	if (failedByHearts) {
+	  // 🔥 immagine speciale quando si arriva a zero vite
+	  imgSrc = "../resources/games/life_0.png"; 
+	  imgAlt = "Game Over – Vite finite";
+	}
+	else if (percent === 100) {
 	  imgSrc = "../resources/games/perfect.png";
 	  imgAlt = "Perfetto!";
 	}
@@ -191,11 +242,11 @@
 	  imgAlt = "Hai perso";
 	}
 
-	winLose.innerHTML = `
-	  <img src="${imgSrc}" alt="${imgAlt}"
-		   class="winlose-anim"
-		   style="width:100%; height:100%; object-fit:contain;">
-	`;
+    winLose.innerHTML = `
+      <img src="${imgSrc}" alt="${imgAlt}"
+           class="winlose-anim"
+           style="width:100%; height:100%; object-fit:contain;">
+    `;
 
     // === TESTO RISULTATO ===
     const baseText = failedByHearts
@@ -234,7 +285,7 @@
   document.getElementById('levelTitle').textContent =
     `${TOPIC} – Livello ${LEVEL_NUMBER}`;
   refreshPills();
+  updateLifeImage();   // mostra subito lo stato vite
   renderDots();
   renderQuestion();
 })();
-

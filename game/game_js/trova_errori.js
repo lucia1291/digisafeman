@@ -1,4 +1,9 @@
 (function () {
+
+  // ====== VARIABILE GLOBALE ALERT ======
+  // ★ MODIFICA ALERT
+  let alertBox = null;
+
   // ====== PARAMETRI URL (come quest.js) ======
   const params = new URLSearchParams(location.search);
   const CATEGORY = (params.get('category') || 'MACCHINARI').toUpperCase();
@@ -94,7 +99,7 @@
     }
   }
 
-  // ====== CALCOLO BOX REALE DELL'IMMAGINE (object-fit: contain) ======
+  // ====== CALCOLO BOX IMMAGINE ======
   function getImageLayout() {
     if (!imageShell || !sceneImage) return null;
 
@@ -107,7 +112,6 @@
     const containerW = shellRect.width;
     const containerH = shellRect.height;
 
-    // replica di object-fit: contain
     const scale = Math.min(containerW / naturalW, containerH / naturalH);
     const drawW = naturalW * scale;
     const drawH = naturalH * scale;
@@ -138,11 +142,10 @@
     foundGlobal++;
     e.currentTarget.classList.add('found');
 
-    // ridimensiono il pallino found in base alla dimensione reale dell'immagine
     const layout = getImageLayout();
     if (layout) {
       const base = Math.min(layout.drawW, layout.drawH);
-      const visibleDiameter = base * 0.12; // 8% del lato più corto
+      const visibleDiameter = base * 0.12;
       e.currentTarget.style.width  = visibleDiameter + 'px';
       e.currentTarget.style.height = visibleDiameter + 'px';
     }
@@ -151,7 +154,7 @@
     if (captionText) captionText.textContent = scene.errors[idx].label;
   }
 
-  // ====== POSIZIONA HOTSPOT RELATIVI ALL’IMMAGINE ======
+  // ====== POSIZIONE HOTSPOT ======
   function placeHotspotsForScene(index) {
     const scene = scenes[index];
     if (!imageShell || !sceneImage || !scene) return;
@@ -161,12 +164,10 @@
 
     const { shellRect, offsetX, offsetY, drawW, drawH } = layout;
 
-    // grandezza area cliccabile & pallino proporzionale all'immagine
     const base = Math.min(drawW, drawH);
-    const invisibleDiameter = base * 0.14; // area tap grande (invisibile)
-    const visibleDiameter   = base * 0.12; // pallino found
+    const invisibleDiameter = base * 0.14;
+    const visibleDiameter   = base * 0.12;
 
-    // pulisci hotspot precedenti
     imageShell.querySelectorAll('.hotspot').forEach(h => h.remove());
 
     scene.errors.forEach((err, i) => {
@@ -174,19 +175,15 @@
       btn.className = 'hotspot';
       btn.dataset.errorIndex = String(i);
 
-      // coordinate RELATIVE ALL’IMMAGINE (x,y in %)
       const pxLeft = offsetX + drawW * (err.x / 100);
       const pxTop  = offsetY + drawH * (err.y / 100);
 
-      // left/top relativi a imageShell
       btn.style.left = pxLeft + 'px';
       btn.style.top  = pxTop  + 'px';
 
-      // default: area cliccabile ampia ma invisibile
       btn.style.width  = invisibleDiameter + 'px';
       btn.style.height = invisibleDiameter + 'px';
 
-      // se già trovato (retry senza ricaricare pagina)
       if (foundPerScene[index].has(i)) {
         btn.classList.add('found');
         btn.style.width  = visibleDiameter + 'px';
@@ -202,7 +199,7 @@
   function loadScene (index) {
     currentScene = index;
     const scene = scenes[index];
-    if (!scene || !imageShell || !sceneImage) return;
+    if (!scene) return;
 
     if (tagTitleEl)    tagTitleEl.textContent    = scene.title;
     if (topLabelTitle) topLabelTitle.textContent = scene.title;
@@ -214,26 +211,22 @@
     if (totTopEl)      totTopEl.textContent      = String(scene.errors.length);
     if (foundTopEl)    foundTopEl.textContent    = String(foundPerScene[index].size);
 
-    sceneImage.onload = () => {
-      placeHotspotsForScene(index);
-    };
+    sceneImage.onload = () => placeHotspotsForScene(index);
 
-    // nel caso l'immagine sia già in cache
     if (sceneImage.complete && sceneImage.naturalWidth > 0) {
       placeHotspotsForScene(index);
     }
 
     sceneImage.src = scene.image;
-
     renderDots();
   }
 
-  // ====== CLICK FUORI HOTSPOT (hint + perdita vita + alert una sola volta) ======
+  // ====== CLICK FUORI HOTSPOT ======
   let warnedOnce = false;
 
   if (imageShell) {
     imageShell.addEventListener('click', function (e) {
-      // se è un hotspot, ignoriamo
+
       if (e.target.classList.contains('hotspot')) return;
 
       const layout = getImageLayout();
@@ -246,7 +239,7 @@
 
       const scene = scenes[currentScene];
       let near = false;
-      const threshold = 50; // px
+      const threshold = 50;
 
       scene.errors.forEach(err => {
         const hx = offsetX + drawW * (err.x / 100);
@@ -255,7 +248,6 @@
         if (dist < threshold) near = true;
       });
 
-      // popup "ci sei quasi" / "non è qui"
       const hint = document.createElement('div');
       hint.className = 'hint-popup';
       hint.textContent = near ? 'ci sei quasi' : 'non è qui';
@@ -265,12 +257,14 @@
 
       setTimeout(() => hint.remove(), 1200);
 
-      // perdita vita se totalmente fuori
+      // ====== ALERT + PERDITA VITA ======
       if (!near) {
+
+        // ★ MODIFICA ALERT — mostra solo 1 volta + chiudibile ovunque
         if (!warnedOnce) {
           warnedOnce = true;
 
-          const alertBox = document.createElement('div');
+          alertBox = document.createElement('div');
           alertBox.style.position = 'fixed';
           alertBox.style.top = '50%';
           alertBox.style.left = '50%';
@@ -282,6 +276,7 @@
           alertBox.style.zIndex = '9999';
           alertBox.style.fontSize = '18px';
           alertBox.style.textAlign = 'center';
+
           alertBox.innerHTML = `
             <strong>Attenzione!</strong><br>
             Cliccare nei punti sbagliati ti fa perdere vite!
@@ -300,16 +295,40 @@
 
           document.body.appendChild(alertBox);
 
+          // chiudi con pulsante
           document.getElementById('alertCloseBtn').onclick = () => {
-            alertBox.remove();
+            if (alertBox) alertBox.remove();
+            alertBox = null;
           };
+
+          // chiudi cliccando ovunque (con piccolo delay)
+          const closeOnClick = () => {
+            if (alertBox) {
+              alertBox.remove();
+              alertBox = null;
+            }
+            document.removeEventListener('click', closeOnClick);
+          };
+
+          setTimeout(() => {
+            document.addEventListener('click', closeOnClick);
+          }, 80);
         }
 
+        // perde vita
         hearts--;
         saveHearts();
         refreshPills();
 
+        // se vite finite → chiudi alert e game over
         if (hearts <= 0) {
+
+          // ★ MODIFICA ALERT — chiudi quando vite = 0
+          if (alertBox) {
+            alertBox.remove();
+            alertBox = null;
+          }
+
           endLevel(true);
         }
       }
@@ -430,7 +449,7 @@
     });
   }
 
-  // ====== RICALCOLO HOTSPOT SU RESIZE ======
+  // ====== RICALCOLO SU RESIZE ======
   window.addEventListener('resize', () => {
     placeHotspotsForScene(currentScene);
   });
