@@ -38,7 +38,7 @@ window.FIND_ERRORS_BANK = {
         ]
       },
       {
-          title: "Pericoli",
+          title: "Pericoli carrello",
           image: "../resources/games/game2/trova_carr_2.png",
           description: "Individua altri 3 errori di sicurezza.",
           errors: [
@@ -48,7 +48,7 @@ window.FIND_ERRORS_BANK = {
           ]
         },
         {
-          title: "Pericoli",
+          title: "Pericoli carrello",
           image: "../resources/games/game2/trova_carr_3.png",
           description: "Ultima schermata: trova gli ultimi 3 errori.",
           errors: [
@@ -57,11 +57,11 @@ window.FIND_ERRORS_BANK = {
             { x: 60, y: 77, label: "Usare i corretti DPI: scarpe, guanti ed elmetto" }
           ]
         }// eventuali altre schermate...
-    ]
+    ],
 	4: [
       {
         title: "Pericoli carrello",
-        image: "../resources/games/game2/trova_carr_1.png",
+        image: "../resources/games/game2/trova_carr_4.png",
         description: "Trova i 3 errori legati alla guida del carrello.",
         errors: [
           { x: 70, y: 50, label: "Usare i corretti DPI: scarpe, guanti ed elmetto" },
@@ -71,7 +71,7 @@ window.FIND_ERRORS_BANK = {
       },
       {
           title: "Pericoli",
-          image: "../resources/games/game2/trova_carr_2.png",
+          image: "../resources/games/game2/trova_carr_5.png",
           description: "Individua altri 3 errori di sicurezza.",
           errors: [
             { x: 28, y: 16, label: "Non sostate e non parcheggiate in prossimità di uscite di sicurezza" },
@@ -81,14 +81,14 @@ window.FIND_ERRORS_BANK = {
         },
         {
           title: "Pericoli",
-          image: "../resources/games/game2/trova_carr_3.png",
+          image: "../resources/games/game2/trova_carr_6.png",
           description: "Ultima schermata: trova gli ultimi 3 errori.",
           errors: [
             { x: 50, y: 15, label: "é fatto assoluto divieto di accatastamento su rampe e comunque in situazioni di pavimento e terreno in pendenza" },
             { x: 55, y: 45, label: "In prossimità di incroci, passaggi pedonali, portoni e comunque se ci sono pedoni, rallentate e segnalate la vostra presenza" },
             { x: 60, y: 77, label: "Usare i corretti DPI: scarpe, guanti ed elmetto" }
           ]
-        }// eventuali altre schermate...
+        },
     ]
   }
 }
