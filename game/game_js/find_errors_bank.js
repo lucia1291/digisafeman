@@ -26,35 +26,67 @@ window.FIND_ERRORS_BANK = {
 
   ATTREZZATURE: {
   "CARRELLO ELEVATORE": {
-    4: [
+    2: [
       {
         title: "Pericoli carrello",
-        image: "carrello1.png",
+        image: "../resources/games/game2/trova_carr_1.png",
         description: "Trova i 3 errori legati alla guida del carrello.",
         errors: [
-          { x: 20, y: 40, label: "Carico non fissato" },
-          { x: 55, y: 60, label: "Operatore senza cintura" },
-          { x: 75, y: 35, label: "Percorso non segnalato" }
+          { x: 70, y: 50, label: "Usare i corretti DPI: scarpe, guanti ed elmetto" },
+          { x: 40, y: 60, label: "è vietato utilizzare il carrello per sollevare carichi sospesi" },
+          { x: 80, y: 40, label: "è assolutamente vietato trasportare altri passeggeri" }
         ]
       },
       {
           title: "Pericoli",
-          image: "trova2.png",
+          image: "../resources/games/game2/trova_carr_2.png",
           description: "Individua altri 3 errori di sicurezza.",
           errors: [
-            { x: 25, y: 30, label: "Errore 1 schermata 2" },
-            { x: 60, y: 55, label: "Errore 2 schermata 2" },
-            { x: 75, y: 70, label: "Errore 3 schermata 2" }
+            { x: 28, y: 16, label: "Non sostate e non parcheggiate in prossimità di uscite di sicurezza" },
+            { x: 65, y: 70, label: "è vietato usare il carrello per effettuare lavori di manutenzione o qualsiasi altro lavoro in quota" },
+            { x: 80, y: 70, label: "Usare i corretti DPI: scarpe, guanti ed elmetto" }
           ]
         },
         {
           title: "Pericoli",
-          image: "trova3.png",
+          image: "../resources/games/game2/trova_carr_3.png",
           description: "Ultima schermata: trova gli ultimi 3 errori.",
           errors: [
-            { x: 30, y: 35, label: "Errore 1 schermata 3" },
-            { x: 55, y: 50, label: "Errore 2 schermata 3" },
-            { x: 70, y: 65, label: "Errore 3 schermata 3" }
+            { x: 50, y: 15, label: "é fatto assoluto divieto di accatastamento su rampe e comunque in situazioni di pavimento e terreno in pendenza" },
+            { x: 55, y: 45, label: "In prossimità di incroci, passaggi pedonali, portoni e comunque se ci sono pedoni, rallentate e segnalate la vostra presenza" },
+            { x: 60, y: 77, label: "Usare i corretti DPI: scarpe, guanti ed elmetto" }
+          ]
+        }// eventuali altre schermate...
+    ]
+	4: [
+      {
+        title: "Pericoli carrello",
+        image: "../resources/games/game2/trova_carr_1.png",
+        description: "Trova i 3 errori legati alla guida del carrello.",
+        errors: [
+          { x: 70, y: 50, label: "Usare i corretti DPI: scarpe, guanti ed elmetto" },
+          { x: 40, y: 60, label: "è vietato utilizzare il carrello per sollevare carichi sospesi" },
+          { x: 80, y: 40, label: "è assolutamente vietato trasportare altri passeggeri" }
+        ]
+      },
+      {
+          title: "Pericoli",
+          image: "../resources/games/game2/trova_carr_2.png",
+          description: "Individua altri 3 errori di sicurezza.",
+          errors: [
+            { x: 28, y: 16, label: "Non sostate e non parcheggiate in prossimità di uscite di sicurezza" },
+            { x: 65, y: 70, label: "è vietato usare il carrello per effettuare lavori di manutenzione o qualsiasi altro lavoro in quota" },
+            { x: 80, y: 70, label: "Usare i corretti DPI: scarpe, guanti ed elmetto" }
+          ]
+        },
+        {
+          title: "Pericoli",
+          image: "../resources/games/game2/trova_carr_3.png",
+          description: "Ultima schermata: trova gli ultimi 3 errori.",
+          errors: [
+            { x: 50, y: 15, label: "é fatto assoluto divieto di accatastamento su rampe e comunque in situazioni di pavimento e terreno in pendenza" },
+            { x: 55, y: 45, label: "In prossimità di incroci, passaggi pedonali, portoni e comunque se ci sono pedoni, rallentate e segnalate la vostra presenza" },
+            { x: 60, y: 77, label: "Usare i corretti DPI: scarpe, guanti ed elmetto" }
           ]
         }// eventuali altre schermate...
     ]

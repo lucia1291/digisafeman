@@ -55,3 +55,68 @@ document.addEventListener('DOMContentLoaded', function(){
 	  }
     });
 
+// --- DOTS PAGINATION (versione 100% JS, senza modifiche all'HTML) ---
+document.addEventListener("DOMContentLoaded", () => {
+
+  const vp = document.getElementById("hpages");
+  if (!vp) return;
+
+  // CREA IL CONTAINER DEI PALLINI
+  const dotsContainer = document.createElement("div");
+  dotsContainer.id = "hscroll-dots";
+  dotsContainer.style.display = "flex";
+  dotsContainer.style.justifyContent = "center";
+  dotsContainer.style.gap = "10px";
+  dotsContainer.style.margin = "10px 0 15px 0";
+
+  // LO INSERISCE AUTOMATICAMENTE PRIMA DI <main>
+  const main = document.querySelector("main.hscroll-layout");
+  main.parentNode.insertBefore(dotsContainer, main);
+
+  // CREA I PALLINI IN BASE AL NUMERO DI PAGINE
+  const pages = vp.querySelectorAll(".hpage").length;
+
+  for (let i = 0; i < pages; i++) {
+    const dot = document.createElement("div");
+    dot.className = "dot";
+    dot.style.width = "10px";
+    dot.style.height = "10px";
+    dot.style.borderRadius = "50%";
+    dot.style.background = "#bbb";
+    dot.style.transition = "background 0.3s, transform 0.3s";
+    dot.dataset.index = i;
+
+    if (i === 0) {
+      dot.style.background = "#333";
+      dot.style.transform = "scale(1.3)";
+    }
+
+    dotsContainer.appendChild(dot);
+  }
+
+  const dots = dotsContainer.querySelectorAll(".dot");
+
+  // CLICK → NAVIGAZIONE TRA LE PAGINE
+  dots.forEach(dot => {
+    dot.addEventListener("click", () => {
+      const index = parseInt(dot.dataset.index);
+      vp.scrollTo({ left: index * vp.clientWidth, behavior: "smooth" });
+    });
+  });
+
+  // SCROLL → AGGIORNA IL PALLINO ATTIVO
+  vp.addEventListener("scroll", () => {
+    const index = Math.round(vp.scrollLeft / vp.clientWidth);
+
+    dots.forEach((d, i) => {
+      if (i === index) {
+        d.style.background = "#333";
+        d.style.transform = "scale(1.3)";
+      } else {
+        d.style.background = "#bbb";
+        d.style.transform = "scale(1)";
+      }
+    });
+  });
+
+});

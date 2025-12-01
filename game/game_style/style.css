@@ -176,7 +176,7 @@
 
 .image-shell {
       position: relative;
-      height: 450px;
+     /*  height: 450px;*/
       border-radius: 14px;
       overflow: hidden;
       background: #222;

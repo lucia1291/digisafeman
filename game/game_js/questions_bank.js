@@ -349,7 +349,7 @@ const QUESTIONS_BANK = {
 		{ q:'Come si parcheggia correttamente un carrello elevatore?', a:['Con forche in alto','Con motore acceso','Con forche a terra, freno inserito e chiave rimossa'], correct:2 },
 		{ q:'Qual è la causa più frequente di ribaltamento laterale del carrello elevatore?', a:['Frenare troppo spesso','Avere le ruote sporche','Affrontare curve ad alta velocità con carico sollevato'], correct:2 },
 	  ], 
-	  2: [ 
+	  3: [ 
 	    { q:'Cosa deve fare l’operatore se percepisce vibrazioni anomale alla colonna di sollevamento?', a:['Continuare finché non aumenta','Alzare il carico per verificarlo','Fermarsi, abbassare il carico e segnalare un possibile problema ai rulli/montante '], correct:2 },
 		{ q:'Perché è importante conoscere il diagramma di portata del carrello?', a:['Per sapere come accendere il carrello elevatore','Per capire la velocità massima','Per non superare il peso massimo sollevabile '], correct:2 },
 		{ q:'Qual è la posizione corretta delle forche durante la marcia?', a:['Massima altezza','All’altezza delle ginocchia','Basse a terra e leggermente inclinate all’indietro '], correct:2 },
@@ -361,7 +361,7 @@ const QUESTIONS_BANK = {
 		{ q:'Perché un carico sollevato oltre il baricentro del carrello può causare ribaltamento in avanti?', a:['Perché aumenta la velocità','Perché riduce la visibilità','Perché sposta il baricentro oltre il punto di stabilità, facendo sollevare l’assale posteriore '], correct:2 },
 		{ q:'Qual è uno dei rischi più gravi nello sterzare con il carico sollevato?', a:['Non è comodo','Riduce la visibilità','Perdita di stabilità laterale e ribaltamento '], correct:2 },
 	  ], 
-	  3: [ 
+	  5: [ 
 	    { q:'Qual è il rischio specifico nell’attraversare rampe con superficie bagnata o oliata?', a:['Le ruote si sporcano','La rampa diventa più scivolosa','Si riduce l’aderenza e il carico può slittare o rovesciarsi '], correct:2 },
 		{ q:'Perché è vietato sollevare un carico che ostruisce completamente la visuale frontale?', a:['Perché è scomodo','Perché richiede più tempo di manovra','Perché aumenta il rischio di investimento: serve retro marcia o un assistente a terra '], correct:2 },
 		{ q:'Qual è la conseguenza di un carico distribuito male sulle forche (più peso da un lato)?', a:['Fornisce maggiore autonomia e sicurezza','Rallenta i movimenti e la guida del carrello elevatore','Instabilità laterale con rischio di ribaltamento asimmetrico '], correct:2 },
@@ -373,7 +373,7 @@ const QUESTIONS_BANK = {
 		{ q:'Cosa deve fare l’operatore quando trasporta un carico in un corridoio stretto?', a:['Sollevare il carico per vedere meglio','Aumentare la velocità','Tenere le forche basse, procedere lentamente e suonare ai punti ciechi '], correct:2 },
 		{ q:'Perché è vietato trasportare colleghi sulle forche o sul carrello?', a:['Perché rallenta il lavoro','Perché è scomodo','Perché è estremamente pericoloso '], correct:2 },
 	  ], 
-	  4: [ 
+	  6: [ 
 	    { q:'Quando un pedone attraversa un percorso in cui circolano muletti, deve:', a:['Correre','Ignorare i mezzi','Incrociare lo sguardo del carrellista e assicurarsi di essere visto '], correct:2 },
 		{ q:'Le vie di esodo devono essere:', a:['Chiuse a chiave','Usate come magazzino temporaneo','Libere e non ostruite '], correct:2 },
 		{ q:'Prima di salire su montacarichi vagoni ferroviari o camion è indispensabile:', a:['Tenere le forche alzate','Affrettami per evitare di essere troppo lento nelle manovre','oltre ad esserne autorizzati, fare attenzione che questi possano sopportare il peso totale del carrello'], correct:2 },
