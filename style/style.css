@@ -1487,6 +1487,7 @@ a .cardSearch {
 .bullets li {
 	list-style-type: disc; 
 	margin-left: 20px;
+	color: #000;
 }
 
 #image-container {
