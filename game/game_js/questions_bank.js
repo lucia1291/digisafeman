@@ -387,7 +387,7 @@ const QUESTIONS_BANK = {
 	  ], 
 	},
 'TRABATTELLO O PONTE A TORRE': {
-      1: [
+      2: [
         { q:'Che cos’è un trabattello?', a:['Una scala molto lunga','Una piattaforma rialzata per sollevare materiali','Una torre mobile su ruote utilizzata per lavorare in quota '], correct:2 },
         { q:'A cosa serve il trabattello?', a:['A immagazzinare materiali','A lavorare in quota in modo stabile su una struttura mobile ','A trasportare persone in cantiere'], correct:1 },
 		{ q:'Prima dell’uso, cosa va controllato?', a:['Il colore della vernice','Che le ruote siano gonfie','Che il trabattello sia montato correttamente, in bolla e completo di parapetti '], correct:2 },
@@ -399,7 +399,7 @@ const QUESTIONS_BANK = {
 		{ q:'Su quale superficie può essere usato un trabattello?', a:['Su superfici lisce e piane, stabili e solide ','Su terreno sconnesso','Su pedane sospese'], correct:0 },
 		{ q:'È possibile salire sul trabattello usando le strutture laterali?', a:['Sì, se si è in equilibrio','Sì, se non ci sono ispettori','No, bisogna usare la scala interna o dedicata all’accesso '], correct:2 },
       ],
-	  2: [
+	  3: [
         { q:'Perché è fondamentale installare gli stabilizzatori (outrigger) quando previsti?', a:['Per rendere più bello il trabattello','Per aumentare l’altezza','Per aumentare la base di appoggio e migliorare la stabilità contro il ribaltamento '], correct:2 },
         { q:'Prima di salire sul trabattello, cosa bisogna verificare?', a:['Che ci siano abbastanza attrezzi sul piano','Che il vento sia minimo','Che tutti i blocchi delle ruote siano inseriti e chiusi '], correct:2 },
 		{ q:'Qual è il modo corretto per accedere al piano di lavoro?', a:['Arrampicandosi sulle strutture esterne','Usando una corda','Utilizzando la scala interna o incorporata prevista dal costruttore '], correct:2 },
@@ -411,7 +411,7 @@ const QUESTIONS_BANK = {
 		{ q:'In quali situazioni non è possibile usare un trabattello?', a:['Su superfici lisce','In ambienti caldi','Su terreni sconnessi, in pendenza o non portanti'], correct:2 },
 		{ q:'Perché è importante non sovraccaricare il piano di lavoro del trabattello?', a:['Per evitare disordine','Per ridurre il peso durante lo spostamento','Perché il carico eccessivo può compromettere la stabilità e superare la portata della struttura '], correct:2 },
       ],
-	  3: [
+	  4: [
         { q:'Perché è pericoloso montare il trabattello senza seguire l’ordine delle sequenze previsto dal fabbricante?', a:['Perché si impiega più tempo','Perché si consuma più materiale','Perché si rischia di creare punti instabili nella struttura che possono cedere durante l’uso '], correct:2 },
         { q:'Qual è il rischio principale se il trabattello viene montato con i telai non completamente innestati?', a:['Rumore durante lo spostamento','Vibrazioni sul piano','Cedimento dei collegamenti e possibile collasso della torre '], correct:2 },
 		{ q:'Perché è vietato utilizzare tavole di legno o materiali improvvisati come piano di lavoro?', a:['Perché si rovinano','Perché non sono estetici','Perché non sono certificati e possono rompersi sotto carico '], correct:2 },
@@ -437,7 +437,7 @@ const QUESTIONS_BANK = {
 		{ q:'Quando è necessario far trattenere la scala da un altra persona?', a:['Quando è molto leggera e potrebbe muoversi ','Sempre','Mai'], correct:0 },
 		{ q:'È consentito spostare la scala mentre una persona è sopra?', a:['Sì, se il pavimento è liscio','Sì, se la scala è corta','Assolutamente NO'], correct:2 },
       ],
-	  2: [
+	  3: [
        { q:'Quando è obbligatorio fissare la scala in alto o in basso?', a:['Solo se è nuova','Solo se è corta','Quando esiste il rischio che la scala possa scivolare o spostarsi durante l’uso '], correct:2 },
         { q:'Una scala metallica non deve essere usata …', a:['In zone sufficientemente illuminate ','Su pavimenti lisci','vicino a linee elettriche '], correct:2 },
 		{ q:'Qual è il comportamento corretto quando si deve trasportare del materiale salendo su una scala?', a:['Tenere il materiale in una mano','Trasportarlo in tasca','Usare una cintura porta-attrezzi o sollevarlo con una corda '], correct:2 },
@@ -449,7 +449,7 @@ const QUESTIONS_BANK = {
 		{ q:'Perché è pericoloso salire sulla scala con attrezzi in mano?', a:['Perché rallenta il lavoro','Perché è faticoso','Perché si perde uno dei tre punti di contatto, aumentando il rischio di caduta '], correct:2 },
 		{ q:'Cosa indica un piedino di gomma della scala consumato o mancante?', a:['Che la scala pesa meno','Che si può usare solo all’interno','Che la scala non garantisce aderenza e va messa fuori servizio '], correct:2 },
       ],
-	  3: [
+	  4: [
         { q:'Qual è uno dei rischi maggiori nell’appoggiare la scala su superfici scivolose o inclinate?', a:['Che la scala si sporchi','Che diventi più rumorosa','Che la base perda aderenza causando una caduta improvvisa '], correct:2 },
         { q:'Perché una scala deve sporgere almeno 1 metro oltre il piano di sbarco?', a:['Per facilitare la discesa e fornire un appiglio stabile ','Per rispettare una regola estetica','Per proteggere dal vento'], correct:0 },
 		{ q:'Perché è pericoloso spostare lateralmente il proprio corpo mentre si è sulla scala?', a:['Perché fa oscillare la scala','Perché il baricentro si sposta oltre i montanti causando possibile ribaltamento ','Perché può fare rumore'], correct:1 },
@@ -462,7 +462,7 @@ const QUESTIONS_BANK = {
 		{ q:'Perché è vietato utilizzare una scala come ponte tra due superfici?', a:['Perché è difficile da posizionare','Perché è un’idea poco estetica','Perché le scale non sono progettate per carichi orizzontali e possono rompersi '], correct:2 },
 		{ q:'Qual è un errore comune nell’utilizzo delle scale doppie (autoportanti)?', a:['Aprirle completamente','Bloccare il tirante centrale','Usarle chiuse come scale appoggiate, riducendo la stabilità '], correct:2 },
       ],
-	  4: [
+	  5: [
         { q:'Qual è il comportamento scorretto più comune sulle scale portatili in officina o cantiere?', a:['Salire lentamente','Indossare scarpe antiscivolo','Sporgersi lateralmente per raggiungere punti oltre i montanti '], correct:2 },
         { q:'Qual è la causa più frequente di infortunio nell’uso delle scale portatili?', a:['Difetti di fabbrica','Il colore della scala','La perdita di equilibrio dovuta a spostamenti laterali del corpo '], correct:2 },
 		{ q:'Cosa NON deve essere fatto con una scala telescopica o allungabile?', a:['Bloccare i piedini','Controllare le guide','Lubrificare i montanti rendendoli scivolosi e incontrollabili '], correct:2 },
@@ -489,7 +489,7 @@ const QUESTIONS_BANK = {
         { q: 'È corretto lasciare un carico sospeso e allontanarsi?', a:['Sì, se il paranco è nuovo','No, è sempre vietato e pericoloso ','Sì, se non c’è vento'], correct:1 },
 		{ q: 'Prima del sollevamento, quale controllo è fondamentale?', a:['Verificare che la catena sia leggermente arrugginita','Controllare che il carico sia centrato e bilanciato correttamente ','Controllare che il gancio sia colorato'], correct:1 },
       ],
-	  2: [
+	  3: [
         { q: 'Perché il paranco non deve mai essere usato a strappo?', a:['Perché consuma il pavimento','Perché rischia di far saltare la catena o causare oscillazioni pericolose ','Perché rallenta il lavoro'], correct:1 },
         { q: 'In un paranco elettrico, cosa indica un rumore anomalo durante il sollevamento?', a:['Che il carico è leggerissimo','Che la macchina lavora troppo veloce','Un possibile difetto meccanico da segnalare immediatamente '], correct:2 },
         { q: 'Qual è la posizione corretta dell’operatore durante l’uso?', a:['Davanti al carico in movimento','Sotto il carico','Lateralmente e fuori dalla traiettoria del carico '], correct:2 },
@@ -501,7 +501,7 @@ const QUESTIONS_BANK = {
         { q: 'Qual è il rischio principale quando la catena del paranco presenta anche una sola maglia deformata?', a:['Rumore maggiore','Aumento della velocità','Possibile rottura in fase di sollevamento con caduta improvvisa del carico '], correct:2 },
         { q: 'Qual è un segnale che indica un grave problema nel paranco elettrico?', a:['Lieve odore di polvere','Il motore si surriscalda rapidamente anche con carichi leggeri ','Il cavo è leggermente sporco'], correct:1 },
       ],
-	  3: [
+	  4: [
        { q: 'Perché è vietato trascinare carichi con il paranco invece di sollevarli verticalmente?', a:['Perché consuma la catena','Perché può inclinare il motore','Perché si crea uno sforzo laterale sul gancio e sulle pulegge con rischio di cedimento '], correct:2 },
         { q: 'Quando si deve interrompere immediatamente un’operazione di sollevamento?', a:['Se il carico è poco visibile','Se il carico oscilla eccessivamente o ruota in modo incontrollato ','Se il carico è leggero'], correct:1 },
         { q: 'Perché è pericoloso usare il paranco con la catena attorcigliata?', a:['Rende il lavoro più lento','Pesa di più','Aumenta lo sforzo su maglie e pulegge, favorendo rotture improvvise '], correct:2 },
@@ -569,7 +569,7 @@ const QUESTIONS_BANK = {
 		{ q:'Perché non si deve mai toccare linee elettriche con il braccio o il cestello?', a:['Perché potrebbero interferire con i sistemi di sensori della PLE','Perché potrebbero causare deviazioni impreviste nei movimenti della macchina','Per rischio immediato di elettrocuzione, anche senza contatto diretto '], correct:2 },
 		{ q:'Qual è il rischio particolare quando si solleva più di un operatore nel cestello?', a:['Possibili difficoltà di coordinazione tra gli operatori','Minor spazio disponibile per le attrezzature','Aumento del carico e rischio di superare la portata massima strutturale ammessa'], correct:2 },
 	  ], 
-	  3: [ 
+	  4: [ 
 	    { q:'Perché è sbagliato muovere la PLE senza aver prima abbassato completamente il braccio?', a:['Perché consuma più corrente','Perché rallenta la velocità','Perché aumenta il rischio di ribaltamento e di urto con ostacoli alti'], correct:2 }, 
 		{ q:'Il pericolo principale nelle PLE telescopiche durante l’estensione massima del braccio è:', a:['Perdere visibilità','Avere meno spazio in cabina','La diminuzione della stabilità a causa del forte sbraccio'], correct:2 },
 		{ q:'Perché è pericoloso usare la PLE su superfici con dislivelli non visibili?', a:['Perché può provocare nausea agli operatori','Perché rallenta la marcia','Perché può provocare inclinazioni improvvise e perdita di stabilità'], correct:2 },
