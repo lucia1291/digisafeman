@@ -186,26 +186,36 @@ window.FIND_ERRORS_BANK = {
   "PLE": {
     3: [
       {
-        title: "Pericoli PLE",
+        title: "Pericoli paranchi",
         image: "../resources/games/game2/trova_ple_1.png",
         description: "Trova i 3 errori legati all'uso della PLE.",
         errors: [
-          { x: 60, y: 30, label: "Assenza del cavo di sicurezza dell'imbrago." },
-          { x: 55, y: 60, label: "Uso scorretta della PLE" }
+          { x: 50, y: 30, label: "Assenza del cavo di sicurezza dell'imbrago" },
+          { x: 50, y: 60, label: "Uso scorretta della PLE" }
         ]
       },
       {
-          title: "Pericoli PLE",
+          title: "Pericoli paranchi",
           image: "../resources/games/game2/trova_ple_2.png",
-          description: "Ultima schermata: Trova i 3 errori legati all'uso la PLE.",
+          description: "Trova i 3 errori legati all'uso della PLE.",
           errors: [
-            { x: 60, y: 16, label: "Rischio di sbilanciamento laterale" },
-            { x: 56, y: 48, label: "è vietato mettere il piede sul guardacorpo" },
-            { x: 42, y: 65, label: "Calzature non professionali" }
+            { x: 60, y: 20, label: "Prestare attenzione alla caduta accidentale di oggetti metallici" },
+            { x: 65, y: 74, label: "Assenza del corretto utilizzo dell'impragatura come DPI" }
           ]
-        }// eventuali altre schermate...
-    ]
+        },
+	  {
+          title: "Pericoli paranchi",
+          image: "../resources/games/game2/trova_ple_3.png",
+          description: "Trova i 3 errori legati all'uso della PLE.",
+          errors: [
+            { x: 60, y: 20, label: "Prestare attenzione alla caduta accidentale di oggetti metallici" },
+            { x: 65, y: 74, label: "Assenza del corretto utilizzo dell'impragatura come DPI" }
+          ]
+        },
+    ],
   },
+  
+  
 }
 
   // Puoi aggiungere DPI, RISCHIO INCENDIO, ecc. allo stesso modo

@@ -38,7 +38,7 @@
  <!-- MAIN PAGE COMPONENTS------------------------------------------------------------------------------------!>
  
   <main>
-    <section class="profile-page">
+    <section class="profile-page" data-breadcrumb="pagina personale">
 
       <!-- riga “Ciao! scrivi qui” -->
       <p class="profile-greeting">
@@ -85,11 +85,51 @@
 
     </section>
 	
+	<!-- PANORAMICA------------------------------------------------------------------------------------!>
+	
+	<div id="statusTraining" 
+		style="	position: relative; 
+				padding: 16px; 
+				background-color: green; 
+				color: white; 
+				border: none; 
+				border-radius: 8px; 
+				cursor: pointer; 
+				font-weight: bold;
+				box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+				text-align: center;"
+	>
+	PANORAMICA status formazione: 
+	<span class="statusTrainingEsito"> COMPLETO </span>
+	</div>
+	
+	<div id="statusTrainingList" 
+		style="	position: relative; 
+				padding: 16px; 
+				margin-bottom: 48px;
+				background-color: #fff; 
+				color: #000; 
+				border: none; 
+				border-radius: 8px; 
+				cursor: pointer; 
+				font-weight: bold;
+				box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+				text-align: left;"
+	>
+	<span class="TrainingList"> 
+		nessuno
+	</span>
+	
+	</div>
+	
+	<!-- BOTTOM RESET------------------------------------------------------------------------------------!>
+	
 														<button 
 														  onclick="resetProgress()" 
 														  style="
 															position: relative; 
 															padding: 16px; 
+															margin-bottom: 150px;
 															background-color: #ff5555; 
 															color: white; 
 															border: none; 
