@@ -24,6 +24,42 @@
 <link href="https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
 
 
+<style>
+  #infoStatus {
+    display: none;
+  }
+
+  #infoStatus.open {
+    display: block;
+  }
+  
+  .info-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .dot.green {
+    background-color: green;
+  }
+
+  .dot.orange {
+    background-color: orange;
+  }
+
+  .dot.red {
+    background-color: red;
+  }
+</style>
+
 </head>
 
 <body>
@@ -99,8 +135,26 @@
 				box-shadow: 0 2px 5px rgba(0,0,0,0.3);
 				text-align: center;"
 	>
-	PANORAMICA status formazione: 
-	<span class="statusTrainingEsito"> COMPLETO </span>
+		PANORAMICA status formazione: 
+		<span class="statusTrainingEsito"> COMPLETO </span><br>
+		<h5 style=" font-size:14px; font-weight:300; padding-top: 16px"> clicca per dettagli</h5>
+	</div>
+	
+	<div id="infoStatus" style="padding: 16px">
+		<div class="info-row">
+			<span class="dot green"></span>
+			<span>0-1 anno: COMPLETO</span>
+		</div>
+
+		<div class="info-row">
+			<span class="dot orange"></span>
+			<span>1-3 anni: PARZIALE</span>
+		</div>
+
+		<div class="info-row">
+			<span class="dot red"></span>
+			<span>3+ anni: NECESSARIO AGGIORNAMENTO</span>
+		</div>
 	</div>
 	
 	<div id="statusTrainingList" 
@@ -114,13 +168,24 @@
 				cursor: pointer; 
 				font-weight: bold;
 				box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-				text-align: left;"
-	>
-	<span class="TrainingList"> 
-		nessuno
-	</span>
+				text-align: left;">
+		<span class="TrainingList"> 
+			nessuno
+		</span>
 	
 	</div>
+	
+	<script>
+	  document.addEventListener("DOMContentLoaded", function () {
+		const statusTraining = document.getElementById("statusTraining");
+		const infoStatus = document.getElementById("infoStatus");
+
+		statusTraining.addEventListener("click", function () {
+		  infoStatus.classList.toggle("open");
+		});
+	  });
+	</script>
+
 	
 	<!-- BOTTOM RESET------------------------------------------------------------------------------------!>
 	
