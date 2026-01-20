@@ -8,7 +8,7 @@
     "_attrezzature": { label: "attrezzature", href: "attrezzature.html" },
     "_dpi":          { label: "dpi", href: "dpi.html" },
 	"_fire": { label: "incendi", href: "fire.html" },
-	//"_attrezzature": { label: "in quota", href: "quota.html" },
+	"_dlg": { label: "dlg", href: "dlg.html" },
 	// aggiungi qui altre sezioni se vuoi:
   };
 
