@@ -2250,4 +2250,9 @@ ul li:last-child #textDescription {
    font-size: 14px; color: #fff; font-weight: 600}
   
   
-  
+/* BLOCCA IN CASO DI LOGOUT/ NESSUN LOGIN ------*/
+.disabled-link {
+  opacity: 0.4;
+  pointer-events: none;
+  cursor: not-allowed;
+}

@@ -87,14 +87,14 @@
                   <h2>cerca</h2>
                 </a>
               </li>
-              <li>
-				<a href="login.html">
+              <li id="loginLogoutItem">
+				  <a href="login.html" id="loginLogoutLink">
 					<div id="menuIcon">
 					  <img src="resources/icons/log.svg" alt="Login">
 					</div>
-					<h2>login</h2>
-				</a>
-              </li>
+					<h2 id="loginLogoutText">login</h2>
+				  </a>
+				</li>
             </ul>
           </div>
 
@@ -139,5 +139,87 @@
   document.addEventListener("DOMContentLoaded", () => {
     buildHeader();
     absolutizeHeaderAssets();
+	setupLoginLogout(); // 
+	 lockMenuIfLoggedOut();
   });
+  
+  function setupLoginLogout() {
+  const user = localStorage.getItem("dsmUser");
+
+  const text = document.getElementById("loginLogoutText");
+  const link = document.getElementById("loginLogoutLink");
+
+  if (!text || !link) return;
+
+  if (user) {
+    // 👉 UTENTE LOGGATO
+    text.textContent = "logout";
+    link.href = "#";
+
+    link.onclick = function (e) {
+      e.preventDefault();
+      localStorage.removeItem("dsmUser");
+      localStorage.removeItem("selectedAvatarSrc");
+      localStorage.removeItem("digisafe_user_id");
+
+      window.location.href = "login.html";
+    };
+  } else {
+    // 👉 UTENTE NON LOGGATO
+    text.textContent = "login";
+    link.href = "login.html";
+    link.onclick = null;
+  }
+}
+
+
+function lockMenuIfLoggedOut() {
+  const isLogged = !!localStorage.getItem("dsmUser");
+
+  if (isLogged) return;
+
+  // tutti i link del menu
+  const menuLinks = document.querySelectorAll("#menuButton a");
+
+  menuLinks.forEach(link => {
+    const href = link.getAttribute("href");
+
+    if (
+      href.includes("paginaPersonale") ||
+      href.includes("game")
+    ) {
+      link.classList.add("disabled-link");
+      link.removeAttribute("href");
+
+      link.onclick = function (e) {
+        e.preventDefault();
+        alert("Devi effettuare il login per accedere a questa sezione");
+      };
+    }
+  });
+}
+
+/* ================== BLOCCO LINK HOME SE LOGOUT ================== */
+
+(function lockHomeLinksIfLoggedOut() {
+  const isLogged = !!localStorage.getItem("dsmUser");
+  if (isLogged) return;
+
+  // link da bloccare nella home
+  const blockedLinks = document.querySelectorAll(
+    'a[href*="paginaPersonale"], a[href*="game"]'
+  );
+
+  blockedLinks.forEach(link => {
+    link.classList.add("disabled-link");
+    link.removeAttribute("href");
+
+    link.addEventListener("click", function (e) {
+      e.preventDefault();
+      alert("Accedi o registrati per utilizzare questa funzione");
+    });
+  });
+})();
+
+
 })();
