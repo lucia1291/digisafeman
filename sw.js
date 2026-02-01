@@ -13,8 +13,8 @@ const ASSETS = [
   "/digisafeman/js/bottomnav.js",
   "/digisafeman/js/breadcrumb.js",
 
-  "/digisafeman/icons/icon-192.png",
-  "/digisafeman/icons/icon-512.png"
+  "/digisafeman/resources/icons/icon-192.png",
+  "/digisafeman/resources/icons/icon-512.png"
 ];
 
 self.addEventListener("install", (event) => {
