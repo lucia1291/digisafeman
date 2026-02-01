@@ -107,17 +107,17 @@
         <div class="profile-divider"></div>
 
         <div class="profile-field">
-          <span class="profile-field-label">E-mail:</span>
+          <span class="profile-field-label">Cognome</span>
           <span class="profile-field-value" id="profileEmail">scrivi qui</span>
         </div>
         <div class="profile-divider"></div>
 
-        <div class="profile-field">
+       <!--  <div class="profile-field">
           <span class="profile-field-label">Password:</span>
           <span class="profile-field-value" id="profilePassword">scrivi qui</span>
         </div>
         <div class="profile-divider"></div>
-      </section>
+      </section>-->
 
     </section>
 	
@@ -216,7 +216,7 @@
 															  </button>
 															</div>
 
-															<p style="color:#fff">Vuoi davvero cancellare tutti i progressi (stelle, cuori, livelli)?</p>
+															<p style="color:#fff">Vuoi davvero cancellare tutti i progressi (stelle, cuori, livelli, pagine dei preferiti)?</p>
 
 															<div style="margin-top: 20px; display: flex; gap: 10px; justify-content: flex-end;">
 															  <button type="button"
@@ -269,11 +269,29 @@
 														  }
 
 														  function confirmResetProgress() {
-															localStorage.clear();
-															closeResetOverlay();
-															// se vuoi solo ricaricare:
-															location.reload();
-														  }
+															//  1) chiavi da PROTEGGERE (registrazione)
+																const PRESERVE_KEYS = [
+																  "digisafe_user_id",
+																  "dsmUser",
+																  "selectedAvatarSrc"
+																];
+
+																// 2) raccogli tutte le altre chiavi
+																const keysToRemove = [];
+
+																for (let i = 0; i < localStorage.length; i++) {
+																  const key = localStorage.key(i);
+																  if (!PRESERVE_KEYS.includes(key)) {
+																	keysToRemove.push(key);
+																  }
+																}
+
+																// 3) rimuovi solo quelle NON protette
+																keysToRemove.forEach(key => localStorage.removeItem(key));
+
+																closeResetOverlay();
+																location.reload();
+																  }
 														</script>
   </main>
 
