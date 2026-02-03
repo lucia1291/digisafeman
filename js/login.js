@@ -5,6 +5,41 @@ document.addEventListener("DOMContentLoaded", function () {
   var LS_USER = "dsmUser";
   var LS_AVATAR = "selectedAvatarSrc";
 
+  /* ================== GOOGLE SHEET / APPS SCRIPT WEB APP ================== */
+  // Incolla qui l'URL del deploy Apps Script (Web App)
+  // Esempio: https://script.google.com/macros/s/XXXXXXXXXXXX/exec
+  var WEB_APP_URL = "INCOLLA_QUI_L_URL_DELLA_WEB_APP";
+
+  /**
+   * Sincronizza l'utente su Google Sheet (via Apps Script Web App).
+   * Non blocca il flusso: se fallisce, continua comunque.
+   */
+  function syncUserToSheet(userData) {
+    if (!WEB_APP_URL || WEB_APP_URL.indexOf("http") !== 0) {
+      // URL non impostato: non fare nulla
+      return Promise.resolve(null);
+    }
+
+    return fetch(WEB_APP_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(userData)
+    })
+      .then(function (res) {
+        // Apps Script può rispondere JSON; se non lo è, gestiamo comunque
+        return res.json().catch(function () { return null; });
+      })
+      .then(function (out) {
+        // utile in debug
+        // console.log("Sheet sync:", out);
+        return out;
+      })
+      .catch(function (err) {
+        console.warn("Impossibile sincronizzare su Google Sheet", err);
+        return null;
+      });
+  }
+
   function getOrCreateUserId() {
     var id = null;
     try {
@@ -195,7 +230,13 @@ document.addEventListener("DOMContentLoaded", function () {
         avatar: avatarSrc
       };
 
+      // 1) Salva localmente (come prima)
       safeSet(LS_USER, JSON.stringify(userData));
+
+      // 2) Sincronizza sul Google Sheet (non blocca il redirect)
+      // Se vuoi essere ancora più "safe", puoi fare "fire and forget"
+      // senza aspettare: syncUserToSheet(userData);
+      syncUserToSheet(userData);
 
       // chiudi overlay e vai alla home (o pagina personale)
       closeOverlay(registerOverlay);
@@ -247,6 +288,9 @@ document.addEventListener("DOMContentLoaded", function () {
               var userObj = JSON.parse(storedUserStr);
               userObj.avatar = newSrc;
               safeSet(LS_USER, JSON.stringify(userObj));
+
+              // opzionale: sincronizza anche cambio avatar sul foglio
+              syncUserToSheet(userObj);
             }
           } catch (err2) {
             console.error("Impossibile aggiornare l'avatar dell'utente", err2);
@@ -293,27 +337,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // testo nella pagina personale (se presente)
     if (user) {
-		var greetSpan = document.getElementById("profileGreeting");
-		var nameSpan  = document.getElementById("profileName");
-		var lastNameSpan = document.getElementById("profileEmail"); // nel tuo HTML questo è "Cognome"
+      var greetSpan = document.getElementById("profileGreeting");
+      var nameSpan  = document.getElementById("profileName");
+      var lastNameSpan = document.getElementById("profileEmail"); // nel tuo HTML questo è "Cognome"
 
-		if (greetSpan && user.fullName) {
-		  greetSpan.textContent = user.fullName;     // Ciao! Nome Cognome
-		}
+      if (greetSpan && user.fullName) {
+        greetSpan.textContent = user.fullName;     // Ciao! Nome Cognome
+      }
 
-		if (nameSpan && user.firstName) {
-		  nameSpan.textContent = user.firstName;     // Nome: solo Nome
-		}
+      if (nameSpan && user.firstName) {
+        nameSpan.textContent = user.firstName;     // Nome: solo Nome
+      }
 
-		if (lastNameSpan && user.lastName) {
-		  lastNameSpan.textContent = user.lastName;  // Cognome: solo Cognome
-		}
+      if (lastNameSpan && user.lastName) {
+        lastNameSpan.textContent = user.lastName;  // Cognome: solo Cognome
+      }
     }
   } catch (err3) {
     console.error("Impossibile applicare i dati salvati", err3);
   }
-
-
-
 
 });
