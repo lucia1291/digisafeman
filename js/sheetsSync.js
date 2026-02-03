@@ -6,7 +6,7 @@
 */
 
 (function () {
-  const ENDPOINT = "https://script.google.com/macros/s/AKfycbyYIuBuKCd_sxYBRGe3beTF5F2694D2I-Tw5lpTI1gc9ueSLl5Mr1QvDkirTNH5NG6F/exec";
+  const ENDPOINT = "https://script.google.com/macros/s/AKfycbyVogonXvvNnD_f3llbjs7VEw9eqm7_Nyl-PFQDNFAjrzvjJXL-jHdGKOFgIaOJcMJT/exec";
   const API_KEY = "prova";
 
   // Chiavi già usate dal tuo sito
