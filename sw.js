@@ -1,8 +1,9 @@
-const CACHE_NAME = "digisafeman-v3";
+const CACHE_NAME = "digisafeman-v4";
 const ASSETS = [
   "/digisafeman/",
   "/digisafeman/index.html",
   "/digisafeman/manifest.webmanifest",
+  "/digisafeman/js/sheetsSync.js",
 
   "/digisafeman/style/style.css",
   "/digisafeman/style/fontstyle.css",
