@@ -8,36 +8,38 @@ document.addEventListener("DOMContentLoaded", function () {
   /* ================== GOOGLE SHEET / APPS SCRIPT WEB APP ================== */
   // Incolla qui l'URL del deploy Apps Script (Web App)
   // Esempio: https://script.google.com/macros/s/XXXXXXXXXXXX/exec
-  var WEB_APP_URL = "INCOLLA_QUI_L_URL_DELLA_WEB_APP";
+  var WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzSILTYmxPeLs63VsJ1Qyp_7DLcoTS3xEiINMXJex_bpH7CPFBymSTXI7anBE5gGPk/exec";
 
   /**
    * Sincronizza l'utente su Google Sheet (via Apps Script Web App).
    * Non blocca il flusso: se fallisce, continua comunque.
    */
   function syncUserToSheet(userData) {
-    if (!WEB_APP_URL || WEB_APP_URL.indexOf("http") !== 0) {
-      // URL non impostato: non fare nulla
-      return Promise.resolve(null);
-    }
+		function syncUserToSheet(userData) {
+	  if (!WEB_APP_URL || WEB_APP_URL.indexOf("http") !== 0) {
+		return Promise.resolve(null);
+	  }
 
-    return fetch(WEB_APP_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(userData)
-    })
-      .then(function (res) {
-        // Apps Script può rispondere JSON; se non lo è, gestiamo comunque
-        return res.json().catch(function () { return null; });
-      })
-      .then(function (out) {
-        // utile in debug
-        // console.log("Sheet sync:", out);
-        return out;
-      })
-      .catch(function (err) {
-        console.warn("Impossibile sincronizzare su Google Sheet", err);
-        return null;
-      });
+	  return fetch(WEB_APP_URL, {
+		method: "POST",
+		// IMPORTANTISSIMO: evita spesso la preflight CORS
+		headers: { "Content-Type": "text/plain;charset=utf-8" },
+		body: JSON.stringify(userData)
+	  })
+		.then(function (res) {
+		  // Se riesci a leggere JSON bene, altrimenti ignora
+		  return res.json().catch(function () { return null; });
+		})
+		.then(function (out) {
+		  // console.log("Sheet sync:", out);
+		  return out;
+		})
+		.catch(function (err) {
+		  console.warn("Impossibile sincronizzare su Google Sheet", err);
+		  return null;
+		});
+	}
+
   }
 
   function getOrCreateUserId() {
