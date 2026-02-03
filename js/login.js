@@ -196,6 +196,13 @@ document.addEventListener("DOMContentLoaded", function () {
       };
 
       safeSet(LS_USER, JSON.stringify(userData));
+	  
+	  // Salva anche su Google Sheet (best-effort)
+		if (window.DSM_DB && typeof window.DSM_DB.savePseudoRegistration === "function") {
+		  window.DSM_DB.savePseudoRegistration(userData).then((res) => {
+			// se vuoi, puoi loggare: console.log("DB result:", res);
+		  });
+		}
 
       // chiudi overlay e vai alla home (o pagina personale)
       closeOverlay(registerOverlay);
