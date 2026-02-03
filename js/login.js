@@ -15,30 +15,26 @@ document.addEventListener("DOMContentLoaded", function () {
    * Non blocca il flusso: se fallisce, continua comunque.
    */
   function syncUserToSheet(userData) {
-		function syncUserToSheet(userData) {
-	  if (!WEB_APP_URL || WEB_APP_URL.indexOf("http") !== 0) {
-		return Promise.resolve(null);
-	  }
+		if (!WEB_APP_URL || WEB_APP_URL.indexOf("http") !== 0) {
+			return Promise.resolve(null);
+		  }
 
-	  return fetch(WEB_APP_URL, {
-		method: "POST",
-		// IMPORTANTISSIMO: evita spesso la preflight CORS
-		headers: { "Content-Type": "text/plain;charset=utf-8" },
-		body: JSON.stringify(userData)
-	  })
-		.then(function (res) {
-		  // Se riesci a leggere JSON bene, altrimenti ignora
-		  return res.json().catch(function () { return null; });
-		})
-		.then(function (out) {
-		  // console.log("Sheet sync:", out);
-		  return out;
-		})
-		.catch(function (err) {
-		  console.warn("Impossibile sincronizzare su Google Sheet", err);
-		  return null;
-		});
-	}
+		  return fetch(WEB_APP_URL, {
+			method: "POST",
+			headers: { "Content-Type": "text/plain;charset=utf-8" },
+			body: JSON.stringify(userData)
+		  })
+			.then(function (res) {
+			  return res.json().catch(function () { return null; });
+			})
+			.then(function (out) {
+			  console.log("Sheet sync:", out); // lascialo per debug
+			  return out;
+			})
+			.catch(function (err) {
+			  console.warn("Impossibile sincronizzare su Google Sheet", err);
+			  return null;
+			});
 
   }
 
