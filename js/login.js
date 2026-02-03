@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
   /* ================== GOOGLE SHEET / APPS SCRIPT WEB APP ================== */
   // Incolla qui l'URL del deploy Apps Script (Web App)
   // Esempio: https://script.google.com/macros/s/XXXXXXXXXXXX/exec
-  var WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzSILTYmxPeLs63VsJ1Qyp_7DLcoTS3xEiINMXJex_bpH7CPFBymSTXI7anBE5gGPk/exec";
+  var WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxq_GdODkC-AJwLHSlbxYCNvuWDkWvL2FgERt7u1KM/dev";
 
   /**
    * Sincronizza l'utente su Google Sheet (via Apps Script Web App).
