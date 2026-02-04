@@ -354,27 +354,29 @@ document.addEventListener("DOMContentLoaded", function () {
     console.error("Impossibile applicare i dati salvati", err3);
   }
 
-							// === MINI-TOOLS ADMIN (per ora via Console) ===
-							// Visualizza DB: DSM_getUsersDb()
-							// Aggiungi/aggiorna data a un userId: DSM_setAdminDate("id", "2026-02-04")
-							window.DSM_getUsersDb = function () {
-							  return readDb();
-							};
-
-							window.DSM_setAdminDate = function (userId, dateStr) {
-							  if (!userId) return false;
-
-							  var db = readDb();
-							  for (var i = 0; i < db.length; i++) {
-								if (db[i] && db[i].userId === userId) {
-								  db[i].adminDate = dateStr || null;
-								  writeDb(db);
-								  return true;
-								}
-							  }
-							  return false;
-							};
-
-
-
 });
+
+// === MINI-TOOLS ADMIN (GLOBALI) ===
+window.DSM_getUsersDb = function () {
+  try {
+    var raw = localStorage.getItem("dsmUsersDb");
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    return [];
+  }
+};
+
+window.DSM_setAdminDate = function (userId, dateStr) {
+  if (!userId) return false;
+
+  var db = DSM_getUsersDb();
+  for (var i = 0; i < db.length; i++) {
+    if (db[i] && db[i].userId === userId) {
+      db[i].adminDate = dateStr || null;
+      localStorage.setItem("dsmUsersDb", JSON.stringify(db));
+      return true;
+    }
+  }
+  return false;
+};
+
