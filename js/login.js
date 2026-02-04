@@ -197,11 +197,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
       safeSet(LS_USER, JSON.stringify(userData));
 	  
+	  saveUserToSheet(userData);
+	  
       // chiudi overlay e vai alla home (o pagina personale)
       closeOverlay(registerOverlay);
       window.location.href = "index.html"; // oppure "paginaPersonale.html"
     });
   }
+  
+  
+  function saveUserToSheet(userData) {
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxqVYjIw3BotVADlj6UmvzKgLtVtwObgXAkuXWAtAvOIHmmF5T46a4DGKWWycFiDQXa/exec";
+
+  // invio "fire an:contentReference[oaicite:4]{index=4}licazioni CORS)
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(userData)
+  }).catch(() => {});
+}
+
 
   /* ================== SELETTORE AVATAR (OVERLAY) ================== */
 
