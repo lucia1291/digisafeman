@@ -4,46 +4,73 @@ document.addEventListener("DOMContentLoaded", function () {
   var LS_USER_ID = "digisafe_user_id";
   var LS_USER = "dsmUser";
   var LS_AVATAR = "selectedAvatarSrc";
-  
-								  var LS_DB = "dsmUsersDb"; // "database" locale: lista utenti pseudo-registrati
 
-								function readDb() {
-								  try {
-									var raw = localStorage.getItem(LS_DB);
-									var arr = raw ? JSON.parse(raw) : [];
-									return Array.isArray(arr) ? arr : [];
-								  } catch (e) {
-									return [];
-								  }
-								}
+  // === Google Apps Script Web App (PUBBLICO per registrazioni) ===
+  // Incolla qui l'URL della tua Web App (quella che riceve doPost)
+  var GAS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbz9M0TIJjRaFH51Yk6i9xbczBIEgKslBdJ__YA_ms3NxzFuHvxJNS551fnoSXwUS9Qu/exec";
 
-								function writeDb(arr) {
-								  try { localStorage.setItem(LS_DB, JSON.stringify(arr)); } catch (e) { /* ignore */ }
-								}
+  var LS_DB = "dsmUsersDb"; // "database" locale: lista utenti pseudo-registrati
 
-								// inserisce o aggiorna l'utente nel DB (chiave: userId)
-								function upsertUserInDb(userData) {
-								  var db = readDb();
-								  var idx = -1;
+  function readDb() {
+    try {
+      var raw = localStorage.getItem(LS_DB);
+      var arr = raw ? JSON.parse(raw) : [];
+      return Array.isArray(arr) ? arr : [];
+    } catch (e) {
+      return [];
+    }
+  }
 
-								  for (var i = 0; i < db.length; i++) {
-									if (db[i] && db[i].userId === userData.userId) { idx = i; break; }
-								  }
+  function writeDb(arr) {
+    try { localStorage.setItem(LS_DB, JSON.stringify(arr)); } catch (e) { /* ignore */ }
+  }
 
-								  if (idx >= 0) {
-									// aggiorna mantenendo eventuali campi admin (es. adminDate)
-									db[idx] = Object.assign({}, db[idx], userData);
-								  } else {
-									// nuovo record
-									db.push(Object.assign({
-									  createdAt: new Date().toISOString(),
-									  adminDate: null
-									}, userData));
-								  }
+  // inserisce o aggiorna l'utente nel DB (chiave: userId)
+  function upsertUserInDb(userData) {
+    var db = readDb();
+    var idx = -1;
 
-								  writeDb(db);
-								}
+    for (var i = 0; i < db.length; i++) {
+      if (db[i] && db[i].userId === userData.userId) { idx = i; break; }
+    }
 
+    if (idx >= 0) {
+      // aggiorna mantenendo eventuali campi admin (es. adminDate)
+      db[idx] = Object.assign({}, db[idx], userData);
+    } else {
+      // nuovo record
+      db.push(Object.assign({
+        createdAt: new Date().toISOString(),
+        adminDate: null
+      }, userData));
+    }
+
+    writeDb(db);
+  }
+
+  // === INVIO REGISTRAZIONE A GOOGLE SHEET (Apps Script Web App) ===
+  function sendRegistrationToGoogleSheet(userData) {
+    if (!userData || !userData.userId) return;
+
+    // Se non hai ancora messo l'URL, non fare nulla
+    if (!GAS_WEBAPP_URL || GAS_WEBAPP_URL.indexOf("INCOLLA_QUI") === 0) return;
+
+    try {
+      fetch(GAS_WEBAPP_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "register",
+          userId: userData.userId,
+          firstName: userData.firstName,
+          lastName: userData.lastName
+        })
+      });
+    } catch (e) {
+      // non bloccare la registrazione se fallisce la rete
+    }
+  }
 
   function getOrCreateUserId() {
     var id = null;
@@ -236,8 +263,11 @@ document.addEventListener("DOMContentLoaded", function () {
       };
 
       safeSet(LS_USER, JSON.stringify(userData));
-													upsertUserInDb(userData);
-	  
+      upsertUserInDb(userData);
+
+      // INVIA ANCHE AL GOOGLE SHEET (DB condiviso)
+      sendRegistrationToGoogleSheet(userData);
+
       // chiudi overlay e vai alla home (o pagina personale)
       closeOverlay(registerOverlay);
       window.location.href = "index.html"; // oppure "paginaPersonale.html"
@@ -334,21 +364,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // testo nella pagina personale (se presente)
     if (user) {
-		var greetSpan = document.getElementById("profileGreeting");
-		var nameSpan  = document.getElementById("profileName");
-		var lastNameSpan = document.getElementById("profileEmail"); // nel tuo HTML questo è "Cognome"
+      var greetSpan = document.getElementById("profileGreeting");
+      var nameSpan  = document.getElementById("profileName");
+      var lastNameSpan = document.getElementById("profileEmail"); // nel tuo HTML questo è "Cognome"
 
-		if (greetSpan && user.fullName) {
-		  greetSpan.textContent = user.fullName;     // Ciao! Nome Cognome
-		}
+      if (greetSpan && user.fullName) {
+        greetSpan.textContent = user.fullName;     // Ciao! Nome Cognome
+      }
 
-		if (nameSpan && user.firstName) {
-		  nameSpan.textContent = user.firstName;     // Nome: solo Nome
-		}
+      if (nameSpan && user.firstName) {
+        nameSpan.textContent = user.firstName;     // Nome: solo Nome
+      }
 
-		if (lastNameSpan && user.lastName) {
-		  lastNameSpan.textContent = user.lastName;  // Cognome: solo Cognome
-		}
+      if (lastNameSpan && user.lastName) {
+        lastNameSpan.textContent = user.lastName;  // Cognome: solo Cognome
+      }
     }
   } catch (err3) {
     console.error("Impossibile applicare i dati salvati", err3);
@@ -379,4 +409,3 @@ window.DSM_setAdminDate = function (userId, dateStr) {
   }
   return false;
 };
-
