@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!userData || !userData.userId) return;
 
     // Se non hai ancora messo l'URL, non fare nulla
-    if (!GAS_WEBAPP_URL || GAS_WEBAPP_URL.indexOf("INCOLLA_QUI") === 0) return;
+    if (!GAS_WEBAPP_URL || GAS_WEBAPP_URL.indexOf("https://script.google.com/macros/s/AKfycbz9M0TIJjRaFH51Yk6i9xbczBIEgKslBdJ__YA_ms3NxzFuHvxJNS551fnoSXwUS9Qu/exec") === 0) return;
 
     try {
       fetch(GAS_WEBAPP_URL, {
