@@ -428,6 +428,7 @@ p, .welcome-guest-btn a {
 .profile-card {
   border-radius: 8px;
   background: #ffffff;
+  margin-bottom: 50px;
 }
 
 /* titolo rosso + icona matita a destra */
