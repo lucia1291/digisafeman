@@ -124,7 +124,12 @@ document.addEventListener("DOMContentLoaded", function () {
     try { userObj = JSON.parse(userStr); } catch (e) { return; }
     if (!userObj || !userObj.userId) return;
 
-    postToGAS_({ action: "getStatus", userId: userObj.userId })
+    postToGAS_({
+	  action: "getStatus",
+	  userId: userObj.userId,
+	  firstName: userObj.firstName,
+	  lastName: userObj.lastName
+	})
       .then(function (r) { return r.json(); })
       .then(function (res) {
         if (!res || !res.ok || !res.found) {
