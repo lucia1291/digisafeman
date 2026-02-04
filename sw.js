@@ -1,4 +1,4 @@
-const CACHE_NAME = "digisafeman-v6";
+const CACHE_NAME = "digisafeman-v7";
 const ASSETS = [
   "/digisafeman/",
   "/digisafeman/index.html",
