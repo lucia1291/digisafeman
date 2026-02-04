@@ -14,11 +14,23 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (!id) {
-      id = "U" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+      // fallback se crypto.randomUUID non esiste
+      var newId = null;
       try {
-        localStorage.setItem(LS_USER_ID, id);
-      } catch (e) { /* ignore */ }
+        newId = (crypto && crypto.randomUUID)
+          ? crypto.randomUUID()
+          : (Date.now() + "-" + Math.random().toString(16).slice(2));
+      } catch (e2) {
+        newId = Date.now() + "-" + Math.random().toString(16).slice(2);
+      }
+
+      try {
+        localStorage.setItem(LS_USER_ID, newId);
+      } catch (e3) { /* ignore */ }
+
+      id = newId;
     }
+
     return id;
   }
 
@@ -30,46 +42,21 @@ document.addEventListener("DOMContentLoaded", function () {
     try { localStorage.setItem(key, value); } catch (e) { /* ignore */ }
   }
 
-
-  /* ================== SALVATAGGIO SU GOOGLE SHEET (opzionale) ==================
-     - Richiede una Google Apps Script Web App (URL /exec)
-     - Su GitHub Pages spesso conviene inviare in modalità "fire-and-forget" per evitare problemi CORS
-  */
-
-  var GOOGLE_SHEET_WEBAPP_URL = ""; // <-- incolla qui l'URL della tua Web App (/exec)
-
-  function saveUserToSheet(userData) {
-    if (!GOOGLE_SHEET_WEBAPP_URL) return;
-
-    try {
-      fetch(GOOGLE_SHEET_WEBAPP_URL, {
-        method: "POST",
-        // "no-cors" = invio senza leggere la risposta (utile su hosting statico)
-        mode: "no-cors",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(userData)
-      }).catch(function () { /* ignore */ });
-    } catch (e) {
-      // ignore
-    }
-  }
-
-
   /* ===== helper per aprire/chiudere overlay ===== */
 
   function openOverlay(overlay) {
     if (!overlay) return;
-    overlay.style.display = "flex";
-    document.body.classList.add("no-scroll");
+    overlay.classList.add("is-visible");
+    overlay.setAttribute("aria-hidden", "false");
   }
 
   function closeOverlay(overlay) {
     if (!overlay) return;
-    overlay.style.display = "none";
-    document.body.classList.remove("no-scroll");
+    overlay.classList.remove("is-visible");
+    overlay.setAttribute("aria-hidden", "true");
   }
 
-  function wireOverlayClose(overlay) {
+  function setupCloseOnBgAndButtons(overlay) {
     if (!overlay) return;
 
     // chiusura con attributo data-close-register (es. "continua come ospite")
@@ -94,102 +81,51 @@ document.addEventListener("DOMContentLoaded", function () {
 
   /* ================== APERTURA dai pulsanti della welcome ================== */
 
-  function byId(id) { return document.getElementById(id); }
+  var openLoginBtn    = document.getElementById("openLogin");
+  var openRegisterBtn = document.getElementById("openRegister");
 
-  var btnLoginWelcome    = byId("btnLoginWelcome");
-  var btnRegisterWelcome = byId("btnRegisterWelcome");
+  // Se vuoi trasformare il tasto LOGIN in "entra se già registrato"
+  // altrimenti aprirà comunque l'overlay login (che potrai poi rimuovere).
+  if (openLoginBtn) {
+    openLoginBtn.addEventListener("click", function (e) {
+      e.preventDefault();
 
-  if (btnLoginWelcome) {
-    btnLoginWelcome.addEventListener("click", function () {
-      openOverlay(loginOverlay);
+      // Se esiste già un utente pseudo-registrato, entra direttamente
+      var userStr = safeGet(LS_USER);
+      if (userStr) {
+        window.location.href = "index.html"; // oppure "paginaPersonale.html"
+        return;
+      }
+
+      // Altrimenti apri direttamente registrazione (più coerente senza password/email)
+      if (registerOverlay) openOverlay(registerOverlay);
+      else if (loginOverlay) openOverlay(loginOverlay);
     });
   }
 
-  if (btnRegisterWelcome) {
-    btnRegisterWelcome.addEventListener("click", function () {
+  if (openRegisterBtn && registerOverlay) {
+    openRegisterBtn.addEventListener("click", function (e) {
+      e.preventDefault();
       openOverlay(registerOverlay);
     });
   }
 
-  wireOverlayClose(loginOverlay);
-  wireOverlayClose(registerOverlay);
-  wireOverlayClose(forgotOverlay);
+  /* ========== link "Registrati" dentro il login → apre registrazione ========== */
 
-  /* ================== TOGGLE password ================== */
-  function wirePasswordToggle(wrapperId, inputId) {
-    var w = byId(wrapperId);
-    if (!w) return;
-    var inp = byId(inputId);
-    var btn = w.querySelector(".togglePassword");
-    if (!inp || !btn) return;
-
-    btn.addEventListener("click", function () {
-      var isPwd = inp.getAttribute("type") === "password";
-      inp.setAttribute("type", isPwd ? "text" : "password");
-      btn.textContent = isPwd ? "🙈" : "👁️";
-    });
-  }
-
-  wirePasswordToggle("loginPasswordWrapper", "loginPassword");
-  wirePasswordToggle("registerPasswordWrapper", "registerPassword");
-  wirePasswordToggle("forgotPasswordWrapper", "forgotPassword");
-
-  /* ================== SELEZIONE AVATAR ================== */
-
-  var avatarButtons = document.querySelectorAll(".avatarChoice");
-  for (var a = 0; a < avatarButtons.length; a++) {
-    avatarButtons[a].addEventListener("click", function () {
-      // togli selezione
-      for (var b = 0; b < avatarButtons.length; b++) {
-        avatarButtons[b].classList.remove("selected");
-      }
-      this.classList.add("selected");
-
-      var src = this.getAttribute("data-avatar");
-      if (src) safeSet(LS_AVATAR, src);
-    });
-  }
-
-  // se già salvato, rimetti evidenza
-  var savedAvatar = safeGet(LS_AVATAR);
-  if (savedAvatar) {
-    for (var c = 0; c < avatarButtons.length; c++) {
-      if (avatarButtons[c].getAttribute("data-avatar") === savedAvatar) {
-        avatarButtons[c].classList.add("selected");
-      }
-    }
-  }
-
-  /* ================== LOGIN / REGISTRAZIONE (pseudo) ================== */
-
-  function gotoHome() {
-    // Se hai una pagina personale dedicata puoi cambiare qui
-    window.location.href = "paginaPersonale.html";
-  }
-
-  // LOGIN
-  var loginForm = byId("loginForm");
-  if (loginForm) {
-    loginForm.addEventListener("submit", function (e) {
+  var regFromLogin = document.getElementById("openRegisterFromLogin");
+  if (regFromLogin && loginOverlay && registerOverlay) {
+    regFromLogin.addEventListener("click", function (e) {
       e.preventDefault();
-
-      var email = (byId("loginEmail") ? byId("loginEmail").value : "").trim();
-      var pass  = (byId("loginPassword") ? byId("loginPassword").value : "").trim();
-
-      // qui è "pseudo login": se esiste user in localStorage fai entrare
-      var u = safeGet(LS_USER);
-      if (u) {
-        closeOverlay(loginOverlay);
-        gotoHome();
-      } else {
-        alert("Nessun utente registrato localmente. Usa 'Registrati'.");
-      }
+      closeOverlay(loginOverlay);
+      openOverlay(registerOverlay);
     });
   }
 
-  // LINK "Password dimenticata?"
-  var openForgot = byId("openForgot");
-  if (openForgot) {
+  /* ========== link "Hai dimenticato la tua password?" → apre forgot ========== */
+  // (puoi anche eliminare forgotOverlay dal markup se non ti serve)
+
+  var openForgot = document.getElementById("openForgot");
+  if (openForgot && loginOverlay && forgotOverlay) {
     openForgot.addEventListener("click", function (e) {
       e.preventDefault();
       closeOverlay(loginOverlay);
@@ -197,44 +133,58 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // TORNA A LOGIN da forgot
-  var backToLogin = byId("backToLogin");
-  if (backToLogin) {
-    backToLogin.addEventListener("click", function (e) {
-      e.preventDefault();
-      closeOverlay(forgotOverlay);
-      openOverlay(loginOverlay);
-    });
+  /* ========== chiusura generica (sfondo + bottoni data-close-register) ========== */
+
+  setupCloseOnBgAndButtons(loginOverlay);
+  setupCloseOnBgAndButtons(registerOverlay);
+  setupCloseOnBgAndButtons(forgotOverlay);
+
+  /* ================== TOGGLE VISIBILITÀ PASSWORD (OCCHIO) ================== */
+  // Se hai rimosso i campi password dal markup, questo blocco non fa nulla (va bene).
+
+  var pwdWrappers = document.querySelectorAll(".reg-label-password");
+  var ICON_OPEN   = "👁️";      // password nascosta
+  var ICON_CLOSED = "👁️‍🗨️";   // password visibile
+
+  for (var j = 0; j < pwdWrappers.length; j++) {
+    (function (wrapper) {
+      var input  = wrapper.querySelector("input");
+      var eyeBtn = wrapper.querySelector(".reg-eye");
+
+      if (!input || !eyeBtn) return;
+
+      eyeBtn.textContent = ICON_OPEN;
+      eyeBtn.style.display = "block";
+
+      eyeBtn.addEventListener("click", function () {
+        var isHidden = input.type === "password";
+        input.type = isHidden ? "text" : "password";
+        eyeBtn.textContent = isHidden ? ICON_CLOSED : ICON_OPEN;
+      });
+    })(pwdWrappers[j]);
   }
 
-  // FORGOT (demo)
-  var forgotForm = byId("forgotForm");
-  if (forgotForm) {
-    forgotForm.addEventListener("submit", function (e) {
-      e.preventDefault();
-      alert("Demo: recupero password non attivo.");
-      closeOverlay(forgotOverlay);
-    });
-  }
+  /* ================== PSEUDO-REGISTRAZIONE (NOME + COGNOME) ================== */
 
-  // REGISTRAZIONE
-  var registerForm = byId("registerForm");
-  if (registerForm) {
-    registerForm.addEventListener("submit", function (e) {
+  var formReg = document.querySelector("#registerOverlay .reg-form");
+
+  if (formReg) {
+    formReg.addEventListener("submit", function (e) {
       e.preventDefault();
 
-      var first = (byId("registerFirstName") ? byId("registerFirstName").value : "").trim();
-      var last  = (byId("registerLastName") ? byId("registerLastName").value : "").trim();
-      var email = (byId("registerEmail") ? byId("registerEmail").value : "").trim();
-      var pass  = (byId("registerPassword") ? byId("registerPassword").value : "").trim();
+      var firstNameInput = document.getElementById("regFirstName");
+      var lastNameInput  = document.getElementById("regLastName");
 
-      if (!first || !last) {
-        alert("Inserisci nome e cognome.");
-        return;
-      }
+      var first = firstNameInput ? firstNameInput.value.trim() : "";
+      var last  = lastNameInput  ? lastNameInput.value.trim()  : "";
 
-      // avatar scelto o default
+      if (!first || !last) return;
+
+      // avatar scelto
+      var avatarImg = document.getElementById("selectedAvatar");
+
       var avatarSrc = safeGet(LS_AVATAR);
+      if (!avatarSrc && avatarImg) avatarSrc = avatarImg.src;
       if (!avatarSrc) avatarSrc = "resources/avatars/avatar0.png";
 
       var userData = {
@@ -246,22 +196,124 @@ document.addEventListener("DOMContentLoaded", function () {
       };
 
       safeSet(LS_USER, JSON.stringify(userData));
-      saveUserToSheet(userData);
-
+	  
       // chiudi overlay e vai alla home (o pagina personale)
       closeOverlay(registerOverlay);
-      gotoHome();
+      window.location.href = "index.html"; // oppure "paginaPersonale.html"
     });
   }
 
-  // Link "Hai già un account? Accedi"
-  var linkToLogin = byId("linkToLogin");
-  if (linkToLogin) {
-    linkToLogin.addEventListener("click", function (e) {
-      e.preventDefault();
-      closeOverlay(registerOverlay);
-      openOverlay(loginOverlay);
-    });
+  /* ================== SELETTORE AVATAR (OVERLAY) ================== */
+
+  var avatarBoxes      = document.querySelectorAll(".reg-avatar, .profile-avatar");
+  var avatarOverlay    = document.getElementById("avatarOverlay");
+  var avatarOptions    = avatarOverlay ? avatarOverlay.querySelectorAll(".avatar-option") : [];
+  var currentAvatarImg = null;
+
+  // abilita chiusura overlay avatar con sfondo e bottoni data-close-register
+  setupCloseOnBgAndButtons(avatarOverlay);
+
+  if (avatarOverlay && avatarOptions.length && avatarBoxes.length) {
+
+    // clic sui box avatar (login, registrazione, pagina personale)
+    for (var k = 0; k < avatarBoxes.length; k++) {
+      (function (box) {
+        var img = box.querySelector("img");
+        if (!img) return;
+
+        box.style.cursor = "pointer";
+
+        box.addEventListener("click", function () {
+          currentAvatarImg = img;
+          openOverlay(avatarOverlay);
+        });
+      })(avatarBoxes[k]);
+    }
+
+    // clic su uno degli avatar nell’overlay
+    for (var m = 0; m < avatarOptions.length; m++) {
+      avatarOptions[m].addEventListener("click", function () {
+        var newSrc = this.getAttribute("data-avatar");
+        if (currentAvatarImg && newSrc) {
+          currentAvatarImg.src = newSrc;
+
+          // salva la scelta in localStorage
+          safeSet(LS_AVATAR, newSrc);
+
+          // se esiste già un utente salvato, aggiorna anche il suo avatar
+          try {
+            var storedUserStr = safeGet(LS_USER);
+            if (storedUserStr) {
+              var userObj = JSON.parse(storedUserStr);
+              userObj.avatar = newSrc;
+              safeSet(LS_USER, JSON.stringify(userObj));
+            }
+          } catch (err2) {
+            console.error("Impossibile aggiornare l'avatar dell'utente", err2);
+          }
+        }
+        closeOverlay(avatarOverlay);
+      });
+    }
   }
+
+  /* ================== APPLICA I DATI SALVATI (AVATAR + NOME) ================== */
+
+  try {
+    var storedUserStr2 = safeGet(LS_USER);
+    var savedAvatar    = safeGet(LS_AVATAR);
+    var user = null;
+
+    if (storedUserStr2) {
+      try {
+        user = JSON.parse(storedUserStr2);
+      } catch (err) {
+        console.error("Impossibile leggere i dati utente salvati", err);
+      }
+    }
+
+    var avatarToUse = null;
+    if (user && user.avatar) {
+      avatarToUse = user.avatar;
+    } else if (savedAvatar) {
+      avatarToUse = savedAvatar;
+    }
+
+    // avatar nei pannelli di login/registrazione
+    var regAvatarImg2 = document.getElementById("selectedAvatar");
+    if (regAvatarImg2 && avatarToUse) {
+      regAvatarImg2.src = avatarToUse;
+    }
+
+    // avatar nella pagina personale
+    var profileAvatarImg2 = document.querySelector(".profile-avatar img");
+    if (profileAvatarImg2 && avatarToUse) {
+      profileAvatarImg2.src = avatarToUse;
+    }
+
+    // testo nella pagina personale (se presente)
+    if (user) {
+		var greetSpan = document.getElementById("profileGreeting");
+		var nameSpan  = document.getElementById("profileName");
+		var lastNameSpan = document.getElementById("profileEmail"); // nel tuo HTML questo è "Cognome"
+
+		if (greetSpan && user.fullName) {
+		  greetSpan.textContent = user.fullName;     // Ciao! Nome Cognome
+		}
+
+		if (nameSpan && user.firstName) {
+		  nameSpan.textContent = user.firstName;     // Nome: solo Nome
+		}
+
+		if (lastNameSpan && user.lastName) {
+		  lastNameSpan.textContent = user.lastName;  // Cognome: solo Cognome
+		}
+    }
+  } catch (err3) {
+    console.error("Impossibile applicare i dati salvati", err3);
+  }
+
+
+
 
 });
