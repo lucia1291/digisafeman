@@ -60,7 +60,6 @@ document.addEventListener("DOMContentLoaded", function () {
     try { id = localStorage.getItem(LS_USER_ID); } catch (e) { id = null; }
 
     if (!id) {
-      // fallback se crypto.randomUUID non esiste
       var newId = null;
       try {
         newId = (crypto && crypto.randomUUID)
@@ -84,8 +83,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     return fetch(GAS_WEBAPP_URL, {
       method: "POST",
-      // niente no-cors qui perché per getStatus vogliamo leggere la risposta JSON.
-      // Se in futuro hai problemi di CORS, lo risolvi lato GAS con header e doOptions.
       headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
       body: body,
       redirect: "follow",
@@ -93,11 +90,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Registra (non blocca la UX anche se fallisce)
   function sendRegistrationToGoogleSheet(userData) {
     if (!userData || !userData.userId) return;
 
     try {
+      // NB: non ci interessa leggere la risposta per register
       postToGAS_({
         action: "register",
         userId: userData.userId,
@@ -109,10 +106,45 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  /* ================== STATUS TRAINING: leggi adminDate dallo Sheet ================== */
+  /* ================== STATUS TRAINING: JSONP (robusto senza CORS) ================== */
+  function getStatusJSONP_(userObj) {
+    return new Promise(function (resolve, reject) {
+      if (!userObj) return reject(new Error("Missing userObj"));
+
+      var cb = "dsm_cb_" + Math.random().toString(16).slice(2);
+      var script = document.createElement("script");
+
+      window[cb] = function (data) {
+        try { delete window[cb]; } catch (e) { window[cb] = undefined; }
+        if (script && script.parentNode) script.parentNode.removeChild(script);
+        resolve(data);
+      };
+
+      // Chiamiamo doGet?action=getStatus in JSONP
+      var url =
+        GAS_WEBAPP_URL +
+        "?action=getStatus" +
+        "&userId=" + encodeURIComponent(userObj.userId || "") +
+        "&firstName=" + encodeURIComponent(userObj.firstName || "") +
+        "&lastName=" + encodeURIComponent(userObj.lastName || "") +
+        "&callback=" + encodeURIComponent(cb);
+
+      script.src = url;
+      script.async = true;
+
+      script.onerror = function () {
+        try { delete window[cb]; } catch (e) { window[cb] = undefined; }
+        if (script && script.parentNode) script.parentNode.removeChild(script);
+        reject(new Error("JSONP error"));
+      };
+
+      document.head.appendChild(script);
+    });
+  }
+
   function applyTrainingStatusFromSheet_() {
     var statusBox = document.getElementById("statusTraining");
-    if (!statusBox) return; // siamo su pagine senza quel div
+    if (!statusBox) return;
 
     var esitoSpan = statusBox.querySelector(".statusTrainingEsito");
     if (!esitoSpan) return;
@@ -124,13 +156,7 @@ document.addEventListener("DOMContentLoaded", function () {
     try { userObj = JSON.parse(userStr); } catch (e) { return; }
     if (!userObj || !userObj.userId) return;
 
-    postToGAS_({
-	  action: "getStatus",
-	  userId: userObj.userId,
-	  firstName: userObj.firstName,
-	  lastName: userObj.lastName
-	})
-      .then(function (r) { return r.json(); })
+    getStatusJSONP_(userObj)
       .then(function (res) {
         if (!res || !res.ok || !res.found) {
           setStatus_("NECESSARIO AGGIORNAMENTO", "red");
@@ -163,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       })
       .catch(function () {
-        // offline o errore rete: non bloccare
+        // offline o errore: non bloccare
       });
 
     function setStatus_(label, color) {
@@ -188,7 +214,6 @@ document.addEventListener("DOMContentLoaded", function () {
   function setupCloseOnBgAndButtons(overlay) {
     if (!overlay) return;
 
-    // chiusura con attributo data-close-register
     var closeBtns = overlay.querySelectorAll("[data-close-register]");
     for (var i = 0; i < closeBtns.length; i++) {
       closeBtns[i].addEventListener("click", function () {
@@ -196,7 +221,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
-    // chiudi cliccando sullo sfondo scuro
     overlay.addEventListener("click", function (e) {
       if (e.target === overlay) closeOverlay(overlay);
     });
@@ -214,14 +238,12 @@ document.addEventListener("DOMContentLoaded", function () {
     openLoginBtn.addEventListener("click", function (e) {
       e.preventDefault();
 
-      // Se esiste già un utente pseudo-registrato, entra direttamente
       var userStr = safeGet(LS_USER);
       if (userStr) {
-        window.location.href = "index.html"; // oppure "paginaPersonale.html"
+        window.location.href = "index.html";
         return;
       }
 
-      // Altrimenti apri direttamente registrazione
       if (registerOverlay) openOverlay(registerOverlay);
       else if (loginOverlay) openOverlay(loginOverlay);
     });
@@ -234,7 +256,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  /* ========== link "Registrati" dentro il login → apre registrazione ========== */
   var regFromLogin = document.getElementById("openRegisterFromLogin");
   if (regFromLogin && loginOverlay && registerOverlay) {
     regFromLogin.addEventListener("click", function (e) {
@@ -244,7 +265,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  /* ========== link "Hai dimenticato la tua password?" → apre forgot ========== */
   var openForgot = document.getElementById("openForgot");
   if (openForgot && loginOverlay && forgotOverlay) {
     openForgot.addEventListener("click", function (e) {
@@ -254,12 +274,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  /* ========== chiusura generica (sfondo + bottoni) ========== */
   setupCloseOnBgAndButtons(loginOverlay);
   setupCloseOnBgAndButtons(registerOverlay);
   setupCloseOnBgAndButtons(forgotOverlay);
 
-  /* ================== TOGGLE VISIBILITÀ PASSWORD (OCCHIO) ================== */
+  /* ================== TOGGLE VISIBILITÀ PASSWORD ================== */
   var pwdWrappers = document.querySelectorAll(".reg-label-password");
   var ICON_OPEN   = "👁️";
   var ICON_CLOSED = "👁️‍🗨️";
@@ -295,7 +314,6 @@ document.addEventListener("DOMContentLoaded", function () {
       var last  = lastNameInput  ? lastNameInput.value.trim()  : "";
       if (!first || !last) return;
 
-      // avatar scelto
       var avatarImg = document.getElementById("selectedAvatar");
       var avatarSrc = safeGet(LS_AVATAR);
       if (!avatarSrc && avatarImg) avatarSrc = avatarImg.src;
@@ -312,13 +330,11 @@ document.addEventListener("DOMContentLoaded", function () {
       safeSet(LS_USER, JSON.stringify(userData));
       upsertUserInDb(userData);
 
-      // INVIA ANCHE AL GOOGLE SHEET (DB condiviso)
       sendRegistrationToGoogleSheet(userData);
 
-      // chiudi overlay e vai alla home
       closeOverlay(registerOverlay);
       setTimeout(function () {
-        window.location.href = "index.html"; // oppure "paginaPersonale.html"
+        window.location.href = "index.html";
       }, 300);
     });
   }
@@ -402,7 +418,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (lastNameSpan && user.lastName) lastNameSpan.textContent = user.lastName;
     }
 
-    // === (B) dopo aver applicato i dati utente, aggiorna status training ===
+    // dopo aver applicato i dati utente, aggiorna status training
     applyTrainingStatusFromSheet_();
 
   } catch (err3) {
