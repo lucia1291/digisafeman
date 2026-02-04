@@ -34,10 +34,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (idx >= 0) {
-      // aggiorna mantenendo eventuali campi admin (es. adminDate)
       db[idx] = Object.assign({}, db[idx], userData);
     } else {
-      // nuovo record
       db.push(Object.assign({
         createdAt: new Date().toISOString(),
         adminDate: null
@@ -94,7 +92,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!userData || !userData.userId) return;
 
     try {
-      // NB: non ci interessa leggere la risposta per register
       postToGAS_({
         action: "register",
         userId: userData.userId,
@@ -120,10 +117,10 @@ document.addEventListener("DOMContentLoaded", function () {
         resolve(data);
       };
 
-      // Chiamiamo doGet?action=getStatus in JSONP
+      // Chiamiamo doGet?action=getstatus in JSONP
       var url =
         GAS_WEBAPP_URL +
-        "?action=getStatus" +
+        "?action=getstatus" +
         "&userId=" + encodeURIComponent(userObj.userId || "") +
         "&firstName=" + encodeURIComponent(userObj.firstName || "") +
         "&lastName=" + encodeURIComponent(userObj.lastName || "") +
@@ -143,31 +140,54 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function applyTrainingStatusFromSheet_() {
+    // Questo blocco gira solo sulle pagine che hanno quel div
     var statusBox = document.getElementById("statusTraining");
     if (!statusBox) return;
 
     var esitoSpan = statusBox.querySelector(".statusTrainingEsito");
     if (!esitoSpan) return;
 
+    // Note: qui stampiamo la colonna "notes" dentro statusTrainingList
+    var notesContainer = document.getElementById("statusTrainingList");
+    var notesSpan = notesContainer ? notesContainer.querySelector(".TrainingList") : null;
+
     var userStr = safeGet(LS_USER);
-    if (!userStr) return;
+    if (!userStr) {
+      setPending_();
+      setNotes_("nessuna nota");
+      return;
+    }
 
     var userObj = null;
-    try { userObj = JSON.parse(userStr); } catch (e) { return; }
-    if (!userObj || !userObj.userId) return;
+    try { userObj = JSON.parse(userStr); } catch (e) {
+      setPending_();
+      setNotes_("nessuna nota");
+      return;
+    }
+    if (!userObj) {
+      setPending_();
+      setNotes_("nessuna nota");
+      return;
+    }
 
     getStatusJSONP_(userObj)
       .then(function (res) {
+        // se non trovato o errore: pending
         if (!res || !res.ok || !res.found) {
           setPending_();
+          setNotes_("nessuna nota");
           return;
         }
 
+        // NOTE
+        setNotes_(String(res.notes || "").trim() || "nessuna nota");
+
+        // DATE
         var adminDateStr = String(res.adminDate || "").trim();
-		if (!adminDateStr) {
-		  setPending_();
-		  return;
-		}
+        if (!adminDateStr) {
+          setPending_();
+          return;
+        }
 
         // atteso yyyy-mm-dd
         var d = new Date(adminDateStr + "T00:00:00");
@@ -190,17 +210,24 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .catch(function () {
         // offline o errore: non bloccare
+        setPending_();
+        setNotes_("nessuna nota");
       });
 
     function setStatus_(label, color) {
       esitoSpan.textContent = label;
       statusBox.style.backgroundColor = color;
     }
-	
-	function setPending_() {
-		esitoSpan.textContent = "IN ATTESA DI CONTROLLO";
-		statusBox.style.backgroundColor = "grey";
-}
+
+    function setPending_() {
+      esitoSpan.textContent = "IN ATTESA DI CONTROLLO";
+      statusBox.style.backgroundColor = "grey";
+    }
+
+    function setNotes_(text) {
+      if (!notesSpan) return;
+      notesSpan.textContent = text;
+    }
   }
 
   /* ===== helper per aprire/chiudere overlay ===== */
