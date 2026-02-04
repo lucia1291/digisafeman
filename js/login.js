@@ -4,6 +4,46 @@ document.addEventListener("DOMContentLoaded", function () {
   var LS_USER_ID = "digisafe_user_id";
   var LS_USER = "dsmUser";
   var LS_AVATAR = "selectedAvatarSrc";
+  
+								  var LS_DB = "dsmUsersDb"; // "database" locale: lista utenti pseudo-registrati
+
+								function readDb() {
+								  try {
+									var raw = localStorage.getItem(LS_DB);
+									var arr = raw ? JSON.parse(raw) : [];
+									return Array.isArray(arr) ? arr : [];
+								  } catch (e) {
+									return [];
+								  }
+								}
+
+								function writeDb(arr) {
+								  try { localStorage.setItem(LS_DB, JSON.stringify(arr)); } catch (e) { /* ignore */ }
+								}
+
+								// inserisce o aggiorna l'utente nel DB (chiave: userId)
+								function upsertUserInDb(userData) {
+								  var db = readDb();
+								  var idx = -1;
+
+								  for (var i = 0; i < db.length; i++) {
+									if (db[i] && db[i].userId === userData.userId) { idx = i; break; }
+								  }
+
+								  if (idx >= 0) {
+									// aggiorna mantenendo eventuali campi admin (es. adminDate)
+									db[idx] = Object.assign({}, db[idx], userData);
+								  } else {
+									// nuovo record
+									db.push(Object.assign({
+									  createdAt: new Date().toISOString(),
+									  adminDate: null
+									}, userData));
+								  }
+
+								  writeDb(db);
+								}
+
 
   function getOrCreateUserId() {
     var id = null;
@@ -196,6 +236,7 @@ document.addEventListener("DOMContentLoaded", function () {
       };
 
       safeSet(LS_USER, JSON.stringify(userData));
+													upsertUserInDb(userData);
 	  
       // chiudi overlay e vai alla home (o pagina personale)
       closeOverlay(registerOverlay);
@@ -313,6 +354,26 @@ document.addEventListener("DOMContentLoaded", function () {
     console.error("Impossibile applicare i dati salvati", err3);
   }
 
+							// === MINI-TOOLS ADMIN (per ora via Console) ===
+							// Visualizza DB: DSM_getUsersDb()
+							// Aggiungi/aggiorna data a un userId: DSM_setAdminDate("id", "2026-02-04")
+							window.DSM_getUsersDb = function () {
+							  return readDb();
+							};
+
+							window.DSM_setAdminDate = function (userId, dateStr) {
+							  if (!userId) return false;
+
+							  var db = readDb();
+							  for (var i = 0; i < db.length; i++) {
+								if (db[i] && db[i].userId === userId) {
+								  db[i].adminDate = dateStr || null;
+								  writeDb(db);
+								  return true;
+								}
+							  }
+							  return false;
+							};
 
 
 
