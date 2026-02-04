@@ -159,15 +159,15 @@ document.addEventListener("DOMContentLoaded", function () {
     getStatusJSONP_(userObj)
       .then(function (res) {
         if (!res || !res.ok || !res.found) {
-          setStatus_("NECESSARIO AGGIORNAMENTO", "red");
+          setPending_();
           return;
         }
 
         var adminDateStr = String(res.adminDate || "").trim();
-        if (!adminDateStr) {
-          setStatus_("NECESSARIO AGGIORNAMENTO", "red");
-          return;
-        }
+		if (!adminDateStr) {
+		  setPending_();
+		  return;
+		}
 
         // atteso yyyy-mm-dd
         var d = new Date(adminDateStr + "T00:00:00");
@@ -196,6 +196,11 @@ document.addEventListener("DOMContentLoaded", function () {
       esitoSpan.textContent = label;
       statusBox.style.backgroundColor = color;
     }
+	
+	function setPending_() {
+		esitoSpan.textContent = "IN ATTESA DI CONTROLLO";
+		statusBox.style.backgroundColor = "grey";
+}
   }
 
   /* ===== helper per aprire/chiudere overlay ===== */
