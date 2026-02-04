@@ -23,7 +23,17 @@ self.addEventListener("install", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
-  event.respondWith(caches.match(event.request).then((r) => r || fetch(event.request)));
+  const url = new URL(event.request.url);
+
+  // 1) non toccare POST/PUT/DELETE ecc (es. chiamate a Google Apps Script)
+  if (event.request.method !== "GET") return;
+
+  // 2) non toccare richieste fuori dal tuo dominio
+  if (url.origin !== self.location.origin) return;
+
+  event.respondWith(
+    caches.match(event.request).then((r) => r || fetch(event.request))
+  );
 });
 
 
