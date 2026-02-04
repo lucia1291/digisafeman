@@ -61,15 +61,20 @@ function sendRegistrationToGoogleSheet(userData) {
 
   try {
     fetch(GAS_WEBAPP_URL, {
-      method: "POST",
-      mode: "no-cors",
-      redirect: "follow",
-      keepalive: true,
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
-      },
-      body: "payload=" + encodeURIComponent(JSON.stringify(payload))
-    });
+  method: "POST",
+  mode: "no-cors",
+  redirect: "follow",
+  keepalive: true,
+  headers: {
+    "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+  },
+  body: "payload=" + encodeURIComponent(JSON.stringify({
+    action: "register",
+    userId: userData.userId,
+    firstName: userData.firstName,
+    lastName: userData.lastName
+  }))
+});
   } catch (e) {
     // non bloccare la registrazione se fallisce la rete
   }
