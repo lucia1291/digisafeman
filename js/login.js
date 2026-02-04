@@ -59,22 +59,22 @@ function sendRegistrationToGoogleSheet(userData) {
     lastName: userData.lastName
   });
 
+  // 1) Prova sendBeacon (ottimo su iPhone) MA solo se va a buon fine
   try {
-    // iPhone/Safari: beacon è molto più affidabile quando fai redirect subito dopo
     if (navigator.sendBeacon) {
       var blob = new Blob([payload], { type: "application/json" });
-      navigator.sendBeacon(GAS_WEBAPP_URL, blob);
-      return;
+      var ok = navigator.sendBeacon(GAS_WEBAPP_URL, blob);
+      if (ok) return; // ✅ solo se davvero inviato
     }
   } catch (e) {
-    // se fallisce, prova con fetch sotto
+    // continua col fallback
   }
 
+  // 2) Fallback fetch (funziona bene su Android)
   try {
     fetch(GAS_WEBAPP_URL, {
       method: "POST",
       mode: "no-cors",
-      keepalive: true,
       headers: { "Content-Type": "application/json" },
       body: payload
     });
