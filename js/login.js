@@ -48,38 +48,26 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // === INVIO REGISTRAZIONE A GOOGLE SHEET (Apps Script Web App) ===
-function sendRegistrationToGoogleSheet(userData) {
-  if (!userData || !userData.userId) return;
-  if (!GAS_WEBAPP_URL) return;
+  function sendRegistrationToGoogleSheet(userData) {
+    if (!userData || !userData.userId) return;
+    if (!GAS_WEBAPP_URL) return;
 
-  var payload = JSON.stringify({
-    action: "register",
-    userId: userData.userId,
-    firstName: userData.firstName,
-    lastName: userData.lastName
-  });
-
-  // Prova sendBeacon (molto affidabile con redirect). Se fallisce, fallback.
-  try {
-    if (navigator.sendBeacon) {
-      var ok = navigator.sendBeacon(
-        GAS_WEBAPP_URL,
-        new Blob([payload], { type: "application/json" })
-      );
-      if (ok) return;
+    try {
+      fetch(GAS_WEBAPP_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "register",
+          userId: userData.userId,
+          firstName: userData.firstName,
+          lastName: userData.lastName
+        })
+      });
+    } catch (e) {
+      // non bloccare la registrazione se fallisce la rete
     }
-  } catch (e) {}
-
-  // Fallback fetch
-  try {
-    fetch(GAS_WEBAPP_URL, {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "application/json" },
-      body: payload
-    });
-  } catch (e2) {}
-}
+  }
 
   function getOrCreateUserId() {
     var id = null;
@@ -277,7 +265,7 @@ function sendRegistrationToGoogleSheet(userData) {
       closeOverlay(registerOverlay);
       setTimeout(function () {
         window.location.href = "index.html"; // oppure "paginaPersonale.html"
-      }, 600);
+      }, 300);
     });
   }
 
