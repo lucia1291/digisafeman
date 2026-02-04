@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var LS_USER = "dsmUser";
   var LS_AVATAR = "selectedAvatarSrc";
 
-  // === Google Apps Script Web App (PUBBLICO per registrazioni) ===
+  // === Google Apps Script Web App (PUBBLICO) ===
   var GAS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbz9M0TIJjRaFH51Yk6i9xbczBIEgKslBdJ__YA_ms3NxzFuHvxJNS551fnoSXwUS9Qu/exec";
 
   var LS_DB = "dsmUsersDb"; // "database" locale: lista utenti pseudo-registrati
@@ -47,46 +47,17 @@ document.addEventListener("DOMContentLoaded", function () {
     writeDb(db);
   }
 
-  // === INVIO REGISTRAZIONE A GOOGLE SHEET (Apps Script Web App) ===
-function sendRegistrationToGoogleSheet(userData) {
-  if (!userData || !userData.userId) return;
-  if (!GAS_WEBAPP_URL) return;
-
-  const payload = {
-    action: "register",
-    userId: userData.userId,
-    firstName: userData.firstName,
-    lastName: userData.lastName
-  };
-
-  try {
-    fetch(GAS_WEBAPP_URL, {
-  method: "POST",
-  mode: "no-cors",
-  redirect: "follow",
-  keepalive: true,
-  headers: {
-    "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
-  },
-  body: "payload=" + encodeURIComponent(JSON.stringify({
-    action: "register",
-    userId: userData.userId,
-    firstName: userData.firstName,
-    lastName: userData.lastName
-  }))
-});
-  } catch (e) {
-    // non bloccare la registrazione se fallisce la rete
+  function safeGet(key) {
+    try { return localStorage.getItem(key); } catch (e) { return null; }
   }
-}
+
+  function safeSet(key, value) {
+    try { localStorage.setItem(key, value); } catch (e) { /* ignore */ }
+  }
 
   function getOrCreateUserId() {
     var id = null;
-    try {
-      id = localStorage.getItem(LS_USER_ID);
-    } catch (e) {
-      id = null;
-    }
+    try { id = localStorage.getItem(LS_USER_ID); } catch (e) { id = null; }
 
     if (!id) {
       // fallback se crypto.randomUUID non esiste
@@ -99,26 +70,104 @@ function sendRegistrationToGoogleSheet(userData) {
         newId = Date.now() + "-" + Math.random().toString(16).slice(2);
       }
 
-      try {
-        localStorage.setItem(LS_USER_ID, newId);
-      } catch (e3) { /* ignore */ }
-
+      try { localStorage.setItem(LS_USER_ID, newId); } catch (e3) { /* ignore */ }
       id = newId;
     }
 
     return id;
   }
 
-  function safeGet(key) {
-    try { return localStorage.getItem(key); } catch (e) { return null; }
+  /* ================== INVIO A GOOGLE SHEET (Safari-safe) ================== */
+  function postToGAS_(payloadObj) {
+    if (!GAS_WEBAPP_URL) return Promise.reject(new Error("Missing GAS_WEBAPP_URL"));
+    var body = "payload=" + encodeURIComponent(JSON.stringify(payloadObj || {}));
+
+    return fetch(GAS_WEBAPP_URL, {
+      method: "POST",
+      // niente no-cors qui perché per getStatus vogliamo leggere la risposta JSON.
+      // Se in futuro hai problemi di CORS, lo risolvi lato GAS con header e doOptions.
+      headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+      body: body,
+      redirect: "follow",
+      keepalive: true
+    });
   }
 
-  function safeSet(key, value) {
-    try { localStorage.setItem(key, value); } catch (e) { /* ignore */ }
+  // Registra (non blocca la UX anche se fallisce)
+  function sendRegistrationToGoogleSheet(userData) {
+    if (!userData || !userData.userId) return;
+
+    try {
+      postToGAS_({
+        action: "register",
+        userId: userData.userId,
+        firstName: userData.firstName,
+        lastName: userData.lastName
+      }).catch(function () { /* ignore */ });
+    } catch (e) {
+      // non bloccare la registrazione se fallisce la rete
+    }
+  }
+
+  /* ================== STATUS TRAINING: leggi adminDate dallo Sheet ================== */
+  function applyTrainingStatusFromSheet_() {
+    var statusBox = document.getElementById("statusTraining");
+    if (!statusBox) return; // siamo su pagine senza quel div
+
+    var esitoSpan = statusBox.querySelector(".statusTrainingEsito");
+    if (!esitoSpan) return;
+
+    var userStr = safeGet(LS_USER);
+    if (!userStr) return;
+
+    var userObj = null;
+    try { userObj = JSON.parse(userStr); } catch (e) { return; }
+    if (!userObj || !userObj.userId) return;
+
+    postToGAS_({ action: "getStatus", userId: userObj.userId })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (!res || !res.ok || !res.found) {
+          setStatus_("NECESSARIO AGGIORNAMENTO", "red");
+          return;
+        }
+
+        var adminDateStr = String(res.adminDate || "").trim();
+        if (!adminDateStr) {
+          setStatus_("NECESSARIO AGGIORNAMENTO", "red");
+          return;
+        }
+
+        // atteso yyyy-mm-dd
+        var d = new Date(adminDateStr + "T00:00:00");
+        if (isNaN(d.getTime())) {
+          setStatus_("NECESSARIO AGGIORNAMENTO", "red");
+          return;
+        }
+
+        var now = new Date();
+        var diffMs = now.getTime() - d.getTime();
+        var diffDays = diffMs / (1000 * 60 * 60 * 24);
+
+        if (diffDays <= 365) {
+          setStatus_("COMPLETO", "green");
+        } else if (diffDays <= 365 * 3) {
+          setStatus_("PARZIALE", "orange");
+        } else {
+          setStatus_("NECESSARIO AGGIORNAMENTO", "red");
+        }
+      })
+      .catch(function () {
+        // offline o errore rete: non bloccare
+      });
+
+    function setStatus_(label, color) {
+      esitoSpan.textContent = label;
+      statusBox.style.backgroundColor = color;
+    }
   }
 
   /* ===== helper per aprire/chiudere overlay ===== */
-
   function openOverlay(overlay) {
     if (!overlay) return;
     overlay.classList.add("is-visible");
@@ -134,7 +183,7 @@ function sendRegistrationToGoogleSheet(userData) {
   function setupCloseOnBgAndButtons(overlay) {
     if (!overlay) return;
 
-    // chiusura con attributo data-close-register (es. "continua come ospite")
+    // chiusura con attributo data-close-register
     var closeBtns = overlay.querySelectorAll("[data-close-register]");
     for (var i = 0; i < closeBtns.length; i++) {
       closeBtns[i].addEventListener("click", function () {
@@ -144,9 +193,7 @@ function sendRegistrationToGoogleSheet(userData) {
 
     // chiudi cliccando sullo sfondo scuro
     overlay.addEventListener("click", function (e) {
-      if (e.target === overlay) {
-        closeOverlay(overlay);
-      }
+      if (e.target === overlay) closeOverlay(overlay);
     });
   }
 
@@ -155,7 +202,6 @@ function sendRegistrationToGoogleSheet(userData) {
   var forgotOverlay   = document.getElementById("forgotOverlay");
 
   /* ================== APERTURA dai pulsanti della welcome ================== */
-
   var openLoginBtn    = document.getElementById("openLogin");
   var openRegisterBtn = document.getElementById("openRegister");
 
@@ -184,7 +230,6 @@ function sendRegistrationToGoogleSheet(userData) {
   }
 
   /* ========== link "Registrati" dentro il login → apre registrazione ========== */
-
   var regFromLogin = document.getElementById("openRegisterFromLogin");
   if (regFromLogin && loginOverlay && registerOverlay) {
     regFromLogin.addEventListener("click", function (e) {
@@ -195,7 +240,6 @@ function sendRegistrationToGoogleSheet(userData) {
   }
 
   /* ========== link "Hai dimenticato la tua password?" → apre forgot ========== */
-
   var openForgot = document.getElementById("openForgot");
   if (openForgot && loginOverlay && forgotOverlay) {
     openForgot.addEventListener("click", function (e) {
@@ -206,13 +250,11 @@ function sendRegistrationToGoogleSheet(userData) {
   }
 
   /* ========== chiusura generica (sfondo + bottoni) ========== */
-
   setupCloseOnBgAndButtons(loginOverlay);
   setupCloseOnBgAndButtons(registerOverlay);
   setupCloseOnBgAndButtons(forgotOverlay);
 
   /* ================== TOGGLE VISIBILITÀ PASSWORD (OCCHIO) ================== */
-
   var pwdWrappers = document.querySelectorAll(".reg-label-password");
   var ICON_OPEN   = "👁️";
   var ICON_CLOSED = "👁️‍🗨️";
@@ -221,7 +263,6 @@ function sendRegistrationToGoogleSheet(userData) {
     (function (wrapper) {
       var input  = wrapper.querySelector("input");
       var eyeBtn = wrapper.querySelector(".reg-eye");
-
       if (!input || !eyeBtn) return;
 
       eyeBtn.textContent = ICON_OPEN;
@@ -236,7 +277,6 @@ function sendRegistrationToGoogleSheet(userData) {
   }
 
   /* ================== PSEUDO-REGISTRAZIONE (NOME + COGNOME) ================== */
-
   var formReg = document.querySelector("#registerOverlay .reg-form");
 
   if (formReg) {
@@ -248,12 +288,10 @@ function sendRegistrationToGoogleSheet(userData) {
 
       var first = firstNameInput ? firstNameInput.value.trim() : "";
       var last  = lastNameInput  ? lastNameInput.value.trim()  : "";
-
       if (!first || !last) return;
 
       // avatar scelto
       var avatarImg = document.getElementById("selectedAvatar");
-
       var avatarSrc = safeGet(LS_AVATAR);
       if (!avatarSrc && avatarImg) avatarSrc = avatarImg.src;
       if (!avatarSrc) avatarSrc = "resources/avatars/avatar0.png";
@@ -272,7 +310,7 @@ function sendRegistrationToGoogleSheet(userData) {
       // INVIA ANCHE AL GOOGLE SHEET (DB condiviso)
       sendRegistrationToGoogleSheet(userData);
 
-      // chiudi overlay e vai alla home (micro delay per non troncare la fetch)
+      // chiudi overlay e vai alla home
       closeOverlay(registerOverlay);
       setTimeout(function () {
         window.location.href = "index.html"; // oppure "paginaPersonale.html"
@@ -281,7 +319,6 @@ function sendRegistrationToGoogleSheet(userData) {
   }
 
   /* ================== SELETTORE AVATAR (OVERLAY) ================== */
-
   var avatarBoxes      = document.querySelectorAll(".reg-avatar, .profile-avatar");
   var avatarOverlay    = document.getElementById("avatarOverlay");
   var avatarOptions    = avatarOverlay ? avatarOverlay.querySelectorAll(".avatar-option") : [];
@@ -330,36 +367,25 @@ function sendRegistrationToGoogleSheet(userData) {
   }
 
   /* ================== APPLICA I DATI SALVATI (AVATAR + NOME) ================== */
-
   try {
     var storedUserStr2 = safeGet(LS_USER);
     var savedAvatar    = safeGet(LS_AVATAR);
     var user = null;
 
     if (storedUserStr2) {
-      try {
-        user = JSON.parse(storedUserStr2);
-      } catch (err) {
-        console.error("Impossibile leggere i dati utente salvati", err);
-      }
+      try { user = JSON.parse(storedUserStr2); }
+      catch (err) { console.error("Impossibile leggere i dati utente salvati", err); }
     }
 
     var avatarToUse = null;
-    if (user && user.avatar) {
-      avatarToUse = user.avatar;
-    } else if (savedAvatar) {
-      avatarToUse = savedAvatar;
-    }
+    if (user && user.avatar) avatarToUse = user.avatar;
+    else if (savedAvatar) avatarToUse = savedAvatar;
 
     var regAvatarImg2 = document.getElementById("selectedAvatar");
-    if (regAvatarImg2 && avatarToUse) {
-      regAvatarImg2.src = avatarToUse;
-    }
+    if (regAvatarImg2 && avatarToUse) regAvatarImg2.src = avatarToUse;
 
     var profileAvatarImg2 = document.querySelector(".profile-avatar img");
-    if (profileAvatarImg2 && avatarToUse) {
-      profileAvatarImg2.src = avatarToUse;
-    }
+    if (profileAvatarImg2 && avatarToUse) profileAvatarImg2.src = avatarToUse;
 
     if (user) {
       var greetSpan = document.getElementById("profileGreeting");
@@ -370,13 +396,18 @@ function sendRegistrationToGoogleSheet(userData) {
       if (nameSpan && user.firstName) nameSpan.textContent = user.firstName;
       if (lastNameSpan && user.lastName) lastNameSpan.textContent = user.lastName;
     }
+
+    // === (B) dopo aver applicato i dati utente, aggiorna status training ===
+    applyTrainingStatusFromSheet_();
+
   } catch (err3) {
     console.error("Impossibile applicare i dati salvati", err3);
   }
 
 });
 
-// === MINI-TOOLS ADMIN (GLOBALI) ===
+
+/* ================== MINI-TOOLS ADMIN (GLOBALI) ================== */
 window.DSM_getUsersDb = function () {
   try {
     var raw = localStorage.getItem("dsmUsersDb");
