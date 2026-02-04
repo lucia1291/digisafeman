@@ -48,26 +48,32 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // === INVIO REGISTRAZIONE A GOOGLE SHEET (Apps Script Web App) ===
-  function sendRegistrationToGoogleSheet(userData) {
-    if (!userData || !userData.userId) return;
-    if (!GAS_WEBAPP_URL) return;
+function sendRegistrationToGoogleSheet(userData) {
+  if (!userData || !userData.userId) return;
+  if (!GAS_WEBAPP_URL) return;
 
-    try {
-      fetch(GAS_WEBAPP_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "register",
-          userId: userData.userId,
-          firstName: userData.firstName,
-          lastName: userData.lastName
-        })
-      });
-    } catch (e) {
-      // non bloccare la registrazione se fallisce la rete
-    }
+  const payload = {
+    action: "register",
+    userId: userData.userId,
+    firstName: userData.firstName,
+    lastName: userData.lastName
+  };
+
+  try {
+    fetch(GAS_WEBAPP_URL, {
+      method: "POST",
+      mode: "no-cors",
+      redirect: "follow",
+      keepalive: true,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+      },
+      body: "payload=" + encodeURIComponent(JSON.stringify(payload))
+    });
+  } catch (e) {
+    // non bloccare la registrazione se fallisce la rete
   }
+}
 
   function getOrCreateUserId() {
     var id = null;
