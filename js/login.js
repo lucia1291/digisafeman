@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", function () {
   var LS_AVATAR = "selectedAvatarSrc";
 
   // === Google Apps Script Web App (PUBBLICO per registrazioni) ===
-  // Incolla qui l'URL della tua Web App (quella che riceve doPost)
   var GAS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbz9M0TIJjRaFH51Yk6i9xbczBIEgKslBdJ__YA_ms3NxzFuHvxJNS551fnoSXwUS9Qu/exec";
 
   var LS_DB = "dsmUsersDb"; // "database" locale: lista utenti pseudo-registrati
@@ -51,9 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // === INVIO REGISTRAZIONE A GOOGLE SHEET (Apps Script Web App) ===
   function sendRegistrationToGoogleSheet(userData) {
     if (!userData || !userData.userId) return;
-
-    // Se non hai ancora messo l'URL, non fare nulla
-    if (!GAS_WEBAPP_URL || GAS_WEBAPP_URL.indexOf("https://script.google.com/macros/s/AKfycbz9M0TIJjRaFH51Yk6i9xbczBIEgKslBdJ__YA_ms3NxzFuHvxJNS551fnoSXwUS9Qu/exec") === 0) return;
+    if (!GAS_WEBAPP_URL) return;
 
     try {
       fetch(GAS_WEBAPP_URL, {
@@ -151,8 +148,6 @@ document.addEventListener("DOMContentLoaded", function () {
   var openLoginBtn    = document.getElementById("openLogin");
   var openRegisterBtn = document.getElementById("openRegister");
 
-  // Se vuoi trasformare il tasto LOGIN in "entra se già registrato"
-  // altrimenti aprirà comunque l'overlay login (che potrai poi rimuovere).
   if (openLoginBtn) {
     openLoginBtn.addEventListener("click", function (e) {
       e.preventDefault();
@@ -164,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      // Altrimenti apri direttamente registrazione (più coerente senza password/email)
+      // Altrimenti apri direttamente registrazione
       if (registerOverlay) openOverlay(registerOverlay);
       else if (loginOverlay) openOverlay(loginOverlay);
     });
@@ -189,7 +184,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /* ========== link "Hai dimenticato la tua password?" → apre forgot ========== */
-  // (puoi anche eliminare forgotOverlay dal markup se non ti serve)
 
   var openForgot = document.getElementById("openForgot");
   if (openForgot && loginOverlay && forgotOverlay) {
@@ -200,18 +194,17 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  /* ========== chiusura generica (sfondo + bottoni data-close-register) ========== */
+  /* ========== chiusura generica (sfondo + bottoni) ========== */
 
   setupCloseOnBgAndButtons(loginOverlay);
   setupCloseOnBgAndButtons(registerOverlay);
   setupCloseOnBgAndButtons(forgotOverlay);
 
   /* ================== TOGGLE VISIBILITÀ PASSWORD (OCCHIO) ================== */
-  // Se hai rimosso i campi password dal markup, questo blocco non fa nulla (va bene).
 
   var pwdWrappers = document.querySelectorAll(".reg-label-password");
-  var ICON_OPEN   = "👁️";      // password nascosta
-  var ICON_CLOSED = "👁️‍🗨️";   // password visibile
+  var ICON_OPEN   = "👁️";
+  var ICON_CLOSED = "👁️‍🗨️";
 
   for (var j = 0; j < pwdWrappers.length; j++) {
     (function (wrapper) {
@@ -268,9 +261,11 @@ document.addEventListener("DOMContentLoaded", function () {
       // INVIA ANCHE AL GOOGLE SHEET (DB condiviso)
       sendRegistrationToGoogleSheet(userData);
 
-      // chiudi overlay e vai alla home (o pagina personale)
+      // chiudi overlay e vai alla home (micro delay per non troncare la fetch)
       closeOverlay(registerOverlay);
-      window.location.href = "index.html"; // oppure "paginaPersonale.html"
+      setTimeout(function () {
+        window.location.href = "index.html"; // oppure "paginaPersonale.html"
+      }, 300);
     });
   }
 
@@ -281,12 +276,10 @@ document.addEventListener("DOMContentLoaded", function () {
   var avatarOptions    = avatarOverlay ? avatarOverlay.querySelectorAll(".avatar-option") : [];
   var currentAvatarImg = null;
 
-  // abilita chiusura overlay avatar con sfondo e bottoni data-close-register
   setupCloseOnBgAndButtons(avatarOverlay);
 
   if (avatarOverlay && avatarOptions.length && avatarBoxes.length) {
 
-    // clic sui box avatar (login, registrazione, pagina personale)
     for (var k = 0; k < avatarBoxes.length; k++) {
       (function (box) {
         var img = box.querySelector("img");
@@ -301,17 +294,14 @@ document.addEventListener("DOMContentLoaded", function () {
       })(avatarBoxes[k]);
     }
 
-    // clic su uno degli avatar nell’overlay
     for (var m = 0; m < avatarOptions.length; m++) {
       avatarOptions[m].addEventListener("click", function () {
         var newSrc = this.getAttribute("data-avatar");
         if (currentAvatarImg && newSrc) {
           currentAvatarImg.src = newSrc;
 
-          // salva la scelta in localStorage
           safeSet(LS_AVATAR, newSrc);
 
-          // se esiste già un utente salvato, aggiorna anche il suo avatar
           try {
             var storedUserStr = safeGet(LS_USER);
             if (storedUserStr) {
@@ -350,35 +340,24 @@ document.addEventListener("DOMContentLoaded", function () {
       avatarToUse = savedAvatar;
     }
 
-    // avatar nei pannelli di login/registrazione
     var regAvatarImg2 = document.getElementById("selectedAvatar");
     if (regAvatarImg2 && avatarToUse) {
       regAvatarImg2.src = avatarToUse;
     }
 
-    // avatar nella pagina personale
     var profileAvatarImg2 = document.querySelector(".profile-avatar img");
     if (profileAvatarImg2 && avatarToUse) {
       profileAvatarImg2.src = avatarToUse;
     }
 
-    // testo nella pagina personale (se presente)
     if (user) {
       var greetSpan = document.getElementById("profileGreeting");
       var nameSpan  = document.getElementById("profileName");
-      var lastNameSpan = document.getElementById("profileEmail"); // nel tuo HTML questo è "Cognome"
+      var lastNameSpan = document.getElementById("profileEmail");
 
-      if (greetSpan && user.fullName) {
-        greetSpan.textContent = user.fullName;     // Ciao! Nome Cognome
-      }
-
-      if (nameSpan && user.firstName) {
-        nameSpan.textContent = user.firstName;     // Nome: solo Nome
-      }
-
-      if (lastNameSpan && user.lastName) {
-        lastNameSpan.textContent = user.lastName;  // Cognome: solo Cognome
-      }
+      if (greetSpan && user.fullName) greetSpan.textContent = user.fullName;
+      if (nameSpan && user.firstName) nameSpan.textContent = user.firstName;
+      if (lastNameSpan && user.lastName) lastNameSpan.textContent = user.lastName;
     }
   } catch (err3) {
     console.error("Impossibile applicare i dati salvati", err3);
